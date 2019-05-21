@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Weatherion",
+    "desc": "Weather app for desktop with 6-hour interval forecasts for selected location.",
+    "logo": "../assets/weatherion-logo.png",
+    "image": "../assets/weatherion.png",
+    "meta": {
+      "name": "weatherion",
+      "repo": {
+        "exists": true,
+        "url": "//github.com/arafatamim/weatherion"
+      },
+      "downloadable": true,
+      "productLink": "//github.com/arafatamim/weatherion/releases/latest"
+    }
+  },
+  {
+    "name": "Keeper",
+    "desc": "Google Keep now lives on your desktop, whenever you want it.",
+    "logo": "../assets/keeper-logo.png",
+    "image": "../assets/keeper.png",
+    "meta": {
+      "name": "keeper",
+      "repo": {
+        "exists": true,
+        "url": "//github.com/arafatamim/keeper"
+      },
+      "downloadable": true,
+      "productLink": "//github.com/arafatamim/keeper/releases/latest"
+    }
+  },
+
+  {
+    "name": "Waqt Web",
+    "desc": "View Islamic prayer times for your location.",
+    "logo": "../assets/waqt-web-logo.png",
+    "image": "../assets/waqt-web.png",
+    "meta": {
+      "name": "waqt-web",
+      "repo": {
+        "exists": true,
+        "url": "//github.com/arafatamim/waqt-web"
+      },
+      "downloadable": false,
+      "productLink": "//waqt-web.netlify.com"
+    }
+  },
+  {
+    "name": "Tally Counter PWA",
+    "desc": "Simple and handy tally counter.",
+    "logo": "../assets/tally-counter-logo.png",
+    "image": "../assets/tally-counter.png",
+    "meta": {
+      "name": "tally-counter-pwa",
+      "repo": {
+        "exists": true,
+        "url": "//github.com/arafatamim/tally-counter"
+      },
+      "downloadable": false,
+      "productLink": "//tally-counter-pwa.netlify.com"
+    }
+  }
+]

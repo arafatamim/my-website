@@ -1,0 +1,126 @@
+@import "../../styles/base";
+
+.hero {
+  margin: 120px 50px 50px;
+  display: grid;
+  row-gap: 10px;
+  &__main-image {
+    img {
+      border-radius: 50%;
+    }
+  }
+  &__title {
+    font-size: 20pt;
+    font-weight: bold;
+    font-family: $title-font;
+    color: $accent-2;
+  }
+  &__subtitle {
+    font-size: 14pt;
+  }
+  &__main-button {
+    padding: 15px;
+    padding-left: 0;
+
+    &__link {
+      text-decoration: none;
+      color: $accent-2;
+      font-size: 14pt;
+      transition: 0.1s;
+      font-family: $title-font;
+      &:hover {
+        color: #eee;
+      }
+    }
+  }
+}
+
+.nav {
+  padding: 15px;
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    vertical-align: middle;
+    color: $accent-2;
+  }
+  &__header__brand-image {
+    margin-right: 10px;
+    img {
+      border-radius: 50%;
+    }
+  }
+  &__header__site-name {
+    font-family: $title-font;
+    font-size: 14pt;
+    font-weight: bold;
+  }
+}
+.footer {
+  color: $accent-1;
+  background-color: transparent;
+  padding: 30px;
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+    &__right__link {
+      margin-left: 15px;
+      font-size: 14pt;
+      color: $accent-1;
+      transition: 0.1s;
+      &:hover {
+        color: #eee;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .hero {
+    margin: 35px 30px;
+  }
+  .footer {
+    padding: 10px;
+  }
+}
+
+// /* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .hero {
+    margin: 35px 30px;
+  }
+  .footer {
+    padding: 10px;
+  }
+}
+
+// /* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .hero {
+    margin: 60px;
+  }
+  .footer {
+    padding: 30px;
+  }
+}
+
+// /* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .hero {
+    margin: 70px 60px;
+  }
+  .footer {
+    padding: 30px;
+  }
+}
+
+// /* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .hero {
+    margin: 70px 60px;
+  }
+  .footer {
+    padding: 30px;
+  }
+}

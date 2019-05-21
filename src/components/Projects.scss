@@ -1,0 +1,91 @@
+@import "../styles/base";
+
+.projects {
+  &__header {
+    @include section-header;
+  }
+  &__container--grid {
+    @include container-grid;
+  }
+}
+
+.project__contents {
+  background-color: $secondary-color;
+  padding: 20px;
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  // grid-template-rows: 25px auto 250px;
+  // box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: 0.2s;
+  &:hover {
+    background-color: lighten($secondary-color, 5%);
+    // box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.35);
+  }
+  &__name {
+    font-family: $title-font;
+    color: $accent-2;
+    font-size: 16pt;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+  &__desc {
+    padding-top: 15px;
+    padding-bottom: 20px;
+    font-size: 14pt;
+    color: $accent-2;
+  }
+  &__image > img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+  }
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .projects__header {
+    font-size: 20pt;
+  }
+  .projects__container--grid {
+    padding: 20px;
+    grid-template-columns: 1fr;
+    row-gap: 15px;
+  }
+}
+
+// /* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .projects__container--grid {
+    padding: 30px;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 15px;
+  }
+}
+
+// /* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .projects__container--grid {
+    padding: 40px;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 15px;
+  }
+}
+
+// /* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .projects__container--grid {
+    padding: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 15px;
+  }
+}
+
+// /* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .projects__container--grid {
+    padding: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 15px;
+  }
+}

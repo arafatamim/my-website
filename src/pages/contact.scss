@@ -1,0 +1,12 @@
+@import "../styles/base";
+
+.contact__header {
+  @include section-header;
+  margin-top: 5%;
+}
+
+@media only screen and (max-width: 600px) {
+  .contact__header {
+    font-size: 20pt;
+  }
+}

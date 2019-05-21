@@ -1,0 +1,47 @@
+// imports
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=Lato");
+
+// variables
+$title-font: "Poppins", serif;
+$title-size: 26pt;
+$title-color: #333;
+$body-font: "Lato", sans-serif;
+$body-color: #222;
+
+$primary-color: #302d28;
+$secondary-color: #46443e;
+$accent-1: #cc9d46;
+$accent-2: #f8e194;
+
+// mixins
+@mixin section-header {
+  font-size: $title-size;
+  font-family: $title-font;
+  text-align: center;
+  color: $accent-1;
+}
+@mixin container-grid {
+  padding: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 25px;
+  row-gap: 25px;
+}
+
+// default styles
+a {
+  text-decoration: none;
+  color: black;
+}
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  font-family: $body-font;
+  margin: 0;
+  height: 100%;
+  color: $accent-1;
+  background-color: $primary-color;
+}
