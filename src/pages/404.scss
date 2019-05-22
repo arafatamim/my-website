@@ -1,0 +1,18 @@
+@import "../styles/base";
+
+.error {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  &__title {
+    font-family: $title-font;
+    font-size: 14vw;
+  }
+  &__subtitle {
+    font-size: 8vw;
+  }
+  &__link {
+    color: #f5f5f5;
+  }
+}

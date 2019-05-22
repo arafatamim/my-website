@@ -11,7 +11,7 @@
   }
   &__title {
     font-size: 20pt;
-    font-weight: bold;
+    font-weight: 600;
     font-family: $title-font;
     color: $accent-2;
   }
@@ -64,6 +64,9 @@
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
+    &__left {
+      color: $accent-1;
+    }
     &__right__link {
       margin-left: 15px;
       font-size: 14pt;

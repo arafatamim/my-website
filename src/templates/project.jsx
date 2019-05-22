@@ -2,8 +2,8 @@ import React from "react";
 import "./project.scss";
 import Layout from "../components/layouts/MainLayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Helmet } from "react-helmet";
 import "animate.css";
-import path from "path";
 
 export default props => {
   const { name, desc, logo, image, meta } = props.pageContext;
@@ -37,6 +37,11 @@ export default props => {
   }
   return (
     <Layout>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{name} | Tamim Arafat</title>
+        <meta name="description" content={`${name}. ${desc}`} />
+      </Helmet>
       <div className="project__container">
         <div className="project__logo">
           <img

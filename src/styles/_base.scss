@@ -1,6 +1,6 @@
 // imports
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-@import url("https://fonts.googleapis.com/css?family=Lato");
+// @import url("https://fonts.googleapis.com/css?family=Poppins");
+// @import url("https://fonts.googleapis.com/css?family=Lato");
 
 // variables
 $title-font: "Poppins", serif;
@@ -25,8 +25,7 @@ $accent-2: #f8e194;
   padding: 50px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 25px;
-  row-gap: 25px;
+  gap: 15px;
 }
 
 // default styles

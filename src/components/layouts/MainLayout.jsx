@@ -2,6 +2,7 @@ import React from "react";
 import "./MainLayout.scss";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Helmet } from "react-helmet";
 import "animate.css";
 
 export default props => {
@@ -85,6 +86,9 @@ export default props => {
 
   return (
     <div>
+      <Helmet>
+        <html lang="en" />
+      </Helmet>
       <header>{header}</header>
       {props.children}
       <footer>
@@ -100,6 +104,7 @@ export default props => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__content__right__link"
+                aria-label="Facebook social link"
               >
                 <FontAwesomeIcon icon={["fab", "facebook"]} />
               </a>
@@ -108,6 +113,7 @@ export default props => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__content__right__link"
+                aria-label="Instagram social link"
               >
                 <FontAwesomeIcon icon={["fab", "instagram"]} />
               </a>
@@ -117,6 +123,7 @@ export default props => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__content__right__link"
+                aria-label="GitHub social link"
               >
                 <FontAwesomeIcon icon={["fab", "github"]} />
               </a>
