@@ -1,7 +1,6 @@
 import "typeface-lato";
 import "typeface-poppins";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
   faFacebook,
