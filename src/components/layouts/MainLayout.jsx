@@ -95,8 +95,7 @@ export default props => {
         <div className="footer">
           <div className="footer__content">
             <div className="footer__content__left">
-              Copyright &copy; {data.site.siteMetadata.title},{" "}
-              {new Date().getFullYear()}
+              &copy; {data.site.siteMetadata.title} {new Date().getFullYear()}
             </div>
             <div className="footer__content__right">
               <a
