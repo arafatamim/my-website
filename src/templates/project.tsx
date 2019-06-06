@@ -6,14 +6,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Helmet } from "react-helmet";
 import "animate.css";
 
-const Project: React.FunctionComponent<{ pageContext: any }> = props => {
+const Project: React.FunctionComponent<{
+  pageContext: {
+    name: String;
+    desc: String;
+    image: {
+      publicURL: String;
+    };
+    logo: {
+      publicURL: String;
+    };
+    meta: {
+      name: String;
+      repo: {
+        exists: Boolean;
+        url: String;
+      };
+      downloadable: Boolean;
+      productLink: String;
+    };
+  };
+}> = props => {
   const { name, desc, image, logo, meta } = props.pageContext;
 
   let tryButton: React.ReactElement;
   if (meta.downloadable) {
     tryButton = (
       <a
-        href={meta.productLink}
+        href={meta.productLink as string}
         target="_blank"
         rel="noopener noreferrer"
         className="animated fadeIn faster"
@@ -26,7 +46,7 @@ const Project: React.FunctionComponent<{ pageContext: any }> = props => {
   } else {
     tryButton = (
       <a
-        href={meta.productLink}
+        href={meta.productLink as string}
         target="_blank"
         rel="noopener noreferrer"
         className="animated fadeIn fast"
@@ -47,7 +67,7 @@ const Project: React.FunctionComponent<{ pageContext: any }> = props => {
       <div className="project__container">
         <div className="project__logo">
           <img
-            src={logo.publicURL}
+            src={logo.publicURL as string}
             alt={name + " logo"}
             width="96"
             height="96"
@@ -58,7 +78,11 @@ const Project: React.FunctionComponent<{ pageContext: any }> = props => {
         <div className="project__buttons animated fadeIn faster">
           {tryButton}
           {meta.repo.exists && (
-            <a href={meta.repo.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={meta.repo.url as string}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <span>
                 <FontAwesomeIcon icon={["fab", "github"]} /> View source
               </span>
@@ -66,7 +90,7 @@ const Project: React.FunctionComponent<{ pageContext: any }> = props => {
           )}
         </div>
         <div className="project__images animated fadeInUpBig fast">
-          <img src={image.publicURL} alt={name + " screenshot"} />
+          <img src={image.publicURL as string} alt={name + " screenshot"} />
         </div>
       </div>
     </Layout>
