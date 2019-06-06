@@ -1,13 +1,15 @@
 import React from "react";
 import "./project.scss";
 import Layout from "../components/layouts/MainLayout";
+import Img from "gatsby-image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Helmet } from "react-helmet";
 import "animate.css";
 
-export default props => {
-  const { name, desc, logo, image, meta } = props.pageContext;
-  let tryButton;
+const Project: React.FunctionComponent<{ pageContext: any }> = props => {
+  const { name, desc, image, logo, meta } = props.pageContext;
+
+  let tryButton: React.ReactElement;
   if (meta.downloadable) {
     tryButton = (
       <a
@@ -70,3 +72,5 @@ export default props => {
     </Layout>
   );
 };
+
+export default Project;

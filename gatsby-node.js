@@ -1,9 +1,8 @@
 const path = require("path");
-// const data = require("./src/content/projects.json");
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
-  const template = path.resolve("src/templates/project.jsx");
+  const template = path.resolve("src/templates/project.tsx");
 
   return graphql(`
     query {

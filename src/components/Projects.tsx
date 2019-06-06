@@ -1,34 +1,16 @@
 import React from "react";
 import "./Projects.scss";
-import { useStaticQuery, graphql } from "gatsby";
 import "animate.css";
 
-export default () => {
-  const data = useStaticQuery(graphql`
-    query {
-      allProjectsJson {
-        edges {
-          node {
-            name
-            desc
-            image {
-              publicURL
-            }
-            meta {
-              name
-            }
-          }
-        }
-      }
-    }
-  `);
+const Projects: React.FunctionComponent<{ data: object[] }> = props => {
+  const data = props.data;
 
   return (
     <div className="projects animated fadeInUpBig">
       <div className="projects__header">Projects</div>
       <main>
         <div className="projects__container--grid">
-          {data.allProjectsJson.edges.map((field, i) => {
+          {data.map((field: any, i: number) => {
             return (
               <a
                 href={"/projects/" + field.node.meta.name}
@@ -54,3 +36,5 @@ export default () => {
     </div>
   );
 };
+
+export default Projects;

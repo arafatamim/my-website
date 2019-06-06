@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import MainLayout from "../components/layouts/MainLayout";
 import "./contact.scss";
 
-export default () => (
+export const Count: React.FunctionComponent = () => (
   <MainLayout>
     <Helmet>
       <meta charSet="utf-8" />

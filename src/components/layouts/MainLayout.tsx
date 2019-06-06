@@ -5,8 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Helmet } from "react-helmet";
 import "animate.css";
 
-export default props => {
-  const data = useStaticQuery(graphql`
+const MainLayout: React.FunctionComponent<{
+  location?: String;
+  children: any;
+}> = props => {
+  // Static query
+  const data: any = useStaticQuery(graphql`
     query {
       site {
         siteMetadata {
@@ -21,7 +25,7 @@ export default props => {
     }
   `);
 
-  let header;
+  let header: any;
   if (props.location === "home") {
     header = (
       <div className="hero ">
@@ -133,3 +137,5 @@ export default props => {
     </div>
   );
 };
+
+export default MainLayout;
