@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "gatsby";
 import { Helmet } from "react-helmet";
 import MainLayout from "../components/layouts/MainLayout";
 import "./contact.scss";
