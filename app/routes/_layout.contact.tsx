@@ -26,20 +26,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
       const toEmail = process.env.RESEND_TO_EMAIL;
 
-      const response = await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
         to: toEmail != null ? [toEmail] : [],
         subject: `Message from ${name} (${email})`,
         text: message.toString(),
       });
 
-      if (response.data != null) console.log("Email sent:", response.data);
+      if (data != null) console.log("Email sent:", data);
 
-      if (response.error != null) {
-        console.error(response.error);
+      if (error != null) {
+        console.error(error);
         return {
           success: false,
-          message: "Failed to send message. Please try again later.",
+          message: error,
         };
       }
 
@@ -51,7 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       console.error(e);
       return {
         success: false,
-        message: "Failed to send message. Please try again later.",
+        message: e,
       };
     }
   } else {

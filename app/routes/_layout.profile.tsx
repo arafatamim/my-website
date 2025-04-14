@@ -7,7 +7,6 @@ import {
   SiGo,
   SiRust,
   SiDocker,
-  SiKubernetes,
   SiGit,
   SiMongodb,
   SiPostgresql,
