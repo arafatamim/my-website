@@ -1,0 +1,121 @@
+@use "../styles/base";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 5rem 8rem;
+
+  @include base.breakpoint(laptop) {
+    padding: 4rem 6rem;
+  }
+
+  @include base.breakpoint(tablet) {
+    padding: 3rem 4rem;
+  }
+
+  @include base.breakpoint(mobile) {
+    padding: 2rem;
+    padding-top: 3rem;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+.hero {
+  display: grid;
+  row-gap: 10px;
+
+  @include base.breakpoint(mobile) {
+    text-align: center;
+    justify-items: center;
+  }
+  &__main-image {
+    img {
+      border-radius: 50%;
+    }
+  }
+  &__title {
+    font-size: 20pt;
+    font-weight: 600;
+    font-family: base.$title-font;
+    color: base.$accent-2;
+  }
+  &__subtitle {
+    font-size: 14pt;
+  }
+  &__main-button {
+    padding: 15px;
+    padding-left: 0;
+
+    &__link {
+      text-decoration: none;
+      color: base.$accent-2;
+      font-size: 14pt;
+      transition: 0.1s;
+      font-family: base.$title-font;
+      display: inline-flex;
+      align-items: center;
+      &:hover {
+        color: base.$accent-1;
+      }
+    }
+  }
+}
+
+.collapsed-hero {
+  padding: 2rem;
+
+  @include base.breakpoint(mobile) {
+    padding: 1.2rem;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    vertical-align: middle;
+    color: base.$accent-2;
+  }
+  &__header__brand-image {
+    margin-right: 1rem;
+    border-radius: 50%;
+  }
+  &__header__site-name {
+    font-family: base.$title-font;
+    font-size: 14pt;
+    font-weight: 600;
+  }
+}
+
+.actions {
+  &__socials {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.8rem;
+    margin: 0;
+    padding: 0;
+
+    @include base.breakpoint(mobile) {
+      // flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__item {
+      &__link {
+        color: base.$accent-1;
+        display: inline-flex;
+        font-size: 1.1rem;
+        gap: 0.5rem;
+        align-items: center;
+        transition: color 0.3s ease-in-out;
+        &:hover {
+          color: base.$accent-2;
+        }
+      }
+    }
+  }
+}

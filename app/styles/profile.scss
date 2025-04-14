@@ -1,0 +1,56 @@
+@use "../styles/base";
+
+.profile {
+  @include base.container;
+  max-width: 700px;
+  margin: 0 auto;
+
+  &__body {
+    /* display: grid;
+    grid-template-columns: 1fr; */
+    &__bio {
+      // flex: 1 0 auto;
+    }
+    &__illustration {
+      // flex: 1 1 auto;
+    }
+  }
+}
+
+.svg__accent {
+  fill: base.$accent-1;
+}
+
+.profile__skills {
+  margin-top: 2rem;
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-2px);
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      span {
+        font-size: 0.875rem;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+@use "sass:color";
+@use "../styles/base.scss";
+
+.project {
+  &__container {
+    margin-top: 100px;
+    display: grid;
+    gap: 1.2rem;
+    text-align: center;
+    vertical-align: middle;
+    justify-items: center;
+
+    @include base.breakpoint(tablet) {
+      margin-top: 60px;
+    }
+
+    @include base.breakpoint(mobile) {
+      margin-top: 50px;
+    }
+  }
+  &__name {
+    font-family: base.$title-font;
+    color: base.$accent-2;
+    font-size: 20pt;
+  }
+  &__desc {
+    font-size: 14pt;
+    margin-left: 25%;
+    margin-right: 25%;
+
+    @include base.breakpoint(small-mobile) {
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+  }
+  &__buttons {
+    display: inline-flex;
+    gap: 1.5rem;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      &:first-child {
+        background-color: base.$secondary-color;
+        color: base.$accent-2;
+        padding: 1rem;
+        border-radius: 0.4rem;
+        // box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
+        transition: 0.1s;
+        &:hover {
+          //   box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
+          background-color: color.adjust(
+            $color: base.$secondary-color,
+            $lightness: -2%
+          );
+        }
+      }
+      &:nth-child(2) {
+        color: base.$accent-2;
+        transition: color 0.1s;
+        &:hover {
+          color: color.adjust($color: base.$accent-2, $lightness: -5%);
+        }
+      }
+    }
+  }
+  &__images {
+    margin-top: 1rem;
+    margin-bottom: 45px;
+    background-color: color.adjust(base.$primary-color, $lightness: -5%);
+    border-radius: 10px;
+    padding: 25px;
+    width: 80%;
+    object-fit: contain;
+    img {
+      max-width: 80%;
+      max-height: 768px;
+    }
+  }
+}

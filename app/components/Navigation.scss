@@ -1,0 +1,64 @@
+@use "../styles/base";
+
+.nav {
+  font-family: base.$title-font;
+  font-size: 1.5rem;
+  place-items: center;
+  justify-self: center;
+  position: relative;
+
+  @include base.breakpoint(mobile) {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+  }
+
+  &__ul {
+    list-style: none;
+    display: inline-flex;
+    gap: 1rem;
+    position: relative;
+    padding: 0;
+    margin: 0;
+
+    @include base.breakpoint(mobile) {
+      gap: 0.5rem;
+    }
+  }
+
+  &__item {
+    padding: 0.75rem 1.5rem;
+    border-radius: base.$border-radius;
+    position: relative;
+    transition: color 0.3s ease, background-color 0.3s ease;
+
+    @include base.breakpoint(mobile) {
+      padding: 0.5rem 1rem;
+    }
+
+    &:hover {
+      background-color: base.$secondary-color;
+    }
+
+    &--active-indicator {
+      position: absolute;
+      background-color: base.$accent-1;
+      border-radius: base.$border-radius;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+    }
+
+    &--active {
+      color: base.$primary-color;
+      background-color: transparent;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &__link {
+      color: inherit;
+    }
+  }
+}

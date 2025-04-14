@@ -1,0 +1,91 @@
+// imports
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=Lato");
+
+// variables
+$title-font: "Poppins", serif;
+$title-size: 26pt;
+$title-color: #333;
+$body-font: "Lato", sans-serif;
+$body-color: #222;
+
+$primary-color: #f5f5f5;
+$secondary-color: #e6e6e6;
+$accent-1: #8b6a30;
+$accent-2: #b88c1b;
+
+$border-radius: 0.5rem;
+
+// mixins
+@mixin section-header {
+  font-size: $title-size;
+  font-family: $title-font;
+  text-align: center;
+  color: $accent-1;
+}
+@mixin container {
+  padding: 2rem;
+}
+@mixin container-grid {
+  @include container;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+// default styles
+a {
+  text-decoration: none;
+  color: black;
+}
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  font-family: $body-font;
+  margin: 0;
+  height: 100%;
+  color: $accent-1;
+  background-color: $primary-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $title-font;
+  color: $accent-2;
+}
+
+.prose {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  // width: 60rem;
+}
+
+// Breakpoint mixins
+@mixin breakpoint($point) {
+  @if $point == laptop {
+    @media (max-width: 1366px) {
+      @content;
+    }
+  }
+  @if $point == tablet {
+    @media (max-width: 1024px) {
+      @content;
+    }
+  }
+  @if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+  @if $point == small-mobile {
+    @media (max-width: 480px) {
+      @content;
+    }
+  }
+}

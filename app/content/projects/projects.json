@@ -1,0 +1,78 @@
+[
+  {
+    "name": "Waqt Web",
+    "desc": "View Islamic prayer times for your location.",
+    "logo": "waqt-web-logo.png",
+    "image": "waqt-web.png",
+    "slug": "waqt-web",
+    "repo": {
+      "url": "//github.com/arafatamim/waqt-web"
+    },
+    "productLink": "//waqt-web.netlify.app",
+    "tags": ["web", "pwa", "svelte"]
+  },
+  {
+    "name": "Tally Counter PWA",
+    "desc": "Simple and handy tally counter.",
+    "logo": "tally-counter-logo.png",
+    "image": "tally-counter.png",
+    "slug": "tally-counter-pwa",
+    "repo": {
+      "url": "//github.com/arafatamim/tally-counter"
+    },
+    "productLink": "//tally-counter-pwa.netlify.app",
+    "tags": ["web", "pwa", "vue.js"]
+  },
+  {
+    "name": "Amar Rapid Pass",
+    "desc": "Check the balance of your Rapid Passes and MRT Passes (for Bangladesh).",
+    "logo": "amar-rapid-pass-logo.png",
+    "image": "amar-rapid-pass.jpg",
+    "slug": "amar-rapid-pass",
+    "repo": {
+      "url": "//github.com/arafatamim/rapid_pass_app"
+    },
+    "downloadLink": "//github.com/arafatamim/rapid_pass_app/releases",
+    "tags": ["flutter", "mobile"]
+  },
+  {
+    "name": "Runner Bangladesh Development Society",
+    "desc": "Website for a non-profit organisation in Bangladesh.",
+    "logo": "rbds-logo.png",
+    "image": "rbds.png",
+    "slug": "rbds-website",
+    "productLink": "//runnerbangladesh.org",
+    "tags": ["web", "gatsby", "next.js"]
+  },
+  {
+    "name": "Flutter Movies",
+    "desc": "Sample 10-foot app designed for the big screen, with partial mobile support.",
+    "image": "flutter-movies.png",
+    "slug": "flutter-movies",
+    "repo": {
+      "url": "//github.com/arafatamim/flutter-movies"
+    },
+    "tags": ["flutter", "mobile"]
+  },
+  {
+    "name": "Muslim Youth Mission",
+    "desc": "Website for a charity organisation in Bangladesh.",
+    "logo": "mym-logo.png",
+    "image": "mym.png",
+    "slug": "mym-website",
+    "productLink": "//muslimmission.org/en",
+    "tags": ["web", "astro"]
+  },
+  {
+    "name": "MultiStreamer",
+    "desc": "Android app to stream videos from 1500+ supported websites, powered by youtube-dl.",
+    "logo": "multistreamer-logo.png",
+    "image": "multistreamer.png",
+    "slug": "multistreamer",
+    "downloadLink": "//github.com/arafatamim/multistreamer/releases",
+    "repo": {
+      "url": "//github.com/arafatamim/multistreamer"
+    },
+    "tags": ["flutter", "mobile"]
+  }
+]
