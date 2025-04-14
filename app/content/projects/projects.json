@@ -3,7 +3,7 @@
     "name": "Waqt Web",
     "desc": "View Islamic prayer times for your location.",
     "logo": "waqt-web-logo.png",
-    "image": "waqt-web.png",
+    "image": "waqt-web.webp",
     "slug": "waqt-web",
     "repo": {
       "url": "//github.com/arafatamim/waqt-web"
@@ -39,7 +39,7 @@
     "name": "Runner Bangladesh Development Society",
     "desc": "Website for a non-profit organisation in Bangladesh.",
     "logo": "rbds-logo.png",
-    "image": "rbds.png",
+    "image": "rbds.webp",
     "slug": "rbds-website",
     "productLink": "//runnerbangladesh.org",
     "tags": ["web", "gatsby", "next.js"]
@@ -47,7 +47,7 @@
   {
     "name": "Flutter Movies",
     "desc": "Sample 10-foot app designed for the big screen, with partial mobile support.",
-    "image": "flutter-movies.png",
+    "image": "flutter-movies.webp",
     "slug": "flutter-movies",
     "repo": {
       "url": "//github.com/arafatamim/flutter-movies"
@@ -58,7 +58,7 @@
     "name": "Muslim Youth Mission",
     "desc": "Website for a charity organisation in Bangladesh.",
     "logo": "mym-logo.png",
-    "image": "mym.png",
+    "image": "mym.webp",
     "slug": "mym-website",
     "productLink": "//muslimmission.org/en",
     "tags": ["web", "astro"]
@@ -67,7 +67,7 @@
     "name": "MultiStreamer",
     "desc": "Android app to stream videos from 1500+ supported websites, powered by youtube-dl.",
     "logo": "multistreamer-logo.png",
-    "image": "multistreamer.png",
+    "image": "multistreamer.webp",
     "slug": "multistreamer",
     "downloadLink": "//github.com/arafatamim/multistreamer/releases",
     "repo": {
