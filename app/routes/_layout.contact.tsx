@@ -8,7 +8,10 @@ import { Resend } from "resend";
 import "../styles/contact.scss";
 
 export function meta() {
-  return [{ title: "Contact — Tamim Arafat" }];
+  return [
+    { title: "Contact — Tamim Arafat" },
+    { name: "description", content: "Contact page for Tamim Arafat" },
+  ];
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {

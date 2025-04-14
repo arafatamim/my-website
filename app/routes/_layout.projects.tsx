@@ -12,6 +12,11 @@ export function meta() {
     {
       title: "Projects — Tamim Arafat",
     },
+    {
+      name: "description",
+      content:
+        "A non-exhaustive list of projects I have worked on in the past.",
+    },
   ];
 }
 

@@ -17,7 +17,13 @@ import {
 } from "react-icons/si";
 
 export function meta() {
-  return [{ title: "Profile — Tamim Arafat" }];
+  return [
+    { title: "Profile — Tamim Arafat" },
+    {
+      name: "description",
+      content: "Tamim Arafat, full-stack developer from Bangladesh",
+    },
+  ];
 }
 
 export default function ProfileTab() {
