@@ -13,6 +13,7 @@ import {
   SiTailwindcss,
   SiFsharp,
   SiNextdotjs,
+  SiFlutter,
 } from "react-icons/si";
 
 export function meta() {
@@ -54,7 +55,7 @@ export default function ProfileTab() {
         <ul className="profile__skills__list">
           {[
             { icon: SiTypescript, name: "TypeScript" },
-            { icon: SiReact, name: "React" },
+            { icon: SiReact, name: "React + Native" },
             { icon: SiNodedotjs, name: "Node.js" },
             { icon: SiNextdotjs, name: "Next.js" },
             { icon: SiPython, name: "Python" },
@@ -65,6 +66,7 @@ export default function ProfileTab() {
             { icon: SiMongodb, name: "MongoDB" },
             { icon: SiPostgresql, name: "PostgreSQL" },
             { icon: SiTailwindcss, name: "Tailwind" },
+            { icon: SiFlutter, name: "Flutter" },
             { icon: SiFsharp, name: "F#" },
           ].map((skill, index) => (
             <li key={index} className="profile__skills__list__item">

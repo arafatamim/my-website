@@ -2,10 +2,18 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Link } from "react-router";
 import siteMetadata from "../meta";
 import avatar from "../assets/img/me.jpg";
-import "./Header.scss";
 import { FaFacebook, FaXTwitter } from "react-icons/fa6";
+import { ThemeSwitch } from "~/routes/resources.theme-switch";
+import type { Theme } from "~/utils/theme.server";
+import "./Header.scss";
 
-export default function Header({ collapsed }: { collapsed: boolean }) {
+export default function Header({
+  collapsed,
+  themePreference,
+}: {
+  collapsed: boolean;
+  themePreference?: Theme | null;
+}) {
   if (!collapsed) {
     return (
       <div className="header">
@@ -41,38 +49,39 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
           </div>
         </div>
         <div className="actions">
-          <ul className="actions__socials">
-            <li className="actions__socials__item">
-              <a
-                className="actions__socials__item__link"
-                href={siteMetadata.socialLinks.linkedIn}
-                target="_blank"
-              >
-                <FaLinkedin />
-                &nbsp;LinkedIn
-              </a>
-            </li>
-            <li className="actions__socials__item">
-              <a
-                className="actions__socials__item__link"
-                href={siteMetadata.socialLinks.x}
-                target="_blank"
-              >
-                <FaXTwitter />
-                &nbsp;X (formerly Twitter)
-              </a>
-            </li>
-            <li className="actions__socials__item">
-              <a
-                className="actions__socials__item__link"
-                href={siteMetadata.socialLinks.facebook}
-                target="_blank"
-              >
-                <FaFacebook />
-                &nbsp;Facebook
-              </a>
-            </li>
+          <ul className="actions__socials animate__animated animate__fadeIn animate__faster">
+            {[
+              {
+                name: "LinkedIn",
+                href: siteMetadata.socialLinks.linkedIn,
+                icon: <FaLinkedin />,
+              },
+              {
+                name: "X (formerly Twitter)",
+                href: siteMetadata.socialLinks.x,
+                icon: <FaXTwitter />,
+              },
+              {
+                name: "Facebook",
+                href: siteMetadata.socialLinks.facebook,
+                icon: <FaFacebook />,
+              },
+            ].map((social) => (
+              <li className="actions__socials__item" key={social.name}>
+                <a
+                  className="actions__socials__item__link"
+                  href={social.href}
+                  target="_blank"
+                >
+                  {social.icon}
+                  &nbsp;{social.name}
+                </a>
+              </li>
+            ))}
           </ul>
+          <div className="actions__theme-selector">
+            <ThemeSwitch userPreference={themePreference} />
+          </div>
         </div>
       </div>
     );
@@ -97,6 +106,11 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
             </span>
           </div>
         </Link>
+        <div className="actions">
+          <div className="actions__theme-selector">
+            <ThemeSwitch userPreference={themePreference} />
+          </div>
+        </div>
       </div>
     );
   }

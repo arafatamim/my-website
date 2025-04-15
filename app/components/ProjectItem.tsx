@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useSearchParams } from "react-router";
 import "animate.css";
 import "./ProjectItem.scss";
@@ -18,10 +17,10 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
 
   return (
     <Link {...rest} to={"/projects/" + project.slug} className="project__link">
-      <div className="project__contents">
-        <div className="project__contents__name">{project.name}</div>
-        <p className="project__contents__desc">{project.desc}</p>
-        <div className="project__contents__tags">
+      <div className="project__card animate__animated animate__fadeInUp animate__faster">
+        <div className="project__card__name">{project.name}</div>
+        <p className="project__card__desc">{project.desc}</p>
+        <div className="project__card__tags">
           {project.tags.map((tag: string, i: number) => {
             return (
               <button
@@ -35,14 +34,14 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
                   }
                 }}
                 key={i}
-                className="project__contents__tags__tag"
+                className="project__card__tags__tag"
               >
                 {tag}
               </button>
             );
           })}
         </div>
-        <div className="project__contents__image">
+        <div className="project__card__image">
           <img src={project.projectImage} alt={`Image for ${project.name}`} />
         </div>
       </div>

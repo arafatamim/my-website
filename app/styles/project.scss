@@ -19,8 +19,8 @@
     }
   }
   &__name {
-    font-family: base.$title-font;
-    color: base.$accent-2;
+    font-family: var(--title-font);
+    color: var(--accent-2);
     font-size: 20pt;
   }
   &__desc {
@@ -44,25 +44,20 @@
       gap: 0.5rem;
 
       &:first-child {
-        background-color: base.$secondary-color;
-        color: base.$accent-2;
+        background-color: var(--secondary-color);
+        color: var(--accent-1);
         padding: 1rem;
         border-radius: 0.4rem;
-        // box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
         transition: 0.1s;
         &:hover {
-          //   box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
-          background-color: color.adjust(
-            $color: base.$secondary-color,
-            $lightness: -2%
-          );
+          background-color: var(--secondary-color-highlight);
         }
       }
       &:nth-child(2) {
-        color: base.$accent-2;
+        color: var(--accent-1);
         transition: color 0.1s;
         &:hover {
-          color: color.adjust($color: base.$accent-2, $lightness: -5%);
+          color: var(--accent-2);
         }
       }
     }
@@ -70,7 +65,7 @@
   &__images {
     margin-top: 1rem;
     margin-bottom: 45px;
-    background-color: color.adjust(base.$primary-color, $lightness: -5%);
+    background-color: var(--secondary-color);
     border-radius: 10px;
     padding: 25px;
     width: 80%;

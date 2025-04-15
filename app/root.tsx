@@ -1,21 +1,21 @@
 import {
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useLocation,
+  type LoaderFunctionArgs,
 } from "react-router";
-import siteMetadata from "./meta";
-import avatar from "./assets/img/me.jpg";
 import "animate.css";
 
 import type { Route } from "./+types/root";
-import type { JSX } from "react";
-import { FaFacebook, FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import Header from "./components/Header";
+import { ClientHintCheck, getHints } from "./utils/clientHints";
+import { useTheme } from "./routes/resources.theme-switch";
+import { getTheme } from "./utils/theme.server";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,13 +26,27 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  return {
+    requestInfo: {
+      hints: getHints(request),
+      userPrefs: {
+        theme: getTheme(request),
+      },
+    },
+  };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
+  const theme = useTheme();
+  const data = useLoaderData<typeof loader>();
   const pathname = location.pathname;
 
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
+        <ClientHintCheck />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
@@ -40,7 +54,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Header
-          collapsed={!["/profile", "/projects", "/contact"].includes(pathname)}
+          collapsed={
+            !["/profile", "/projects", "/contact", "/"].includes(pathname)
+          }
+          themePreference={data.requestInfo.userPrefs.theme}
         />
 
         {children}
@@ -61,6 +78,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let details = "An unexpected error occurred.";
   let stack: string | undefined;
 
+  console.error(error);
+
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
     details =
@@ -76,6 +95,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     <main style={{ padding: "2rem" }}>
       <h1>{message}</h1>
       <p>{details}</p>
+      <a href="/">&larr; Go back to home</a>
       {stack && (
         <pre>
           <code>{stack}</code>

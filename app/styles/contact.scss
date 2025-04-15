@@ -7,8 +7,8 @@
   margin: 0 auto;
 
   &__title {
-    font-size: base.$title-size;
-    font-family: base.$title-font;
+    font-size: var(--title-size);
+    font-family: var(--title-font);
     margin-bottom: 1.5rem;
     font-weight: 600;
   }
@@ -22,9 +22,9 @@
 
   &__notification {
     padding: 1rem;
-    background-color: base.$accent-1;
-    color: base.$secondary-color;
-    border-radius: base.$border-radius;
+    background-color: var(--accent-1);
+    color: var(--secondary-color);
+    border-radius: var(--border-radius);
   }
 
   &__form {
@@ -41,23 +41,24 @@
 
   &__label {
     font-weight: 500;
-    font-family: base.$body-font;
-    color: base.$accent-1;
+    font-family: var(--body-font);
+    color: var(--accent-1);
   }
 
   &__input,
   &__textarea {
+    color: var(--body-color);
     padding: 0.75rem;
-    border: 1px solid base.$secondary-color;
-    border-radius: base.$border-radius;
-    font-family: base.$body-font;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    font-family: var(--body-font);
     font-size: 1rem;
-    background-color: base.$primary-color;
+    background-color: var(--primary-color);
 
     &:focus {
       outline: none;
-      border-color: base.$accent-2;
-      box-shadow: 0 0 0 2px rgba(base.$accent-2, 0.2);
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 2px rgba(var(--accent-2, 0.2));
     }
   }
 
@@ -67,24 +68,25 @@
   }
 
   &__button {
-    background-color: base.$accent-2;
-    color: white;
+    background-color: var(--accent-1);
+    color: var(--primary-color);
     border: none;
-    border-radius: base.$border-radius;
+    border-radius: var(--border-radius);
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 500;
-    font-family: base.$body-font;
+    font-family: var(--body-font);
     cursor: pointer;
     align-self: flex-start;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: color.adjust(base.$accent-2, $lightness: -10%);
+      background-color: var(--accent-3);
     }
 
     &:disabled {
-      background-color: color.adjust(base.$accent-2, $lightness: 30%);
+      background-color: var(--secondary-color);
+      color: var(--accent-1);
       cursor: not-allowed;
     }
   }

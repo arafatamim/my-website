@@ -82,7 +82,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
       )}
 
       <Masonry
-        className="projects__container animate__animated animate__fadeInUp animate__faster"
+        className="projects__container"
         items={filteredProjects}
         config={{
           columns: [1, 2, 3, 4],
