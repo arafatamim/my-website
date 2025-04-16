@@ -4,7 +4,6 @@ import {
   useActionData,
   useNavigation,
   type ActionFunctionArgs,
-  type HeadersFunction,
 } from "react-router";
 import { Resend } from "resend";
 import "../styles/contact.scss";
@@ -16,16 +15,6 @@ export function meta() {
     { name: "description", content: "Contact page for Tamim Arafat" },
   ];
 }
-
-export const headers: HeadersFunction = () => {
-  return {
-    "Cache-Control": "public, max-age=604800, s-maxage=604800", // 1 week
-  };
-};
-
-const noCache = {
-  "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
-};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -52,40 +41,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     if (error != null) {
       console.error(error);
-      return data(
-        {
-          success: false,
-          message: error,
-        },
-        {
-          headers: noCache,
-        }
-      );
+      return data({
+        success: false,
+        message: error,
+      });
     }
 
     if (responseData != null) {
       console.log("Email sent:", responseData);
-      return data(
-        {
-          success: true,
-          message: "Message sent successfully!",
-        },
-        {
-          headers: noCache,
-        }
-      );
+      return data({
+        success: true,
+        message: "Message sent successfully!",
+      });
     }
   } catch (e) {
     console.error(e);
-    return data(
-      {
-        success: false,
-        message: e,
-      },
-      {
-        headers: noCache,
-      }
-    );
+    return data({
+      success: false,
+      message: e,
+    });
   }
 };
 

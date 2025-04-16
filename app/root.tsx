@@ -5,7 +5,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
   useLocation,
   type LoaderFunctionArgs,
 } from "react-router";
@@ -13,9 +12,7 @@ import "animate.css";
 
 import type { Route } from "./+types/root";
 import Header from "./components/Header";
-import { ClientHintCheck, getHints } from "./utils/clientHints";
-import { useTheme } from "./routes/resources.theme-switch";
-import { getTheme } from "./utils/theme.server";
+import { ClientHintCheck, getHints, useHints } from "./utils/clientHints";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,17 +27,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     requestInfo: {
       hints: getHints(request),
-      userPrefs: {
-        theme: getTheme(request),
-      },
     },
   };
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const theme = useTheme();
-  const data = useLoaderData<typeof loader>();
+  const theme = useHints().theme;
   const pathname = location.pathname;
 
   return (
@@ -57,7 +50,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           collapsed={
             !["/profile", "/projects", "/contact", "/"].includes(pathname)
           }
-          themePreference={data.requestInfo.userPrefs.theme}
         />
 
         {children}

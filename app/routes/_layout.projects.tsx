@@ -1,5 +1,5 @@
 import type { Route } from "./+types/_layout.projects";
-import { data, useSearchParams, type HeadersFunction } from "react-router";
+import { data, useSearchParams } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import ProjectItem from "~/components/ProjectItem";
 // @ts-expect-error
@@ -20,10 +20,6 @@ export function meta() {
   ];
 }
 
-const cacheControl = {
-  "Cache-Control": "public, max-age=86400, s-maxage=86400", // 1 day
-};
-
 export async function loader() {
   const projects = (await import("../content/projects/projects.json"))[
     "default"
@@ -37,17 +33,8 @@ export async function loader() {
     return projectWithImages;
   });
 
-  return data(
-    { projects: enhancedProjects },
-    {
-      headers: cacheControl,
-    }
-  );
+  return data({ projects: enhancedProjects });
 }
-
-export const headers: HeadersFunction = () => {
-  return cacheControl;
-};
 
 export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   const { projects } = loaderData;

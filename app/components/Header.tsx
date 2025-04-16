@@ -3,17 +3,9 @@ import { Link } from "react-router";
 import siteMetadata from "../meta";
 import avatar from "../assets/img/me.jpg";
 import { FaFacebook, FaXTwitter } from "react-icons/fa6";
-import { ThemeSwitch } from "~/routes/resources.theme-switch";
-import type { Theme } from "~/utils/theme.server";
 import "./Header.scss";
 
-export default function Header({
-  collapsed,
-  themePreference,
-}: {
-  collapsed: boolean;
-  themePreference?: Theme | null;
-}) {
+export default function Header({ collapsed }: { collapsed: boolean }) {
   if (!collapsed) {
     return (
       <div className="header">
@@ -79,9 +71,9 @@ export default function Header({
               </li>
             ))}
           </ul>
-          <div className="actions__theme-selector">
+          {/* <div className="actions__theme-selector">
             <ThemeSwitch userPreference={themePreference} />
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -106,11 +98,6 @@ export default function Header({
             </span>
           </div>
         </Link>
-        <div className="actions">
-          <div className="actions__theme-selector">
-            <ThemeSwitch userPreference={themePreference} />
-          </div>
-        </div>
       </div>
     );
   }

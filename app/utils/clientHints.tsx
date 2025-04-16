@@ -4,8 +4,13 @@
  * Shamelessly copied from https://www.mattstobbs.com/remix-dark-mode-2024/
  */
 import { getHintUtils } from "@epic-web/client-hints";
-import { clientHint as colourSchemeHint } from "@epic-web/client-hints/color-scheme";
+import {
+  clientHint as colourSchemeHint,
+  subscribeToSchemeChange,
+} from "@epic-web/client-hints/color-scheme";
 import { useRequestInfo } from "./requestInfo";
+import { useRevalidator } from "react-router";
+import { useEffect } from "react";
 
 const hintsUtils = getHintUtils({ theme: colourSchemeHint });
 
@@ -23,6 +28,9 @@ export function useHints() {
  * inaccurate value.
  */
 export function ClientHintCheck() {
+  const { revalidate } = useRevalidator();
+  useEffect(() => subscribeToSchemeChange(() => revalidate()), [revalidate]);
+
   return (
     <script
       dangerouslySetInnerHTML={{
