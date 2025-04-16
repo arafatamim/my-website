@@ -29,7 +29,6 @@
     "@types/node": "^22",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@vercel/react-router": "^1.1.0",
     "eslint": "^9.24.0",
     "react-router-devtools": "^1.1.10",
     "sass-embedded": "^1.86.3",
