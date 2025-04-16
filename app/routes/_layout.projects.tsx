@@ -49,7 +49,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   return (
     <div className="projects">
       <p className="prose projects__description animate__animated animate__fadeInUp animate__faster">
-        A non-exhaustive list of projects I have worked on in the past.
+        Take a look below at some of my featured work from the past few years.
       </p>
 
       {tags.length > 0 && (

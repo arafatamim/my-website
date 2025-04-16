@@ -71,9 +71,10 @@ export default function Contact() {
   return (
     <div className="contact-page">
       <p className="contact-page__description animate__animated animate__fadeInUp animate__faster prose">
-        If you have any questions or would like to get in touch, feel free to
-        reach out to me using the form below. I&apos;ll do my best to get back
-        to you as soon as possible.
+        If you have any questions or would like to get in touch, feel free to{" "}
+        <a href="mailto:tamim.arafat@gmail.com">send me an email</a> or reach
+        out using the form below. I&apos;ll do my best to get back to you as
+        soon as possible.
       </p>
 
       <Form
