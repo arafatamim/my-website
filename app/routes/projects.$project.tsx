@@ -36,7 +36,7 @@ export function meta({ data: { project } }: Route.MetaArgs) {
 
 export default function Project({ loaderData }: Route.ComponentProps) {
   const {
-    project: { name, desc, repo, productLink, downloadLink },
+    project: { name, desc, repo, productLink, downloadLink, tags },
     logoImage,
     projectImage,
   } = loaderData;
@@ -66,6 +66,17 @@ export default function Project({ loaderData }: Route.ComponentProps) {
       </div>
       <div className="project__desc animate__animated animate__fadeIn animate__faster">
         {desc}
+      </div>
+      <div className="project__tags">
+        {tags.map((tag) => (
+          <a
+            key={tag}
+            href={`/projects?tags=${tag}`}
+            className="project__tags__tag"
+          >
+            {tag}
+          </a>
+        ))}
       </div>
       <div className="project__buttons animate__animated animate__fadeIn animate__faster">
         {tryButton}

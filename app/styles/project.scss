@@ -5,7 +5,7 @@
   &__container {
     margin-top: 100px;
     display: grid;
-    gap: 1.2rem;
+    gap: 1.5rem;
     text-align: center;
     vertical-align: middle;
     justify-items: center;
@@ -31,6 +31,27 @@
     @include base.breakpoint(small-mobile) {
       margin-left: 5%;
       margin-right: 5%;
+    }
+  }
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.6rem;
+
+    &__tag {
+      padding: 0.5rem;
+      font-family: var(--body-font);
+      background-color: var(--accent-2);
+      color: var(--primary-color);
+      border-radius: 0.3rem;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      &:hover {
+        background-color: var(--accent-1);
+        color: var(--secondary-color);
+      }
     }
   }
   &__buttons {
