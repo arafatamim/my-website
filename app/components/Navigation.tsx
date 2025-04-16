@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigation } from "react-router";
 import { useEffect, useRef } from "react";
 import "./Navigation.scss";
 import "animate.css";
@@ -13,6 +13,9 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
 
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+
   const updateIndicator = () => {
     const activeItem = activeItemRef.current;
     const indicator = indicatorRef.current;
@@ -25,7 +28,12 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
 
       indicator.style.width = `${width}px`;
       indicator.style.height = `${height}px`;
-      indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+      indicator.style.setProperty('--translateX', `${left}px`);
+      indicator.style.setProperty('--translateY', `${top}px`);
+      
+      if (!isLoading) {
+        indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+      }
     }
   };
 
@@ -45,7 +53,10 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   return (
     <nav className="nav animate__animated animate__fadeInUp animate__faster">
       <ul className="nav__ul">
-        <div className="nav__item--active-indicator" ref={indicatorRef} />
+        <div 
+          className={`nav__item--active-indicator ${isLoading ? 'shake-animation' : ''}`} 
+          ref={indicatorRef} 
+        />
         {navItems.map((item) => (
           <li
             key={item.path}
