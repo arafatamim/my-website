@@ -1,11 +1,14 @@
 import {
+  data,
   Form,
   useActionData,
   useNavigation,
   type ActionFunctionArgs,
+  type HeadersFunction,
 } from "react-router";
 import { Resend } from "resend";
 import "../styles/contact.scss";
+import { invariantResponse } from "@epic-web/invariant";
 
 export function meta() {
   return [
@@ -14,51 +17,75 @@ export function meta() {
   ];
 }
 
+export const headers: HeadersFunction = () => {
+  return {
+    "Cache-Control": "public, max-age=604800, s-maxage=604800", // 1 week
+  };
+};
+
+const noCache = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+};
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const name = formData.get("name");
   const email = formData.get("email");
   const message = formData.get("message");
 
-  if (name != null && email != null && message != null) {
-    try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
+  invariantResponse(
+    name != null && email != null && message != null,
+    "Missing form data"
+  );
 
-      const toEmail = process.env.RESEND_TO_EMAIL;
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-      const { data, error } = await resend.emails.send({
-        from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
-        to: toEmail != null ? [toEmail] : [],
-        subject: `Message from ${name} (${email})`,
-        text: message.toString(),
-      });
+    const toEmail = process.env.RESEND_TO_EMAIL;
 
-      if (data != null) console.log("Email sent:", data);
+    const { data: responseData, error } = await resend.emails.send({
+      from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
+      to: toEmail != null ? [toEmail] : [],
+      subject: `Message from ${name} (${email})`,
+      text: message.toString(),
+    });
 
-      if (error != null) {
-        console.error(error);
-        return {
+    if (error != null) {
+      console.error(error);
+      return data(
+        {
           success: false,
           message: error,
-        };
-      }
+        },
+        {
+          headers: noCache,
+        }
+      );
+    }
 
-      return {
-        success: true,
-        message: "Message sent successfully!",
-      };
-    } catch (e) {
-      console.error(e);
-      return {
+    if (responseData != null) {
+      console.log("Email sent:", responseData);
+      return data(
+        {
+          success: true,
+          message: "Message sent successfully!",
+        },
+        {
+          headers: noCache,
+        }
+      );
+    }
+  } catch (e) {
+    console.error(e);
+    return data(
+      {
         success: false,
         message: e,
-      };
-    }
-  } else {
-    return {
-      success: false,
-      message: "Please fill out all fields.",
-    };
+      },
+      {
+        headers: noCache,
+      }
+    );
   }
 };
 
@@ -76,6 +103,7 @@ export default function Contact() {
       </p>
 
       <Form
+        action="/contact"
         method="post"
         className="contact-page__form animate__animated animate__fadeInUp animate__faster"
       >

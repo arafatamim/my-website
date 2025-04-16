@@ -1,3 +1,4 @@
+import type { HeadersFunction } from "react-router";
 import "../styles/profile.scss";
 import {
   SiTypescript,
@@ -25,6 +26,12 @@ export function meta() {
     },
   ];
 }
+
+export const headers: HeadersFunction = () => {
+  return {
+    "Cache-Control": "public, max-age=172800, s-maxage=86400", // 48 hours for browsers, 24 hours for CDNs
+  };
+};
 
 export default function ProfileTab() {
   return (

@@ -3,6 +3,13 @@ import "../styles/project.scss";
 import { FaDownload, FaGitAlt } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { getLogoImage, getProjectImage } from "~/utils/projectImages";
+import type { HeadersFunction } from "react-router";
+
+export const headers: HeadersFunction = () => {
+  return {
+    "Cache-Control": "public, max-age=604800, s-maxage=604800", // 1 week
+  };
+};
 
 export async function loader({ params }: Route.LoaderArgs) {
   const projectId = params.project;
