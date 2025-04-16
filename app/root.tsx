@@ -24,20 +24,21 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const clientHints = getHints(request);
   return {
     requestInfo: {
-      hints: getHints(request),
+      hints: clientHints,
     },
   };
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const theme = useHints().theme;
+  const clientHints = useHints();
   const pathname = location.pathname;
 
   return (
-    <html lang="en" className={theme}>
+    <html lang="en" className={clientHints.theme}>
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />
