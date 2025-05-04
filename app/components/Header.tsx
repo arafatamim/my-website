@@ -41,6 +41,7 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
             </a>
           </div>
         </div>
+        <hr className="header__divider" />
         <div className="header__actions">
           <ul className="header__actions__socials animate__animated animate__fadeIn animate__faster">
             {[
