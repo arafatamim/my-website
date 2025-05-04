@@ -46,7 +46,7 @@
       will-change: transform;
       transform: translate3d(0, 0, 0);
       transition: transform 0.3s cubic-bezier(0.72, 0.21, 0.23, 0.75),
-        background-color 0.3s ease;
+        background-color 0.3s ease, opacity 0.3s ease;
       z-index: -1;
     }
 
@@ -64,13 +64,27 @@
   }
 }
 
-
 @keyframes shake {
-  0% { transform: translate3d(var(--translateX), var(--translateY), 0) translateX(0); }
-  25% { transform: translate3d(var(--translateX), var(--translateY), 0) translateX(-5px); }
-  50% { transform: translate3d(var(--translateX), var(--translateY), 0) translateX(5px); }
-  75% { transform: translate3d(var(--translateX), var(--translateY), 0) translateX(-5px); }
-  100% { transform: translate3d(var(--translateX), var(--translateY), 0) translateX(0); }
+  0% {
+    transform: translate3d(var(--translateX), var(--translateY), 0)
+      translateX(0);
+  }
+  25% {
+    transform: translate3d(var(--translateX), var(--translateY), 0)
+      translateX(-5px);
+  }
+  50% {
+    transform: translate3d(var(--translateX), var(--translateY), 0)
+      translateX(5px);
+  }
+  75% {
+    transform: translate3d(var(--translateX), var(--translateY), 0)
+      translateX(-5px);
+  }
+  100% {
+    transform: translate3d(var(--translateX), var(--translateY), 0)
+      translateX(0);
+  }
 }
 
 .shake-animation {

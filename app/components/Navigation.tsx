@@ -13,9 +13,6 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
 
-  const navigation = useNavigation();
-  const isLoading = navigation.state === "loading";
-
   const updateIndicator = () => {
     const activeItem = activeItemRef.current;
     const indicator = indicatorRef.current;
@@ -30,24 +27,41 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
       indicator.style.height = `${height}px`;
       indicator.style.setProperty("--translateX", `${left}px`);
       indicator.style.setProperty("--translateY", `${top}px`);
-
       indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+
+      indicator.style.opacity = "1";
+    } else if (indicator) {
+      indicator.style.opacity = "0";
     }
   };
 
   useEffect(() => {
     let animationFrameId: number;
+    let resizeObserver: ResizeObserver | null = null;
 
-    const runUpdate = () => {
+    const runInitialUpdate = () => {
       updateIndicator();
-    };
-    animationFrameId = requestAnimationFrame(runUpdate);
 
+      const activeItem = activeItemRef.current;
+      if (activeItem) {
+        resizeObserver = new ResizeObserver(() => {
+          updateIndicator();
+        });
+        resizeObserver.observe(activeItem);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(runInitialUpdate);
+
+    // update on window resize
     window.addEventListener("resize", updateIndicator);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", updateIndicator);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
     };
   }, [location]);
 
@@ -58,8 +72,9 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
     <nav className="nav animate__animated animate__fadeInUp animate__faster">
       <ul className="nav__ul">
         <div
-          className="nav__item--active-indicator animate__animated animate__fadeIn"
+          className="nav__item--active-indicator"
           ref={indicatorRef}
+          style={{ opacity: 0 }}
         />
         {navItems.map((item) => (
           <li
