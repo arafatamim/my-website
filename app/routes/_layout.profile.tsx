@@ -35,7 +35,7 @@ export default function ProfileTab() {
       <section className="profile__body animate__animated animate__fadeInUp animate__faster">
         <h2>Bio</h2>
         <p className="profile__body__bio prose">
-          I discovered my passion for programming at 14, starting with
+          I discovered my passion for programming around age 14, starting with
           QuickBASIC. Over the years, I’ve worked with JavaScript, Dart, Python,
           Go, and now I’m learning Rust. For the past five years, I’ve been
           focused on web development, building sites for fun and profit while
