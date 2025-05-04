@@ -31,18 +31,22 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
       indicator.style.setProperty("--translateX", `${left}px`);
       indicator.style.setProperty("--translateY", `${top}px`);
 
-      if (!isLoading) {
-        indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
-      }
+      indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
     }
   };
 
   useEffect(() => {
-    updateIndicator();
+    let animationFrameId: number;
+
+    const runUpdate = () => {
+      updateIndicator();
+    };
+    animationFrameId = requestAnimationFrame(runUpdate);
 
     window.addEventListener("resize", updateIndicator);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", updateIndicator);
     };
   }, [location]);
@@ -53,7 +57,10 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   return (
     <nav className="nav animate__animated animate__fadeInUp animate__faster">
       <ul className="nav__ul">
-        <div className={`nav__item--active-indicator`} ref={indicatorRef} />
+        <div
+          className="nav__item--active-indicator animate__animated animate__fadeIn"
+          ref={indicatorRef}
+        />
         {navItems.map((item) => (
           <li
             key={item.path}
