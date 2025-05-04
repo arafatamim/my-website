@@ -28,9 +28,9 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
 
       indicator.style.width = `${width}px`;
       indicator.style.height = `${height}px`;
-      indicator.style.setProperty('--translateX', `${left}px`);
-      indicator.style.setProperty('--translateY', `${top}px`);
-      
+      indicator.style.setProperty("--translateX", `${left}px`);
+      indicator.style.setProperty("--translateY", `${top}px`);
+
       if (!isLoading) {
         indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
       }
@@ -53,10 +53,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   return (
     <nav className="nav animate__animated animate__fadeInUp animate__faster">
       <ul className="nav__ul">
-        <div 
-          className={`nav__item--active-indicator ${isLoading ? 'shake-animation' : ''}`} 
-          ref={indicatorRef} 
-        />
+        <div className={`nav__item--active-indicator`} ref={indicatorRef} />
         {navItems.map((item) => (
           <li
             key={item.path}

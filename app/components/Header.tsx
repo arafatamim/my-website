@@ -4,34 +4,35 @@ import siteMetadata from "../meta";
 import avatar from "../assets/img/me.jpg";
 import { FaFacebook, FaXTwitter } from "react-icons/fa6";
 import "./Header.scss";
+import { NavLink } from "react-router";
 
 export default function Header({ collapsed }: { collapsed: boolean }) {
   if (!collapsed) {
     return (
       <div className="header">
-        <div className="hero">
-          <div className="hero__main-image animate__animated animate__fadeInLeft animate__faster">
+        <div className="header__hero">
+          <div className="header__hero__main-image">
             <img src={avatar} width={96} height={96} alt={siteMetadata.title} />
           </div>
           <div
-            className="hero__title animate__animated animate__fadeInLeft animate__faster"
+            className="header__hero__title"
             style={{ animationDelay: "0.1s" }}
           >
             {siteMetadata.title}
           </div>
           <div
-            className="hero__subtitle animate__animated animate__fadeInLeft animate__faster"
+            className="header__hero__subtitle animate__animated animate__fadeInLeft animate__faster"
             style={{ animationDelay: "0.1s" }}
           >
             Web and Mobile Developer
           </div>
           <div
-            className="hero__main-button animate__animated animate__fadeInLeft animate__faster"
+            className="header__hero__main-button animate__animated animate__fadeInLeft animate__faster"
             style={{ animationDelay: "0.2s" }}
           >
             <a
               href={siteMetadata.socialLinks.github}
-              className="hero__main-button__link"
+              className="header__hero__main-button__link"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -40,8 +41,8 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
             </a>
           </div>
         </div>
-        <div className="actions">
-          <ul className="actions__socials animate__animated animate__fadeIn animate__faster">
+        <div className="header__actions">
+          <ul className="header__actions__socials animate__animated animate__fadeIn animate__faster">
             {[
               {
                 name: "LinkedIn",
@@ -59,9 +60,9 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
                 icon: <FaFacebook />,
               },
             ].map((social) => (
-              <li className="actions__socials__item" key={social.name}>
+              <li className="header__actions__socials__item" key={social.name}>
                 <a
-                  className="actions__socials__item__link"
+                  className="header__actions__socials__item__link"
                   href={social.href}
                   target="_blank"
                 >
@@ -71,7 +72,7 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
               </li>
             ))}
           </ul>
-          {/* <div className="actions__theme-selector">
+          {/* <div className="header__actions__theme-selector">
             <ThemeSwitch userPreference={themePreference} />
           </div> */}
         </div>
@@ -80,10 +81,10 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
   } else {
     return (
       <div className="collapsed-hero">
-        <Link to="/" className="collapsed-hero__link">
+        <NavLink to="/" className="collapsed-hero__link" viewTransition>
           <div className="collapsed-hero__header">
             <img
-              className="collapsed-hero__header__brand-image animate__animated animate__fadeInDown animate__faster"
+              className="collapsed-hero__header__brand-image"
               src={avatar}
               alt={siteMetadata.title}
               aria-hidden="true"
@@ -91,13 +92,13 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
               width="54px"
             />
             <span
-              className="collapsed-hero__header__site-name animate__animated animate__fadeInDown animate__faster"
+              className="collapsed-hero__header__site-name"
               style={{ animationDelay: "0.2s" }}
             >
               {siteMetadata.title}
             </span>
           </div>
-        </Link>
+        </NavLink>
       </div>
     );
   }

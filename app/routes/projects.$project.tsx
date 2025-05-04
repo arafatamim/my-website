@@ -45,7 +45,7 @@ export default function Project({ loaderData }: Route.ComponentProps) {
     productLink != null ? (
       <a href={productLink} target="_blank" rel="noopener noreferrer">
         <FaExternalLinkAlt />
-        Try it out
+        Visit project
       </a>
     ) : downloadLink != null ? (
       <a href={downloadLink} target="_blank" rel="noopener noreferrer">
@@ -61,12 +61,8 @@ export default function Project({ loaderData }: Route.ComponentProps) {
           <img src={logoImage} alt={name + " logo"} height="96" />
         </div>
       )}
-      <div className="project__name animate__animated animate__fadeIn animate__faster">
-        {name}
-      </div>
-      <div className="project__desc animate__animated animate__fadeIn animate__faster">
-        {desc}
-      </div>
+      <div className="project__name">{name}</div>
+      <div className="project__desc">{desc}</div>
       <div className="project__tags">
         {tags.map((tag) => (
           <a
@@ -90,7 +86,7 @@ export default function Project({ loaderData }: Route.ComponentProps) {
           </a>
         )}
       </div>
-      <div className="project__images animate__animated animate__fadeInUpBig animate__fast">
+      <div className="project__images">
         <img src={projectImage} alt={name + " screenshot"} />
       </div>
     </div>

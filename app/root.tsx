@@ -8,11 +8,10 @@ import {
   useLocation,
   type LoaderFunctionArgs,
 } from "react-router";
-import "animate.css";
-
 import type { Route } from "./+types/root";
 import Header from "./components/Header";
 import { ClientHintCheck, getHints, useHints } from "./utils/clientHints";
+import "animate.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

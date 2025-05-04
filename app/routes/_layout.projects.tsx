@@ -1,5 +1,5 @@
 import type { Route } from "./+types/_layout.projects";
-import { data, useSearchParams } from "react-router";
+import { data, useSearchParams, type MetaFunction } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import ProjectItem from "~/components/ProjectItem";
 // @ts-expect-error
@@ -7,7 +7,33 @@ import { Masonry } from "react-plock/dist/index.es.js";
 import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
 
-export function meta() {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const projects = data?.projects || [];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: projects.map((project: any, index: number) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: project.name,
+        description: project.desc,
+        keywords: project.tags.join(", "),
+        author: {
+          "@type": "Person",
+          name: "Tamim Arafat",
+        },
+      },
+    })),
+    numberOfItems: projects.length,
+    url: "https://arafatamim.uk/projects",
+    name: "Tamim Arafat's Projects",
+    description:
+      "A non-exhaustive list of projects I have worked on in the past.",
+  };
+
   return [
     {
       title: "Projects — Tamim Arafat",
@@ -17,18 +43,22 @@ export function meta() {
       content:
         "A non-exhaustive list of projects I have worked on in the past.",
     },
+    {
+      "script:ld+json": jsonLd,
+    },
   ];
-}
+};
 
 export async function loader() {
   const projects = (await import("../content/projects/projects.json"))[
     "default"
   ];
 
-  const enhancedProjects = projects.map((project: any) => {
-    const projectWithImages = { ...project };
-
-    projectWithImages.projectImage = getProjectImage(project.image);
+  const enhancedProjects = projects.map((project) => {
+    const projectWithImages = {
+      ...project,
+      projectImage: getProjectImage(project.image),
+    };
 
     return projectWithImages;
   });
@@ -42,8 +72,8 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
 
   const tags = searchParams.getAll("tags");
 
-  const filteredProjects = projects.filter((project: any) =>
-    tags.every((tag: string) => project.tags.includes(tag))
+  const filteredProjects = projects.filter((project) =>
+    tags.every((tag: string) => project.tags.includes(tag)),
   );
 
   return (
@@ -93,6 +123,14 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
           return <ProjectItem key={i} project={item} />;
         }}
       />
+
+      <noscript>
+        <div className="projects__container--nojs">
+          {filteredProjects.map((project, i) => (
+            <ProjectItem key={i} project={project} />
+          ))}
+        </div>
+      </noscript>
     </div>
   );
 }

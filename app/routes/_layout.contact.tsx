@@ -2,12 +2,15 @@ import {
   data,
   Form,
   useActionData,
+  useLoaderData,
   useNavigation,
   type ActionFunctionArgs,
 } from "react-router";
 import { Resend } from "resend";
 import "../styles/contact.scss";
 import { invariantResponse } from "@epic-web/invariant";
+import type { Route } from "./+types/_layout.contact";
+import { useEffect, useState } from "react";
 
 export function meta() {
   return [
@@ -24,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   invariantResponse(
     name != null && email != null && message != null,
-    "Missing form data"
+    "Missing form data",
   );
 
   try {
@@ -64,17 +67,34 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Contact() {
-  const actionData = useActionData();
+  const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
+  const [showEmail, setShowEmail] = useState(false);
+  const [emailAddress, setEmailAddress] = useState("");
+
+  useEffect(() => {
+    const user = "tamim.arafat";
+    const domain = "outlook.com";
+
+    const email = user + "@" + domain;
+
+    setEmailAddress(email);
+    setShowEmail(true);
+  }, []);
 
   return (
     <div className="contact-page">
       <p className="contact-page__description animate__animated animate__fadeInUp animate__faster prose">
-        If you have any questions or would like to get in touch, feel free to{" "}
-        <a href="mailto:tamim.arafat@gmail.com">send me an email</a> or reach
-        out using the form below. I&apos;ll do my best to get back to you as
-        soon as possible.
+        If you have any questions or would like to get in touch, feel free to
+        {showEmail ? (
+          <>
+            <a href={`mailto:${emailAddress}`}> send me an email</a> or
+          </>
+        ) : null}{" "}
+        reach out using the form below. I&apos;ll do my best to get back to you
+        as soon as possible.
       </p>
 
       <Form

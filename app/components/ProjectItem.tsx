@@ -1,5 +1,5 @@
-import { Link, useSearchParams } from "react-router";
-import "animate.css";
+import { Link, useSearchParams, NavLink } from "react-router";
+// import "animate.css";
 import "./ProjectItem.scss";
 
 interface ProjectItemProps {
@@ -16,7 +16,12 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
-    <Link {...rest} to={"/projects/" + project.slug} className="project__link">
+    <NavLink
+      {...rest}
+      to={"/projects/" + project.slug}
+      className="project__link"
+      viewTransition
+    >
       <div className="project__card animate__animated animate__fadeInUp animate__faster">
         <div className="project__card__name">{project.name}</div>
         <p className="project__card__desc">{project.desc}</p>
@@ -45,7 +50,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
           <img src={project.projectImage} alt={`Image for ${project.name}`} />
         </div>
       </div>
-    </Link>
+    </NavLink>
   );
 };
 

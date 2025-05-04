@@ -1,6 +1,25 @@
 @use "sass:color";
 @use "../styles/base";
 
+.project__link {
+  display: block;
+
+  &.transitioning .project__card {
+    &__name {
+      view-transition-name: project-item-name;
+    }
+    &__desc {
+      view-transition-name: project-item-desc;
+    }
+    &__tags {
+      view-transition-name: project-item-tags;
+    }
+    &__image > img {
+      view-transition-name: project-item-image;
+    }
+  }
+}
+
 .project__card {
   background-color: var(--secondary-color);
   padding: 1.2rem;
@@ -40,7 +59,9 @@
       border-radius: 0.3rem;
       border: none;
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
       &:hover {
         background-color: var(--accent-1);
         color: var(--secondary-color);

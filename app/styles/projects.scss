@@ -25,6 +25,17 @@
     @include base.container;
     padding: 2rem 8rem;
 
+    &--nojs {
+      column-count: 3;
+      column-gap: 1rem;
+      padding: 2rem 8rem;
+
+      & > a {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+      }
+    }
+
     @include base.breakpoint(laptop) {
       padding: 40px;
     }

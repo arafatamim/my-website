@@ -22,11 +22,14 @@
     font-family: var(--title-font);
     color: var(--accent-2);
     font-size: 20pt;
+    margin-bottom: -0.5rem; /* compensate for visually uneven spacing */
+    view-transition-name: project-item-name;
   }
   &__desc {
     font-size: 14pt;
     margin-left: 25%;
     margin-right: 25%;
+    view-transition-name: project-item-desc;
 
     @include base.breakpoint(small-mobile) {
       margin-left: 5%;
@@ -38,6 +41,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 0.6rem;
+    view-transition-name: project-item-tags;
 
     &__tag {
       padding: 0.5rem;
@@ -47,7 +51,9 @@
       border-radius: 0.3rem;
       border: none;
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
       &:hover {
         background-color: var(--accent-1);
         color: var(--secondary-color);
@@ -94,6 +100,7 @@
     img {
       max-width: 80%;
       max-height: 768px;
+      view-transition-name: project-item-image;
     }
   }
 }
