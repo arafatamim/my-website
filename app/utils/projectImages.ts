@@ -3,7 +3,9 @@ import waqtWeb from "../content/projects/img/waqt-web.webp";
 import tallyCounterLogo from "../content/projects/img/tally-counter-logo.png";
 import tallyCounter from "../content/projects/img/tally-counter.png";
 import amarRapidPassLogo from "../content/projects/img/amar-rapid-pass-logo.png";
-import amarRapidPass from "../content/projects/img/amar-rapid-pass.jpg";
+import amarRapidPass from "../content/projects/img/amar-rapid-pass.webp";
+import freightAway from "../content/projects/img/freight-away.webp";
+import goodlink from "../content/projects/img/goodlink.webp";
 import rbdsLogo from "../content/projects/img/rbds-logo.png";
 import rbds from "../content/projects/img/rbds.webp";
 import flutterMovies from "../content/projects/img/flutter-movies.webp";
@@ -15,7 +17,9 @@ import multistreamer from "../content/projects/img/multistreamer.webp";
 const projectImages: Record<string, any> = {
   "waqt-web.webp": waqtWeb,
   "tally-counter.png": tallyCounter,
-  "amar-rapid-pass.jpg": amarRapidPass,
+  "amar-rapid-pass.webp": amarRapidPass,
+  "freight-away.webp": freightAway,
+  "goodlink.webp": goodlink,
   "rbds.webp": rbds,
   "flutter-movies.webp": flutterMovies,
   "mym.webp": mym,

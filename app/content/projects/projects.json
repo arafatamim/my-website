@@ -1,33 +1,9 @@
 [
   {
-    "name": "Waqt Web",
-    "desc": "View Islamic prayer times for your location.",
-    "logo": "waqt-web-logo.png",
-    "image": "waqt-web.webp",
-    "slug": "waqt-web",
-    "repo": {
-      "url": "//github.com/arafatamim/waqt-web"
-    },
-    "productLink": "//waqt-web.netlify.app",
-    "tags": ["web", "pwa", "svelte"]
-  },
-  {
-    "name": "Tally Counter PWA",
-    "desc": "Simple and handy tally counter.",
-    "logo": "tally-counter-logo.png",
-    "image": "tally-counter.png",
-    "slug": "tally-counter-pwa",
-    "repo": {
-      "url": "//github.com/arafatamim/tally-counter"
-    },
-    "productLink": "//tally-counter-pwa.netlify.app",
-    "tags": ["web", "pwa", "vue.js"]
-  },
-  {
     "name": "Amar Rapid Pass",
-    "desc": "Check the balance of your Rapid Passes and MRT Passes (for Bangladesh).",
+    "desc": "Check the balance and transaction history of your Rapid Passes (for Bangladesh). Now with Material 3 Expressive design.",
     "logo": "amar-rapid-pass-logo.png",
-    "image": "amar-rapid-pass.jpg",
+    "image": "amar-rapid-pass.webp",
     "slug": "amar-rapid-pass",
     "repo": {
       "url": "//github.com/arafatamim/rapid_pass_app"
@@ -43,6 +19,22 @@
     "slug": "rbds-website",
     "productLink": "//runnerbangladesh.org",
     "tags": ["web", "gatsby", "next.js"]
+  },
+  {
+    "name": "Freight Away",
+    "desc": "Website for a UK-based logistics company.",
+    "image": "freight-away.webp",
+    "slug": "freight-away",
+    "productLink": "//freightaway.co.uk",
+    "tags": ["web", "next.js"]
+  },
+  {
+    "name": "Goodlink Global",
+    "desc": "International trading company",
+    "image": "goodlink.webp",
+    "slug": "goodlink-global",
+    "productLink": "//goodlink.onrender.com",
+    "tags": ["web", "astro"]
   },
   {
     "name": "Flutter Movies",
@@ -64,6 +56,18 @@
     "tags": ["web", "astro"]
   },
   {
+    "name": "Tally Counter PWA",
+    "desc": "Simple and handy tally counter.",
+    "logo": "tally-counter-logo.png",
+    "image": "tally-counter.png",
+    "slug": "tally-counter-pwa",
+    "repo": {
+      "url": "//github.com/arafatamim/tally-counter"
+    },
+    "productLink": "//tally-counter-pwa.netlify.app",
+    "tags": ["web", "pwa", "vue.js"]
+  },
+  {
     "name": "MultiStreamer",
     "desc": "Android app to stream videos from 1500+ supported websites, powered by youtube-dl.",
     "logo": "multistreamer-logo.png",
@@ -74,5 +78,17 @@
       "url": "//github.com/arafatamim/multistreamer"
     },
     "tags": ["flutter", "mobile"]
+  },
+  {
+    "name": "Waqt Web",
+    "desc": "View Islamic prayer times for your location.",
+    "logo": "waqt-web-logo.png",
+    "image": "waqt-web.webp",
+    "slug": "waqt-web",
+    "repo": {
+      "url": "//github.com/arafatamim/waqt-web"
+    },
+    "productLink": "//waqt-web.netlify.app",
+    "tags": ["web", "pwa", "svelte"]
   }
 ]

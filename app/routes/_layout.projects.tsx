@@ -118,7 +118,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
           media: [640, 768, 1920, 2560],
           useBalancedLayout: true,
         }}
-        // @ts-expect-error
+        // @ts-expect-error any type
         render={(item, i) => {
           return <ProjectItem key={i} project={item} />;
         }}
