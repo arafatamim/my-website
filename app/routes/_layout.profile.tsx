@@ -21,7 +21,7 @@ export function meta() {
     { title: "Profile — Tamim Arafat" },
     {
       name: "description",
-      content: "Tamim Arafat, full-stack developer from Bangladesh",
+      content: "Tamim Arafat, full-stack and mobile developer",
     },
   ];
 }
@@ -30,7 +30,7 @@ export default function ProfileTab() {
   return (
     <div className="profile">
       <h1 className="animate__animated animate__fadeInUp animate__faster">
-        Full-stack developer from Bangladesh
+        Full-stack and mobile developer
       </h1>
       <section className="profile__body animate__animated animate__fadeInUp animate__faster">
         <h2>Bio</h2>
