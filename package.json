@@ -30,6 +30,7 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.13.0",
     "@react-router/dev": "^7.9.0",
+    "@types/cloudflare-turnstile": "^0.2.2",
     "@types/node": "^24",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",

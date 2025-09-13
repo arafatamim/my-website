@@ -1,3 +1,6 @@
+/// <reference types="cloudflare-turnstile" />
+/// <reference types="node" />
+
 import {
   data,
   Form,
@@ -28,7 +31,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const name = formData.get("name");
   const email = formData.get("email");
   const message = formData.get("message");
-  const turnstileToken = formData.get("turnstile-token");
+  const turnstileToken = formData.get("cf-turnstile-response");
 
   invariantResponse(
     name != null && email != null && message != null,
@@ -106,10 +109,10 @@ export default function Contact() {
   const isSubmitting = navigation.state === "submitting";
 
   const [emailAddress, setEmailAddress] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileSuccess, setTurnstileSuccess] = useState<boolean>(false);
 
-  const handleTurnstileSuccess = (token: string) => {
-    setTurnstileToken(token);
+  const handleTurnstileSuccess = (_token: string) => {
+    setTurnstileSuccess(true);
   };
 
   useEffect(() => {
@@ -121,17 +124,23 @@ export default function Contact() {
   }, []);
 
   useEffect(() => {
-    (window as any).turnstile.render("#turnstile-container", {
-      sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
-      callback: handleTurnstileSuccess,
-    });
+    ((window as any).turnstile as Turnstile.Turnstile).render(
+      "#turnstile-container",
+      {
+        sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+        callback: handleTurnstileSuccess,
+        size: "flexible",
+        theme: "auto",
+        appearance: "execute",
+      },
+    );
   }, []);
 
   return (
     <div className="contact-page">
       <p className="contact-page__description animate__animated animate__fadeInUp animate__faster prose">
         If you have any questions or would like to get in touch, feel free to
-        {turnstileToken != null ? (
+        {turnstileSuccess ? (
           <>
             <a href={`mailto:${emailAddress}`}> send me an email</a> or
           </>
@@ -192,13 +201,9 @@ export default function Contact() {
 
         <div id="turnstile-container"></div>
 
-        {turnstileToken && (
-          <input type="hidden" name="turnstile-token" value={turnstileToken} />
-        )}
-
         <button
           type="submit"
-          disabled={isSubmitting || !turnstileToken}
+          disabled={isSubmitting || !turnstileSuccess}
           className="contact-page__button"
         >
           {isSubmitting ? "Sending..." : "Send Message"}
