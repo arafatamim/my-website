@@ -2,15 +2,13 @@ import {
   data,
   Form,
   useActionData,
-  useLoaderData,
   useNavigation,
   type ActionFunctionArgs,
 } from "react-router";
 import { Resend } from "resend";
-import "../styles/contact.scss";
 import { invariantResponse } from "@epic-web/invariant";
-import type { Route } from "./+types/_layout.contact";
 import { useEffect, useState } from "react";
+import "../styles/contact.scss";
 
 export function meta() {
   return [
@@ -19,16 +17,52 @@ export function meta() {
   ];
 }
 
+type TurnstileResponse = {
+  success: boolean;
+  hostname: string;
+  ["error-codes"]: string[];
+};
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const name = formData.get("name");
   const email = formData.get("email");
   const message = formData.get("message");
+  const turnstileToken = formData.get("turnstile-token");
 
   invariantResponse(
     name != null && email != null && message != null,
     "Missing form data",
   );
+
+  invariantResponse(turnstileToken != null, "Missing Turnstile token");
+
+  try {
+    const secretKey = process.env.TURNSTILE_SECRET_KEY;
+    invariantResponse(secretKey != null, "Missing Turnstile secret key");
+
+    const formData = new FormData();
+    formData.append("secret", secretKey);
+    formData.append("response", turnstileToken);
+
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const result: TurnstileResponse = await response.json();
+    invariantResponse(
+      result.success,
+      `Turnstile verification failed: ${result["error-codes"].join(", ")}`,
+    );
+  } catch (error) {
+    return data({
+      success: false,
+      message: error,
+    });
+  }
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -71,24 +105,33 @@ export default function Contact() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const [showEmail, setShowEmail] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  const handleTurnstileSuccess = (token: string) => {
+    setTurnstileToken(token);
+  };
 
   useEffect(() => {
-    const user = "tamim.arafat";
-    const domain = "outlook.com";
+    const encoded = "dGFtaW0uYXJhZmF0QG91dGxvb2suY29t";
 
-    const email = user + "@" + domain;
+    const m = atob(encoded);
 
-    setEmailAddress(email);
-    setShowEmail(true);
+    setEmailAddress(m);
+  }, []);
+
+  useEffect(() => {
+    (window as any).turnstile.render("#turnstile-container", {
+      sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+      callback: handleTurnstileSuccess,
+    });
   }, []);
 
   return (
     <div className="contact-page">
       <p className="contact-page__description animate__animated animate__fadeInUp animate__faster prose">
         If you have any questions or would like to get in touch, feel free to
-        {showEmail ? (
+        {turnstileToken != null ? (
           <>
             <a href={`mailto:${emailAddress}`}> send me an email</a> or
           </>
@@ -142,12 +185,20 @@ export default function Contact() {
         </div>
 
         {actionData?.success != null && (
-          <div className="contact-page__notification">{actionData.message}</div>
+          <div className="contact-page__notification">
+            {actionData.message as string}
+          </div>
+        )}
+
+        <div id="turnstile-container"></div>
+
+        {turnstileToken && (
+          <input type="hidden" name="turnstile-token" value={turnstileToken} />
         )}
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !turnstileToken}
           className="contact-page__button"
         >
           {isSubmitting ? "Sending..." : "Send Message"}
