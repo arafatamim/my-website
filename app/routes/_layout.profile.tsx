@@ -35,13 +35,13 @@ export default function ProfileTab() {
       <section className="profile__body animate__animated animate__fadeInUp animate__faster">
         <h2>Bio</h2>
         <p className="profile__body__bio prose">
-          I discovered my passion for programming around age 14, starting with
-          QuickBASIC. Over the years, I’ve worked with JavaScript, Dart, Python,
-          Go, and now I’m learning Rust. For the past five years, I’ve been
-          focused on web development, building sites for fun and profit while
-          sharpening my skills. I also work on mobile apps, 3D and graphic
-          design, and video editing. Outside of tech, I’m studying
-          biotechnology, blending science with creativity.
+          I started programming at 14 with QuickBASIC and never really stopped.
+          Since then I've worked with JavaScript, Dart, Python, Go, and I'm
+          currently learning Rust. For the past five years I've been building
+          web and mobile apps — sometimes for work, mostly because I genuinely
+          enjoy it. I also dabble in 3D, graphic design, and video editing.
+          When I'm not at a screen, I'm usually tinkering with something or
+          figuring out how things work.
         </p>
 
         {/* <aside className="profile__body__illustration animate__animated animate__fadeInRight animate__faster">
