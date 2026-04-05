@@ -13,3 +13,4 @@ dist
 .netlify
 
 wrangler.jsonc
+.wrangler
