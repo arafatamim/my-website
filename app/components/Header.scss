@@ -37,14 +37,32 @@
       }
     }
     &__title {
-      font-size: 1.6rem;
+      font-size: 6rem;
       font-weight: 600;
+      font-style: italic;
       font-family: var(--title-font);
       color: var(--accent-2);
+      line-height: 1;
+      letter-spacing: -0.03em;
       view-transition-name: header-site-name;
+      filter: url(#text-displacement);
+
+      @include base.breakpoint(laptop) {
+        font-size: 4.5rem;
+      }
+
+      @include base.breakpoint(tablet) {
+        font-size: 3.5rem;
+      }
+
+      @include base.breakpoint(mobile) {
+        font-size: 3rem;
+      }
     }
     &__subtitle {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
     }
     &__main-button {
       margin-top: 1rem;
@@ -52,7 +70,7 @@
       &__link {
         text-decoration: none;
         color: var(--accent-1);
-        font-size: 14pt;
+        font-size: 1.8rem;
         transition: 0.1s;
         font-family: var(--title-font);
         display: inline-flex;
@@ -151,8 +169,10 @@
   }
   &__header__site-name {
     font-family: var(--title-font);
-    font-size: 14pt;
-    font-weight: 600;
+    font-size: 2.4rem;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: -0.02em;
     view-transition-name: header-site-name;
   }
 }

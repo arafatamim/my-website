@@ -21,7 +21,12 @@
   &__name {
     font-family: var(--title-font);
     color: var(--accent-2);
-    font-size: 20pt;
+    font-size: 52pt;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    filter: url(#text-displacement);
     margin-bottom: -0.5rem; /* compensate for visually uneven spacing */
     view-transition-name: project-item-name;
   }

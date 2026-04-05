@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigation } from "react-router";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import "./Navigation.scss";
 import "animate.css";
 
@@ -13,7 +13,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
 
-  const updateIndicator = () => {
+  const updateIndicator = useCallback(() => {
     const activeItem = activeItemRef.current;
     const indicator = indicatorRef.current;
 
@@ -33,7 +33,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
     } else if (indicator) {
       indicator.style.opacity = "0";
     }
-  };
+  }, []);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -53,7 +53,6 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
 
     animationFrameId = requestAnimationFrame(runInitialUpdate);
 
-    // update on window resize
     window.addEventListener("resize", updateIndicator);
 
     return () => {
@@ -63,7 +62,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
         resizeObserver.disconnect();
       }
     };
-  }, [location]);
+  }, [location, updateIndicator]);
 
   const activeClass = (path: string) =>
     location.pathname === path ? "nav__item--active" : "";

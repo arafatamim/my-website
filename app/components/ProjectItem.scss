@@ -35,15 +35,18 @@
   &__name {
     font-family: var(--title-font);
     color: var(--accent-1);
-    font-size: 16pt;
+    font-size: 22pt;
     font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.03em;
     vertical-align: middle;
   }
   &__desc {
     margin: 0;
     margin-top: -12px;
     font-size: 14pt;
-    color: var(--accent-3);
+    color: #555;
+    opacity: 0.8;
   }
   &__tags {
     display: flex;

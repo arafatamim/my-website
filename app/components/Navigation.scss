@@ -42,12 +42,13 @@
     &--active-indicator {
       position: absolute;
       background-color: var(--accent-1);
-      border-radius: var(--border-radius);
+      border-radius: 4px;
       will-change: transform;
       transform: translate3d(0, 0, 0);
-      transition: transform 0.3s cubic-bezier(0.72, 0.21, 0.23, 0.75),
-        background-color 0.3s ease, opacity 0.3s ease;
+      transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+        background-color 0.4s ease, opacity 0.4s ease;
       z-index: -1;
+      filter: url(#brush-stroke);
     }
 
     &--active {

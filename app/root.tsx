@@ -20,6 +20,14 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap",
+  },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap",
+  },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -46,6 +54,54 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <svg style={{ display: "none" }} aria-hidden="true">
+          <defs>
+            <filter id="text-displacement">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.04"
+                numOctaves="4"
+                seed="2"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="2"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
+            </filter>
+            <filter id="brush-stroke" x="-10%" y="-20%" width="120%" height="140%">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.03 0.06"
+                numOctaves="3"
+                seed="5"
+                result="noise"
+              >
+                <animate
+                  attributeName="baseFrequency"
+                  values="0.03 0.06;0.035 0.065;0.03 0.06"
+                  dur="3s"
+                  repeatCount="indefinite"
+                />
+              </feTurbulence>
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="5"
+                xChannelSelector="R"
+                yChannelSelector="G"
+                result="displaced"
+              />
+              <feGaussianBlur in="displaced" stdDeviation="0.4" result="blurred" />
+              <feMerge>
+                <feMergeNode in="blurred" />
+              </feMerge>
+            </filter>
+          </defs>
+        </svg>
         <Header
           collapsed={
             !["/profile", "/projects", "/contact", "/"].includes(pathname)
@@ -60,7 +116,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
           async
           defer
-        ></script>
+        />
       </body>
     </html>
   );

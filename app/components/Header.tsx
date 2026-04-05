@@ -12,7 +12,7 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
       <div className="header">
         <div className="header__hero">
           <div className="header__hero__main-image">
-            <img src={avatar} width={96} height={96} alt={siteMetadata.title} />
+            <img src={avatar} width={128} height={128} alt={siteMetadata.title} />
           </div>
           <div
             className="header__hero__title"
@@ -89,8 +89,8 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
               src={avatar}
               alt={siteMetadata.title}
               aria-hidden="true"
-              height="54px"
-              width="54px"
+              height="72px"
+              width="72px"
             />
             <span
               className="collapsed-hero__header__site-name"
