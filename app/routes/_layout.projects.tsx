@@ -2,8 +2,7 @@ import type { Route } from "./+types/_layout.projects";
 import { data, useSearchParams, type MetaFunction } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import ProjectItem from "~/components/ProjectItem";
-// @ts-expect-error
-import { Masonry } from "react-plock/dist/index.es.js";
+import { Masonry } from "react-plock";
 import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
 
