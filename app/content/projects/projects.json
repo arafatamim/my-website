@@ -1,5 +1,16 @@
 [
   {
+    "name": "Ferngeist",
+    "desc": "Android client for ACP-compatible coding agents.",
+    "image": "ferngeist.webp",
+    "slug": "ferngeist",
+    "repo": {
+      "url": "//github.com/arafatamim/ferngeist"
+    },
+    "downloadLink": "//github.com/arafatamim/ferngeist/releases",
+    "tags": ["kotlin", "android", "mobile", "jetpack-compose"]
+  },
+  {
     "name": "Amar Rapid Pass",
     "desc": "Check the balance and transaction history of your Rapid Passes (for Bangladesh). Now with Material 3 Expressive design.",
     "logo": "amar-rapid-pass-logo.png",

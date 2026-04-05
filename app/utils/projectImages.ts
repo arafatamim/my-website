@@ -13,6 +13,7 @@ import mymLogo from "../content/projects/img/mym-logo.png";
 import mym from "../content/projects/img/mym.webp";
 import multistreamerLogo from "../content/projects/img/multistreamer-logo.png";
 import multistreamer from "../content/projects/img/multistreamer.webp";
+import ferngeist from "../content/projects/img/ferngeist.webp";
 
 const projectImages: Record<string, any> = {
   "waqt-web.webp": waqtWeb,
@@ -24,6 +25,7 @@ const projectImages: Record<string, any> = {
   "flutter-movies.webp": flutterMovies,
   "mym.webp": mym,
   "multistreamer.webp": multistreamer,
+  "ferngeist.webp": ferngeist,
 };
 
 const logoImages: Record<string, any> = {
