@@ -198,7 +198,7 @@ export default function Contact() {
           {turnstileSuccess
             ? (
               <>
-                <a href={`mailto:${emailAddress}`}>send me an email</a> or
+                <a href={`mailto:${emailAddress}`}>{" "}send me an email</a> or
               </>
             )
             : null}{" "}
