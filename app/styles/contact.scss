@@ -21,7 +21,7 @@
   }
 
   &__description-wrapper {
-    display: inline-block;
+    display: block;
     margin-bottom: 3rem;
     @include base.breakpoint(mobile) {
       margin-top: 0;

@@ -135,7 +135,7 @@ h6 {
 
 @keyframes draw-wave {
   from {
-    stroke-dashoffset: 420;
+    stroke-dashoffset: 1;
   }
   to {
     stroke-dashoffset: 0;
@@ -146,8 +146,8 @@ h6 {
 .projects__underline,
 .contact-page__underline {
   & path {
-    stroke-dasharray: 420;
-    stroke-dashoffset: 420;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
     animation: draw-wave 0.8s ease-out forwards;
   }
 }

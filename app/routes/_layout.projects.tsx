@@ -88,11 +88,12 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
           aria-hidden="true"
         >
           <path
-            d="M0 5 C5 -12, 10 22, 15 5 C22 -18, 30 28, 38 5 C45 -10, 55 20, 65 5 C75 -22, 90 32, 105 5 C118 -15, 135 25, 150 5 C165 -20, 185 30, 205 5 C222 -12, 242 22, 260 5 C278 -18, 300 28, 320 5 C338 -10, 355 20, 375 5 C388 -15, 395 25, 400 5"
+            d="M0 5 C5 -20, 10 18, 15 5 C22 -10, 30 32, 38 5 C45 -25, 55 15, 65 5 C75 -15, 90 28, 105 5 C118 -22, 135 20, 150 5 C165 -28, 185 25, 205 5 C222 -12, 242 30, 260 5 C278 -20, 300 22, 320 5 C338 -28, 355 18, 375 5 C388 -22, 395 28, 400 5"
             fill="none"
             stroke="var(--accent-2)"
             strokeWidth="2"
             strokeLinecap="round"
+            pathLength="1"
           />
         </svg>
       </div>

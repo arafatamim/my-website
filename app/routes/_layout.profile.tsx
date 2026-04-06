@@ -46,6 +46,7 @@ export default function ProfileTab() {
             stroke="var(--accent-2)"
             strokeWidth="2"
             strokeLinecap="round"
+            pathLength="1"
           />
         </svg>
       </div>
