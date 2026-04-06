@@ -2,11 +2,11 @@
 /// <reference types="node" />
 
 import {
+  type ActionFunctionArgs,
   data,
   Form,
   useActionData,
   useNavigation,
-  type ActionFunctionArgs,
 } from "react-router";
 import { Resend } from "resend";
 import { invariantResponse } from "@epic-web/invariant";
@@ -42,7 +42,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   try {
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
-    invariantResponse(secretKey != null, "Missing Turnstile secret key");
+    if (secretKey == null) {
+      console.error("Missing TURNSTILE_SECRET_KEY");
+      return data({
+        success: false,
+        message: "Turnstile is not configured on the server.",
+      });
+    }
 
     const formData = new FormData();
     formData.append("secret", secretKey);
@@ -56,14 +62,21 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     );
     const result: TurnstileResponse = await response.json();
-    invariantResponse(
-      result.success,
-      `Turnstile verification failed: ${result["error-codes"].join(", ")}`,
-    );
+    if (!result.success) {
+      console.error("Turnstile validation failed", result);
+      const errorCodes = result["error-codes"];
+      return data({
+        success: false,
+        message: `Human verification failed: ${
+          errorCodes.length > 0 ? errorCodes.join(", ") : "unknown error"
+        }`,
+      });
+    }
   } catch (error) {
+    console.error("Turnstile request failed", error);
     return data({
       success: false,
-      message: error,
+      message: "Human verification failed. Please try again.",
     });
   }
 
@@ -73,17 +86,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const toEmail = process.env.RESEND_TO_EMAIL;
 
     const { data: responseData, error } = await resend.emails.send({
-      from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
+      from:
+        `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
       to: toEmail != null ? [toEmail] : [],
       subject: `Message from ${name} (${email})`,
       text: message.toString(),
     });
 
     if (error != null) {
-      console.error(error);
+      console.error("Resend send failed", error);
       return data({
         success: false,
-        message: error,
+        message: typeof error.message === "string"
+          ? `Failed to send message: ${error.message}`
+          : "Failed to send message. Please try again later.",
       });
     }
 
@@ -94,11 +110,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         message: "Message sent successfully!",
       });
     }
-  } catch (e) {
-    console.error(e);
+
+    console.error("Resend send returned no data and no error");
     return data({
       success: false,
-      message: e,
+      message: "Failed to send message. No response from email provider.",
+    });
+  } catch (e) {
+    console.error("Resend request failed", e);
+    return data({
+      success: false,
+      message: e instanceof Error && e.message
+        ? `Failed to send message: ${e.message}`
+        : "An unexpected error occurred. Please try again later.",
     });
   }
 };
@@ -124,22 +148,28 @@ export default function Contact() {
   }, []);
 
   const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    let widgetId: string | undefined;
-
     const renderTurnstile = () => {
-      if ((window as any).turnstile && turnstileRef.current && !widgetId) {
-        widgetId = ((window as any).turnstile as Turnstile.Turnstile).render(
-          turnstileRef.current,
-          {
-            sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
-            callback: handleTurnstileSuccess,
-            size: "flexible",
-            theme: "auto",
-            appearance: "execute",
-          },
-        );
+      if ((window as any).turnstile && turnstileRef.current) {
+        if (widgetIdRef.current) {
+          ((window as any).turnstile as Turnstile.Turnstile).remove(
+            widgetIdRef.current,
+          );
+        }
+        widgetIdRef.current = (
+          (window as any).turnstile as Turnstile.Turnstile
+        ).render(turnstileRef.current, {
+          sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+          callback: handleTurnstileSuccess,
+          "error-callback": () => setTurnstileSuccess(false),
+          "expired-callback": () => setTurnstileSuccess(false),
+          "timeout-callback": () => setTurnstileSuccess(false),
+          size: "flexible",
+          theme: "auto",
+          appearance: "execute",
+        });
       }
     };
 
@@ -150,8 +180,11 @@ export default function Contact() {
     }
 
     return () => {
-      if (widgetId && (window as any).turnstile) {
-        ((window as any).turnstile as Turnstile.Turnstile).remove(widgetId);
+      if (widgetIdRef.current && (window as any).turnstile) {
+        ((window as any).turnstile as Turnstile.Turnstile).remove(
+          widgetIdRef.current,
+        );
+        widgetIdRef.current = undefined;
       }
       window.removeEventListener("load", renderTurnstile);
     };
@@ -162,13 +195,15 @@ export default function Contact() {
       <div className="contact-page__description-wrapper animate__animated animate__fadeInUp animate__faster">
         <p className="contact-page__description prose">
           If you have any questions or would like to get in touch, feel free to
-          {turnstileSuccess ? (
-            <>
-              <a href={`mailto:${emailAddress}`}> send me an email</a> or
-            </>
-          ) : null}{" "}
-          reach out using the form below. I&apos;ll do my best to get back to you
-          as soon as possible.
+          {turnstileSuccess
+            ? (
+              <>
+                <a href={`mailto:${emailAddress}`}>send me an email</a> or
+              </>
+            )
+            : null}{" "}
+          reach out using the form below. I&apos;ll do my best to get back to
+          you as soon as possible.
         </p>
         <svg
           className="contact-page__underline"
@@ -227,7 +262,8 @@ export default function Contact() {
             required
             rows={5}
             className="contact-page__textarea"
-          ></textarea>
+          >
+          </textarea>
         </div>
 
         {actionData?.success != null && (
