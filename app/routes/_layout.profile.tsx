@@ -14,6 +14,7 @@ import {
   SiFsharp,
   SiNextdotjs,
   SiFlutter,
+  SiJetpackcompose,
 } from "react-icons/si";
 
 export function meta() {
@@ -67,6 +68,7 @@ export default function ProfileTab() {
             { icon: SiPostgresql, name: "PostgreSQL" },
             { icon: SiTailwindcss, name: "Tailwind" },
             { icon: SiFlutter, name: "Flutter" },
+            { icon: SiJetpackcompose, name: "Jetpack Compose" },
             { icon: SiFsharp, name: "F#" },
           ].map((skill, index) => (
             <li key={index} className="profile__skills__list__item">
