@@ -1,5 +1,5 @@
 import type { Route } from "./+types/_layout.projects";
-import { data, useSearchParams, type MetaFunction } from "react-router";
+import { data, type MetaFunction, useSearchParams } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import ProjectItem from "~/components/ProjectItem";
 import { Masonry } from "react-plock";
@@ -72,7 +72,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   const tags = searchParams.getAll("tags");
 
   const filteredProjects = projects.filter((project) =>
-    tags.every((tag: string) => project.tags.includes(tag)),
+    tags.every((tag: string) => project.tags.includes(tag))
   );
 
   return (
@@ -126,24 +126,24 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
       )}
 
       <Masonry
+        key="projects-masonry"
         className="projects__container"
         items={filteredProjects}
         config={{
           columns: [1, 2, 3, 4],
           gap: [16, 16, 16, 16],
           media: [640, 768, 1920, 2560],
-          useBalancedLayout: true,
         }}
         // @ts-expect-error any type
         render={(item, i) => {
-          return <ProjectItem key={i} project={item} />;
+          return <ProjectItem key={item.slug} project={item} />;
         }}
       />
 
       <noscript>
         <div className="projects__container--nojs">
           {filteredProjects.map((project, i) => (
-            <ProjectItem key={i} project={project} />
+            <ProjectItem key={project.slug} project={project} />
           ))}
         </div>
       </noscript>
