@@ -133,6 +133,25 @@ h6 {
   line-height: 1.8rem;
 }
 
+@keyframes draw-wave {
+  from {
+    stroke-dashoffset: 420;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.profile__underline,
+.projects__underline,
+.contact-page__underline {
+  & path {
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    animation: draw-wave 0.8s ease-out forwards;
+  }
+}
+
 // Breakpoint mixins
 @mixin breakpoint($point) {
   @if $point == laptop {
