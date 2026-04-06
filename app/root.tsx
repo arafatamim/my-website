@@ -145,7 +145,15 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
+    <main
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        padding: "2rem",
+      }}
+    >
       <h1>{message}</h1>
       <p>{details}</p>
       <a href="/">&larr; Go back to home</a>
