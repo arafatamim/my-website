@@ -14,6 +14,23 @@
       padding-bottom: 1rem;
     }
   }
+
+  &__description-wrapper {
+    display: inline-block;
+    margin: 0 auto;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+    @include base.breakpoint(mobile) {
+      padding: 2rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  &__underline {
+    display: block;
+    width: 100%;
+    margin: 0.4rem 0 0;
+  }
   &__header {
     @include base.section-header;
 

@@ -138,16 +138,32 @@ export default function Contact() {
 
   return (
     <div className="contact-page">
-      <p className="contact-page__description animate__animated animate__fadeInUp animate__faster prose">
-        If you have any questions or would like to get in touch, feel free to
-        {turnstileSuccess ? (
-          <>
-            <a href={`mailto:${emailAddress}`}> send me an email</a> or
-          </>
-        ) : null}{" "}
-        reach out using the form below. I&apos;ll do my best to get back to you
-        as soon as possible.
-      </p>
+      <div className="contact-page__description-wrapper animate__animated animate__fadeInUp animate__faster">
+        <p className="contact-page__description prose">
+          If you have any questions or would like to get in touch, feel free to
+          {turnstileSuccess ? (
+            <>
+              <a href={`mailto:${emailAddress}`}> send me an email</a> or
+            </>
+          ) : null}{" "}
+          reach out using the form below. I&apos;ll do my best to get back to you
+          as soon as possible.
+        </p>
+        <svg
+          className="contact-page__underline"
+          viewBox="0 -25 400 60"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 5 C5 -12, 10 22, 15 5 C22 -18, 30 28, 38 5 C45 -10, 55 20, 65 5 C75 -22, 90 32, 105 5 C118 -15, 135 25, 150 5 C165 -20, 185 30, 205 5 C222 -12, 242 22, 260 5 C278 -18, 300 28, 320 5 C338 -10, 355 20, 375 5 C388 -15, 395 25, 400 5"
+            fill="none"
+            stroke="var(--accent-2)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
 
       <Form
         action="/contact"

@@ -30,9 +30,25 @@ export function meta() {
 export default function ProfileTab() {
   return (
     <div className="profile">
-      <h1 className="animate__animated animate__fadeInUp animate__faster">
-        Full-stack and mobile developer
-      </h1>
+      <div className="profile__title-wrapper animate__animated animate__fadeInUp animate__faster">
+        <h1 className="profile__title">
+          Full-stack and mobile developer
+        </h1>
+        <svg
+          className="profile__underline"
+          viewBox="0 -25 400 60"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 5 C5 -12, 10 22, 15 5 C22 -18, 30 28, 38 5 C45 -10, 55 20, 65 5 C75 -22, 90 32, 105 5 C118 -15, 135 25, 150 5 C165 -20, 185 30, 205 5 C222 -12, 242 22, 260 5 C278 -18, 300 28, 320 5 C338 -10, 355 20, 375 5 C388 -15, 395 25, 400 5"
+            fill="none"
+            stroke="var(--accent-2)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
       <section className="profile__body animate__animated animate__fadeInUp animate__faster">
         <h2>Bio</h2>
         <p className="profile__body__bio prose">
