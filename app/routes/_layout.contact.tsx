@@ -10,7 +10,7 @@ import {
 } from "react-router";
 import { Resend } from "resend";
 import { invariantResponse } from "@epic-web/invariant";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/contact.scss";
 
 export function meta() {
@@ -123,17 +123,38 @@ export default function Contact() {
     setEmailAddress(m);
   }, []);
 
+  const turnstileRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    ((window as any).turnstile as Turnstile.Turnstile).render(
-      "#turnstile-container",
-      {
-        sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
-        callback: handleTurnstileSuccess,
-        size: "flexible",
-        theme: "auto",
-        appearance: "execute",
-      },
-    );
+    let widgetId: string | undefined;
+
+    const renderTurnstile = () => {
+      if ((window as any).turnstile && turnstileRef.current && !widgetId) {
+        widgetId = ((window as any).turnstile as Turnstile.Turnstile).render(
+          turnstileRef.current,
+          {
+            sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+            callback: handleTurnstileSuccess,
+            size: "flexible",
+            theme: "auto",
+            appearance: "execute",
+          },
+        );
+      }
+    };
+
+    if ((window as any).turnstile) {
+      renderTurnstile();
+    } else {
+      window.addEventListener("load", renderTurnstile);
+    }
+
+    return () => {
+      if (widgetId && (window as any).turnstile) {
+        ((window as any).turnstile as Turnstile.Turnstile).remove(widgetId);
+      }
+      window.removeEventListener("load", renderTurnstile);
+    };
   }, []);
 
   return (
@@ -215,7 +236,7 @@ export default function Contact() {
           </div>
         )}
 
-        <div id="turnstile-container"></div>
+        <div ref={turnstileRef} />
 
         <button
           type="submit"
