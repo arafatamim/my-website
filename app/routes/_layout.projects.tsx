@@ -5,10 +5,14 @@ import ProjectItem from "~/components/ProjectItem";
 import { Masonry } from "react-plock";
 import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
-import { absoluteUrl } from "../meta";
+import { absoluteUrl, default as siteMetadata } from "../meta";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const projects = data?.projects || [];
+  const title = "Projects — Tamim Arafat";
+  const description =
+    "A curated collection of web and mobile applications built by Tamim Arafat, featuring React, Flutter, Go, and more.";
+  const url = absoluteUrl("/projects");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -28,24 +32,25 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       },
     })),
     numberOfItems: projects.length,
-    url: absoluteUrl("/projects"),
+    url,
     name: "Tamim Arafat's Projects",
-    description:
-      "A non-exhaustive list of projects I have worked on in the past.",
+    description,
   };
 
   return [
-    {
-      title: "Projects — Tamim Arafat",
-    },
-    {
-      name: "description",
-      content:
-        "A non-exhaustive list of projects I have worked on in the past.",
-    },
-    {
-      "script:ld+json": jsonLd,
-    },
+    { title },
+    { name: "description", content: description },
+    { rel: "canonical", href: url },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: url },
+    { property: "og:site_name", content: siteMetadata.title },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: "@_arafatamim_" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { "script:ld+json": jsonLd },
   ];
 };
 

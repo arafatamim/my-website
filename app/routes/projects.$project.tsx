@@ -5,9 +5,12 @@ import { FaDownload, FaGitAlt } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { getLogoImage, getProjectImage } from "~/utils/projectImages";
 
+import { absoluteUrl, default as siteMetadata } from "../meta";
+
 export const handle: SitemapHandle = {
   sitemap: async (domain) => {
-    const projects = (await import("../content/projects/projects.json")).default;
+    const projects =
+      (await import("../content/projects/projects.json")).default;
 
     return projects.map((project) => ({
       route: `${domain}/projects/${project.slug}`,
@@ -41,9 +44,22 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export function meta({ data: { project } }: Route.MetaArgs) {
+  const title = `${project.name} — Tamim Arafat`;
+  const url = absoluteUrl(`/projects/${project.slug}`);
+
   return [
-    { title: `${project.name} — Tamim Arafat` },
+    { title },
     { name: "description", content: project.desc },
+    { rel: "canonical", href: url },
+    { property: "og:title", content: title },
+    { property: "og:description", content: project.desc },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: url },
+    { property: "og:site_name", content: siteMetadata.title },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: "@_arafatamim_" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: project.desc },
   ];
 }
 
@@ -54,18 +70,21 @@ export default function Project({ loaderData }: Route.ComponentProps) {
     projectImage,
   } = loaderData;
 
-  const tryButton =
-    productLink != null ? (
+  const tryButton = productLink != null
+    ? (
       <a href={productLink} target="_blank" rel="noopener noreferrer">
         <FaExternalLinkAlt />
         Visit project
       </a>
-    ) : downloadLink != null ? (
+    )
+    : downloadLink != null
+    ? (
       <a href={downloadLink} target="_blank" rel="noopener noreferrer">
         <FaDownload />
         Download
       </a>
-    ) : null;
+    )
+    : null;
 
   return (
     <div className="project__container">

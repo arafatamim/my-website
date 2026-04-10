@@ -31,6 +31,9 @@ export const links: Route.LinksFunction = () => [
     href:
       "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap",
   },
+  { rel: "icon", href: "/favicon.ico", sizes: "any" },
+  { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+  { rel: "manifest", href: "/site.webmanifest" },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -53,6 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ClientHintCheck />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#1a1a2e" />
         <Meta />
         <Links />
       </head>

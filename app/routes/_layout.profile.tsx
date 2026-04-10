@@ -16,13 +16,60 @@ import {
   SiFlutter,
   SiJetpackcompose,
 } from "react-icons/si";
+import siteMetadata from "../meta";
 
 export function meta() {
+  const url = "https://arafatamim.uk/profile";
+  const title = "Profile — Tamim Arafat";
+  const description =
+    "Tamim Arafat — Full-stack and mobile developer specializing in React, TypeScript, Node.js, Python, Go, and mobile development with Flutter and Jetpack Compose.";
+
   return [
-    { title: "Profile — Tamim Arafat" },
+    { title },
+    { name: "description", content: description },
+    { rel: "canonical", href: url },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "profile" },
+    { property: "og:url", content: url },
+    { property: "og:site_name", content: siteMetadata.title },
+    { name: "twitter:card", content: "summary" },
+    { name: "twitter:site", content: "@_arafatamim_" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
     {
-      name: "description",
-      content: "Tamim Arafat, full-stack and mobile developer",
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Tamim Arafat",
+        jobTitle: "Full-stack and Mobile Developer",
+        url: "https://arafatamim.uk/profile",
+        sameAs: [
+          siteMetadata.socialLinks.github,
+          siteMetadata.socialLinks.linkedin,
+          siteMetadata.socialLinks.x,
+          siteMetadata.socialLinks.facebook,
+          siteMetadata.socialLinks.instagram,
+        ],
+        knowsAbout: [
+          "TypeScript",
+          "React",
+          "React Native",
+          "Node.js",
+          "Next.js",
+          "Python",
+          "Go",
+          "Rust",
+          "Docker",
+          "Git",
+          "MongoDB",
+          "PostgreSQL",
+          "Tailwind CSS",
+          "Flutter",
+          "Jetpack Compose",
+          "F#",
+        ],
+      },
     },
   ];
 }

@@ -12,11 +12,27 @@ import { Resend } from "resend";
 import { invariantResponse } from "@epic-web/invariant";
 import { useEffect, useRef, useState } from "react";
 import "../styles/contact.scss";
+import { absoluteUrl, default as siteMetadata } from "../meta";
 
 export function meta() {
+  const title = "Contact — Tamim Arafat";
+  const description =
+    "Get in touch with Tamim Arafat for collaborations, freelance work, or any inquiries about web and mobile development.";
+  const url = absoluteUrl("/contact");
+
   return [
-    { title: "Contact — Tamim Arafat" },
-    { name: "description", content: "Contact page for Tamim Arafat" },
+    { title },
+    { name: "description", content: description },
+    { rel: "canonical", href: url },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: url },
+    { property: "og:site_name", content: siteMetadata.title },
+    { name: "twitter:card", content: "summary" },
+    { name: "twitter:site", content: "@_arafatamim_" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
   ];
 }
 
