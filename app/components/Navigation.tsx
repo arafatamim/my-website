@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigation } from "react-router";
 import { useCallback, useEffect, useRef } from "react";
 import "./Navigation.scss";
 import "animate.css";
+import { normalizePathname } from "../utils/path";
 
 interface NavItem {
   path: string;
@@ -12,6 +13,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   const location = useLocation();
   const indicatorRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
+  const pathname = normalizePathname(location.pathname);
 
   const updateIndicator = useCallback(() => {
     const activeItem = activeItemRef.current;
@@ -65,7 +67,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
   }, [location, updateIndicator]);
 
   const activeClass = (path: string) =>
-    location.pathname === path ? "nav__item--active" : "";
+    pathname === path ? "nav__item--active" : "";
 
   return (
     <nav className="nav animate__animated animate__fadeInUp animate__faster">
@@ -79,7 +81,7 @@ export function Navigation({ navItems }: { navItems: NavItem[] }) {
           <li
             key={item.path}
             className={`nav__item ${activeClass(item.path)}`}
-            ref={location.pathname === item.path ? activeItemRef : null}
+            ref={pathname === item.path ? activeItemRef : null}
           >
             <Link
               className="nav__item__link"

@@ -11,6 +11,7 @@ import {
 import type { Route } from "./+types/root";
 import Header from "./components/Header";
 import { ClientHintCheck, getHints, useHintsSafe } from "./utils/clientHints";
+import { normalizePathname } from "./utils/path";
 import "animate.css";
 
 export const links: Route.LinksFunction = () => [
@@ -44,7 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const clientHints = useHintsSafe();
-  const pathname = location.pathname;
+  const pathname = normalizePathname(location.pathname);
 
   return (
     <html lang="en" className={clientHints?.theme ?? "light"}>
