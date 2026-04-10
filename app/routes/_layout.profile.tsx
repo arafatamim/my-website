@@ -1,22 +1,22 @@
 import "../styles/profile.scss";
 import {
-  SiTypescript,
-  SiReact,
-  SiNodedotjs,
-  SiPython,
-  SiGo,
-  SiRust,
   SiDocker,
-  SiGit,
-  SiMongodb,
-  SiPostgresql,
-  SiTailwindcss,
-  SiFsharp,
-  SiNextdotjs,
   SiFlutter,
+  SiFsharp,
+  SiGit,
+  SiGo,
   SiJetpackcompose,
+  SiMongodb,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiRust,
+  SiTailwindcss,
+  SiTypescript,
 } from "react-icons/si";
-import siteMetadata from "../meta";
+import siteMetadata, { absoluteUrl } from "../meta";
 
 export function meta() {
   const url = "https://arafatamim.uk/profile";
@@ -33,7 +33,9 @@ export function meta() {
     { property: "og:type", content: "profile" },
     { property: "og:url", content: url },
     { property: "og:site_name", content: siteMetadata.title },
+    { property: "og:image", content: absoluteUrl("/og-image.png") },
     { name: "twitter:card", content: "summary" },
+    { name: "twitter:image", content: absoluteUrl("/og-image.png") },
     { name: "twitter:site", content: "@_arafatamim_" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
@@ -104,14 +106,16 @@ export default function ProfileTab() {
           Since then I've worked with JavaScript, Dart, Python, Go, and I'm
           currently learning Rust. For the past five years I've been building
           web and mobile apps — sometimes for work, mostly because I genuinely
-          enjoy it. I also dabble in 3D, graphic design, and video editing.
-          When I'm not at a screen, I'm usually tinkering with something or
-          figuring out how things work.
+          enjoy it. I also dabble in 3D, graphic design, and video editing. When
+          I'm not at a screen, I'm usually tinkering with something or figuring
+          out how things work.
         </p>
 
-        {/* <aside className="profile__body__illustration animate__animated animate__fadeInRight animate__faster">
+        {
+          /* <aside className="profile__body__illustration animate__animated animate__fadeInRight animate__faster">
           <Illustration />
-        </aside> */}
+        </aside> */
+        }
       </section>
 
       <section className="profile__skills animate__animated animate__fadeInUp animate__faster">
