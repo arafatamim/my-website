@@ -19,7 +19,7 @@ import {
 import siteMetadata, { absoluteUrl } from "../meta";
 
 export function meta() {
-  const url = "https://arafatamim.uk/profile";
+  const url = absoluteUrl("/profile");
   const title = "Profile — Tamim Arafat";
   const description =
     "Tamim Arafat — Full-stack and mobile developer specializing in React, TypeScript, Node.js, Python, Go, and mobile development with Flutter and Jetpack Compose.";
@@ -45,7 +45,7 @@ export function meta() {
         "@type": "Person",
         name: "Tamim Arafat",
         jobTitle: "Full-stack and Mobile Developer",
-        url: "https://arafatamim.uk/profile",
+        url,
         sameAs: [
           siteMetadata.socialLinks.github,
           siteMetadata.socialLinks.linkedin,
