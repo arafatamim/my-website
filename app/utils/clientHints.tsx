@@ -23,6 +23,17 @@ export function useHints() {
 }
 
 /**
+ * @returns client hints safely, or null if not available (e.g., resource routes)
+ */
+export function useHintsSafe() {
+  try {
+    return useHints();
+  } catch {
+    return null;
+  }
+}
+
+/**
  * @returns inline script element that checks for client hints and sets cookies
  * if they are not set then reloads the page if any cookie was set to an
  * inaccurate value.

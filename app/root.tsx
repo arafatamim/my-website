@@ -1,16 +1,16 @@
 import {
   isRouteErrorResponse,
   Links,
+  type LoaderFunctionArgs,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useLocation,
-  type LoaderFunctionArgs,
 } from "react-router";
 import type { Route } from "./+types/root";
 import Header from "./components/Header";
-import { ClientHintCheck, getHints, useHints } from "./utils/clientHints";
+import { ClientHintCheck, getHints, useHintsSafe } from "./utils/clientHints";
 import "animate.css";
 
 export const links: Route.LinksFunction = () => [
@@ -22,11 +22,13 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap",
+    href:
+      "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap",
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap",
+    href:
+      "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap",
   },
 ];
 
@@ -41,11 +43,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const clientHints = useHints();
+  const clientHints = useHintsSafe();
   const pathname = location.pathname;
 
   return (
-    <html lang="en" className={clientHints.theme}>
+    <html lang="en" className={clientHints?.theme ?? "light"}>
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />
@@ -72,7 +74,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 yChannelSelector="G"
               />
             </filter>
-            <filter id="brush-stroke" x="-10%" y="-20%" width="120%" height="140%">
+            <filter
+              id="brush-stroke"
+              x="-10%"
+              y="-20%"
+              width="120%"
+              height="140%"
+            >
               <feTurbulence
                 type="fractalNoise"
                 baseFrequency="0.03 0.06"
@@ -95,7 +103,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 yChannelSelector="G"
                 result="displaced"
               />
-              <feGaussianBlur in="displaced" stdDeviation="0.4" result="blurred" />
+              <feGaussianBlur
+                in="displaced"
+                stdDeviation="0.4"
+                result="blurred"
+              />
               <feMerge>
                 <feMergeNode in="blurred" />
               </feMerge>
@@ -103,9 +115,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </defs>
         </svg>
         <Header
-          collapsed={
-            !["/profile", "/projects", "/contact", "/"].includes(pathname)
-          }
+          collapsed={!["/profile", "/projects", "/contact", "/"].includes(
+            pathname,
+          )}
         />
 
         {children}
@@ -135,10 +147,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+    details = error.status === 404
+      ? "The requested page could not be found."
+      : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;

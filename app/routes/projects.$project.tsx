@@ -1,8 +1,21 @@
 import type { Route } from "./+types/projects.$project";
+import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 import "../styles/project.scss";
 import { FaDownload, FaGitAlt } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { getLogoImage, getProjectImage } from "~/utils/projectImages";
+
+export const handle: SitemapHandle = {
+  sitemap: async (domain) => {
+    const projects = (await import("../content/projects/projects.json")).default;
+
+    return projects.map((project) => ({
+      route: `${domain}/projects/${project.slug}`,
+      changefreq: "monthly" as const,
+      priority: 0.7 as const,
+    }));
+  },
+};
 
 export async function loader({ params }: Route.LoaderArgs) {
   const projectId = params.project;

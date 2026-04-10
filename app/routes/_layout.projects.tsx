@@ -5,6 +5,7 @@ import ProjectItem from "~/components/ProjectItem";
 import { Masonry } from "react-plock";
 import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
+import { absoluteUrl } from "../meta";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const projects = data?.projects || [];
@@ -27,7 +28,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       },
     })),
     numberOfItems: projects.length,
-    url: "https://arafatamim.uk/projects",
+    url: absoluteUrl("/projects"),
     name: "Tamim Arafat's Projects",
     description:
       "A non-exhaustive list of projects I have worked on in the past.",
