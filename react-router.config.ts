@@ -17,7 +17,6 @@ export default {
     return [
       "/profile",
       "/projects",
-      "/contact",
       "/robots.txt",
       "/sitemap.xml",
       ...(await getProjectRoutes()),
