@@ -297,7 +297,7 @@ export default function ProfileTab() {
         skillsTl
           .to(".profile__skills .profile__kicker", {
             y: 0,
-            autoAlpha: 1,
+            autoAlpha: 0.6,
             duration: 0.6,
           })
           .to(
