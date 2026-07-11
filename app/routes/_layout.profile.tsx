@@ -98,7 +98,15 @@ export default function ProfileTab() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(
+        {
+          motionOk: "(prefers-reduced-motion: no-preference)",
+          isMobile: "(max-width: 768px)",
+        },
+        (self) => {
+          if (!self.conditions?.motionOk) return;
+          const isMobile = self.conditions.isMobile;
+
         // CSS hides .profile until JS takes over (no flash of unanimated content)
         gsap.set(scope.current, { visibility: "visible" });
 
@@ -119,23 +127,34 @@ export default function ProfileTab() {
             }),
         });
 
-        // hand-drawn underline, drawn by the scroll position itself
-        // (clamp keeps it undrawn on load even when it starts above the fold)
+        // hand-drawn underline. pathLength=1 puts the whole draw inside 0–1px;
+        // GSAP's px rounding would snap it to the end, so autoRound is off.
+        // desktop: drawn by the scroll position itself (clamp keeps it undrawn
+        // on load even above the fold). mobile: a one-shot draw on viewport enter.
         gsap.fromTo(
           ".profile__underline path",
           { strokeDashoffset: 1 },
           {
             strokeDashoffset: 0,
-            ease: "none",
-            // pathLength=1 puts the whole draw inside 0–1px; GSAP's px
-            // rounding would snap it to the end otherwise
             autoRound: false,
-            scrollTrigger: {
-              trigger: ".profile__title-wrapper",
-              start: "clamp(top 70%)", // keep in sync with scrubWindow's startViewport
-              end: scrubWindow(480),
-              scrub: true,
-            },
+            ...(isMobile
+              ? {
+                duration: 0.9,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: ".profile__title-wrapper",
+                  start: "top 80%",
+                },
+              }
+              : {
+                ease: "none",
+                scrollTrigger: {
+                  trigger: ".profile__title-wrapper",
+                  start: "clamp(top 70%)", // keep in sync with scrubWindow's startViewport
+                  end: scrubWindow(480),
+                  scrub: true,
+                },
+              }),
           },
         );
 
