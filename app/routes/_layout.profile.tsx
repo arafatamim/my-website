@@ -372,9 +372,6 @@ export default function ProfileTab() {
             →
           </span>
         </Link>
-        <p className="profile__cta__note">
-          Usually replies within a day · No obligation, just a conversation
-        </p>
       </section>
     </div>
   );
