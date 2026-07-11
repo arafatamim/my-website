@@ -7,7 +7,7 @@ import { getLogoImage, getProjectImage } from "~/utils/projectImages";
 import { useRef } from "react";
 import { Link } from "react-router";
 
-import { absoluteUrl, default as siteMetadata } from "../meta";
+import { absoluteUrl, buildMeta } from "../meta";
 import { gsap, useGSAP } from "../utils/gsap";
 
 export const handle: SitemapHandle = {
@@ -46,29 +46,48 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { project, logoImage, projectImage };
 }
 
-export function meta({ data }: Route.MetaArgs) {
-  const project = data?.project;
+export function meta({ loaderData }: Route.MetaArgs) {
+  const project = loaderData?.project;
   if (!project) return [];
 
   const title = `${project.name} — Tamim Arafat`;
   const url = absoluteUrl(`/projects/${project.slug}`);
 
-  return [
-    { title },
-    { name: "description", content: project.desc },
-    { rel: "canonical", href: url },
-    { property: "og:title", content: title },
-    { property: "og:description", content: project.desc },
-    { property: "og:type", content: "website" },
-    { property: "og:url", content: url },
-    { property: "og:site_name", content: siteMetadata.title },
-    { property: "og:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:site", content: "@_arafatamim_" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: project.desc },
-  ];
+  return buildMeta({
+    title,
+    description: project.desc,
+    path: `/projects/${project.slug}`,
+    ogType: "article",
+    imageAlt: `${project.name} — project by Tamim Arafat`,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: project.name,
+        description: project.desc,
+        keywords: project.tags.join(", "),
+        url,
+        author: {
+          "@type": "Person",
+          name: "Tamim Arafat",
+          url: absoluteUrl("/profile"),
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Projects",
+            item: absoluteUrl("/projects"),
+          },
+          { "@type": "ListItem", position: 2, name: project.name, item: url },
+        ],
+      },
+    ],
+  });
 }
 
 export default function Project({ loaderData }: Route.ComponentProps) {

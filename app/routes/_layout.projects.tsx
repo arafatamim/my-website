@@ -1,11 +1,11 @@
 import type { Route } from "./+types/_layout.projects";
-import { data, type MetaFunction, useSearchParams } from "react-router";
+import { data, useSearchParams } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import { useRef } from "react";
 import ProjectItem from "~/components/ProjectItem";
 import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
-import { absoluteUrl, default as siteMetadata } from "../meta";
+import { absoluteUrl, buildMeta } from "../meta";
 import {
   gsap,
   isFirstLoad,
@@ -14,14 +14,14 @@ import {
   useGSAP,
 } from "../utils/gsap";
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const projects = data?.projects || [];
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  const projects = loaderData?.projects || [];
   const title = "Projects — Tamim Arafat";
   const description =
     "A curated collection of web and mobile applications built by Tamim Arafat, featuring React, Flutter, Go, and more.";
   const url = absoluteUrl("/projects");
 
-  const jsonLd = {
+  const jsonLd: object = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     itemListElement: projects.map((project: any, index: number) => ({
@@ -44,23 +44,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     description,
   };
 
-  return [
-    { title },
-    { name: "description", content: description },
-    { rel: "canonical", href: url },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:type", content: "website" },
-    { property: "og:url", content: url },
-    { property: "og:site_name", content: siteMetadata.title },
-    { property: "og:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:site", content: "@_arafatamim_" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    { "script:ld+json": jsonLd },
-  ];
+  return buildMeta({ title, description, path: "/projects", jsonLd });
 };
 
 export async function loader() {

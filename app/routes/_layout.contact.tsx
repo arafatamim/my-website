@@ -13,30 +13,15 @@ import { invariantResponse } from "@epic-web/invariant";
 import { useEffect, useRef, useState } from "react";
 import "../styles/contact.scss";
 import { gsap, isFirstLoad, SplitText, useGSAP } from "../utils/gsap";
-import { absoluteUrl, default as siteMetadata } from "../meta";
+import { buildMeta } from "../meta";
 
 export function meta() {
-  const title = "Contact — Tamim Arafat";
-  const description =
-    "Get in touch with Tamim Arafat for collaborations, freelance work, or any inquiries about web and mobile development.";
-  const url = absoluteUrl("/contact");
-
-  return [
-    { title },
-    { name: "description", content: description },
-    { rel: "canonical", href: url },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:type", content: "website" },
-    { property: "og:url", content: url },
-    { property: "og:site_name", content: siteMetadata.title },
-    { property: "og:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:card", content: "summary" },
-    { name: "twitter:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:site", content: "@_arafatamim_" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-  ];
+  return buildMeta({
+    title: "Contact — Tamim Arafat",
+    description:
+      "Get in touch with Tamim Arafat for collaborations, freelance work, or any inquiries about web and mobile development.",
+    path: "/contact",
+  });
 }
 
 type TurnstileResponse = {

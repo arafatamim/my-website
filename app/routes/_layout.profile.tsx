@@ -19,7 +19,7 @@ import {
   SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
-import siteMetadata, { absoluteUrl } from "../meta";
+import siteMetadata, { absoluteUrl, buildMeta } from "../meta";
 import Marquee from "../components/Marquee";
 import {
   gsap,
@@ -86,27 +86,18 @@ const SKILL_GROUPS = [
 
 export function meta() {
   const url = absoluteUrl("/profile");
-  const title = "Profile — Tamim Arafat";
+  // name-first, role-forward: this is the canonical landing page (/ → 301),
+  // so the title has to earn the SERP click, not read like a tab label.
+  const title = "Tamim Arafat — Full-Stack & Mobile Developer";
   const description =
     "Tamim Arafat — Full-stack and mobile developer specializing in React, TypeScript, Node.js, Python, Go, and mobile development with Flutter and Jetpack Compose.";
 
-  return [
-    { title },
-    { name: "description", content: description },
-    { rel: "canonical", href: url },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:type", content: "profile" },
-    { property: "og:url", content: url },
-    { property: "og:site_name", content: siteMetadata.title },
-    { property: "og:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:card", content: "summary" },
-    { name: "twitter:image", content: absoluteUrl("/og-image.png") },
-    { name: "twitter:site", content: "@_arafatamim_" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    {
-      "script:ld+json": {
+  return buildMeta({
+    title,
+    description,
+    path: "/profile",
+    ogType: "profile",
+    jsonLd: {
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Tamim Arafat",
@@ -137,9 +128,8 @@ export function meta() {
           "Jetpack Compose",
           "F#",
         ],
-      },
     },
-  ];
+  });
 }
 
 export default function ProfileTab() {
