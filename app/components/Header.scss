@@ -5,6 +5,14 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 92svh;
+  // cap the box on ultrawide/4k: the hero anchors first name and avatar to
+  // opposite edges, so a full-width box flings the names apart. 90rem holds
+  // them at the ~1440px composition that reads right, centered. border-box so
+  // the cap is the true outer width (no global * reset sets it for divs)
+  box-sizing: border-box;
+  max-width: 90rem;
+  margin-inline: auto;
+  width: 100%;
   padding: 2.5rem 4rem 2rem;
   gap: 2rem;
 

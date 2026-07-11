@@ -98,6 +98,46 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
             scrub: true,
           },
         });
+
+        // name swap: first name (top-left) and last name (bottom-right) trade
+        // horizontal sides as the hero scrolls. travel is measured per-line so
+        // each word's edge lands on the opposite edge of the title box, and is
+        // recomputed on refresh/resize via the function-based values
+        const title = scope.current!.querySelector<HTMLElement>(
+          ".header__hero__title",
+        );
+        const firstLine = scope.current!.querySelector<HTMLElement>(
+          ".header__hero__title__line:not(.header__hero__title__line--last)",
+        );
+        const lastLine = scope.current!.querySelector<HTMLElement>(
+          ".header__hero__title__line--last",
+        );
+        if (title && firstLine && lastLine) {
+          const swapTrigger = {
+            trigger: scope.current,
+            start: "top top",
+            // spread the swap over ~1.8 viewports (~half the original speed).
+            // the hero scrolls away in ~1 viewport, so the swap is deliberately
+            // unhurried and still reads clearly before the names leave
+            end: "+=180%",
+            scrub: true,
+            invalidateOnRefresh: true,
+          };
+          gsap.to(firstLine, {
+            x: () =>
+              title.getBoundingClientRect().right -
+              firstLine.getBoundingClientRect().right,
+            ease: "none",
+            scrollTrigger: swapTrigger,
+          });
+          gsap.to(lastLine, {
+            x: () =>
+              title.getBoundingClientRect().left -
+              lastLine.getBoundingClientRect().left,
+            ease: "none",
+            scrollTrigger: swapTrigger,
+          });
+        }
       });
     },
     { scope, dependencies: [collapsed], revertOnUpdate: true },
