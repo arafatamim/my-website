@@ -378,7 +378,16 @@
       overflow: hidden;
       border-radius: var(--border-radius);
       aspect-ratio: 16 / 10;
-      box-shadow: 0 10px 34px rgb(0 0 0 / 12%);
+      // layered: the tight component draws a crisp edge the stained-paper
+      // texture can't swallow — a single 12%/34px blur was so diffuse that
+      // over busier texture patches (which patch depends on scroll, the bg is
+      // fixed + parallax) the shadow read as missing entirely. the GSAP wipe
+      // clips this box with negative insets wider than the shadow's reach, so
+      // it reveals with the card instead of popping when the clip clears.
+      box-shadow:
+        0 3px 8px rgb(0 0 0 / 9%),
+        0 14px 34px rgb(0 0 0 / 10%);
+      background-color: var(--secondary-color);
 
       img {
         display: block;

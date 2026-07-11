@@ -334,25 +334,33 @@ export default function ProfileTab() {
               defaults: { ease: "power3.out" },
               scrollTrigger: { trigger: item, start: "top 78%" },
             });
-            // the settle scales the crop box, not the img: the img keeps a CSS
-            // transform transition for its hover zoom, which would fight (and
-            // then override) any GSAP transform left on it
+            // wipe the media box itself. the negative insets keep the clip
+            // region larger than the border box by more than the shadow's
+            // reach, so the box-shadow is INSIDE the wipe and reveals with the
+            // card instead of popping when the clip clears. (cards that seemed
+            // to "lose" their shadow were a contrast issue — see the layered
+            // box-shadow note in profile.scss — not a rendering bug.)
+            // fromTo, not from: from() would tween toward none's equivalent
+            // inset(0 0 0 0), and side insets closing in from -60px to 0 would
+            // re-clip the shadow at the tail. clearProps removes the clip after.
+            // top inset stays in % on BOTH ends: a % start with a px end makes
+            // GSAP resolve the 100% against the wrong box (~page height, not
+            // the ~380px card), so the wipe travelled thousands of px and the
+            // card only uncovered in the last ~6% — an invisible wait then a
+            // flick. matching % lets the browser resolve each against the card
+            // itself, so the reveal maps linearly across the whole tween.
+            // -12% clears the ~20px top shadow reach on both desktop and mobile.
             const media = item.querySelector(".profile__work__item__media");
-            tl.from(media, {
-              clipPath: "inset(100% 0 0 0)",
-              duration: 0.9,
-              ease: "power2.inOut",
-            })
-              .from(
-                media,
-                {
-                  scale: 1.06,
-                  duration: 1.1,
-                  ease: "power2.out",
-                  clearProps: "scale",
-                },
-                0,
-              )
+            tl.fromTo(
+              media,
+              { clipPath: "inset(100% -60px -60px -60px)" },
+              {
+                clipPath: "inset(-12% -60px -60px -60px)",
+                duration: 1.0,
+                ease: "power3.inOut",
+                clearProps: "clipPath",
+              },
+            )
               .from(
                 item.querySelectorAll(".profile__work__item__text > *"),
                 { y: 30, autoAlpha: 0, duration: 0.6, stagger: 0.09 },
