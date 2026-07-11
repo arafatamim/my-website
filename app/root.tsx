@@ -12,8 +12,6 @@ import { useEffect } from "react";
 import type { Route } from "./+types/root";
 import { endFirstLoad } from "./utils/gsap";
 import Header from "./components/Header";
-import CinematicBackground from "./components/CinematicBackground";
-import InkCursor from "./components/InkCursor";
 import SmoothScroll from "./components/SmoothScroll";
 import { ClientHintCheck, getHints, useHintsSafe } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
@@ -136,14 +134,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </filter>
           </defs>
         </svg>
-        <CinematicBackground />
 
         {/* full-viewport hero only on the home story; compact brand elsewhere */}
         <Header collapsed={!["/profile", "/"].includes(pathname)} />
 
         {children}
 
-        <InkCursor />
         <SmoothScroll />
         <ScrollRestoration />
         <Scripts />

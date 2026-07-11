@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap");
 
-$bg-texture: url("../assets/img/white-texture.webp");
+$bg-texture: url("../assets/img/stained_paper.webp");
 
 :root {
   --title-font: "Cormorant Garamond", serif;
@@ -85,18 +85,32 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  // overflow top/bottom so the parallax translate never reveals an edge
+  inset: -20% 0;
   background-image: $bg-texture;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
-  opacity: 0.45;
+  opacity: 0.52;
   pointer-events: none;
   z-index: 0;
+
+  // native scroll-driven parallax: the texture drifts up as the page scrolls,
+  // but far slower than the content. degrades to a static bg where unsupported.
+  @media (prefers-reduced-motion: no-preference) {
+    animation: bg-parallax linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes bg-parallax {
+  to {
+    transform: translateY(-12%);
+  }
 }
 
 html.dark body::before {
-  opacity: 0.2;
+  opacity: 0.24;
   mix-blend-mode: overlay;
 }
 
