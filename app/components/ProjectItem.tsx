@@ -1,5 +1,4 @@
-import { Link, useSearchParams, NavLink } from "react-router";
-// import "animate.css";
+import { NavLink, useSearchParams } from "react-router";
 import "./ProjectItem.scss";
 
 interface ProjectItemProps {
@@ -10,21 +9,34 @@ interface ProjectItemProps {
     tags: string[];
     projectImage: string;
   };
+  index?: number;
+  shape?: "feature" | "tall" | "wide" | "square";
 }
 
-const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
+const ProjectItem: React.FC<ProjectItemProps> = (
+  { project, index, shape = "square", ...rest },
+) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <NavLink
       {...rest}
       to={"/projects/" + project.slug}
-      className="project__link"
+      className={`project__link project__link--${shape}`}
       viewTransition
     >
-      <div className="project__card animate__animated animate__fadeInUp animate__faster">
-        <div className="project__card__name">{project.name}</div>
-        <p className="project__card__desc">{project.desc}</p>
+      <article className="project__card">
+        <div className="project__card__image">
+          <img src={project.projectImage} alt={`Image for ${project.name}`} />
+        </div>
+        <div className="project__card__label">
+          {index != null && (
+            <span className="project__card__index" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          )}
+          <span className="project__card__name">{project.name}</span>
+        </div>
         <div className="project__card__tags">
           {project.tags.map((tag: string, i: number) => {
             return (
@@ -46,10 +58,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project, ...rest }) => {
             );
           })}
         </div>
-        <div className="project__card__image">
-          <img src={project.projectImage} alt={`Image for ${project.name}`} />
-        </div>
-      </div>
+      </article>
     </NavLink>
   );
 };

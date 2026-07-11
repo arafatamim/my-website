@@ -12,6 +12,7 @@ import { Resend } from "resend";
 import { invariantResponse } from "@epic-web/invariant";
 import { useEffect, useRef, useState } from "react";
 import "../styles/contact.scss";
+import { gsap, isFirstLoad, SplitText, useGSAP } from "../utils/gsap";
 import { absoluteUrl, default as siteMetadata } from "../meta";
 
 export function meta() {
@@ -150,6 +151,71 @@ export default function Contact() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
+  const scope = useRef<HTMLDivElement>(null);
+
+  // no SplitText here: the description re-renders when Turnstile succeeds,
+  // so React must keep ownership of its DOM
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.set(scope.current, { visibility: "visible" });
+        // title + underline animate on every visit (they ride the page slide);
+        // the rest of the intro only on a cold load.
+        // title is static text, safe to split (unlike the description)
+        SplitText.create(".contact-page__title__text", {
+          type: "chars",
+          onSplit: (self) =>
+            gsap.from(self.chars, {
+              yPercent: 70,
+              autoAlpha: 0,
+              filter: "blur(10px)",
+              duration: 1,
+              stagger: 0.035,
+              ease: "power3.out",
+              delay: 0.1,
+            }),
+        });
+        gsap.fromTo(
+          ".contact-page__underline path",
+          { strokeDashoffset: 1 },
+          {
+            strokeDashoffset: 0,
+            duration: 0.9,
+            delay: 0.5,
+            ease: "power2.out",
+            autoRound: false, // sub-pixel draw (pathLength=1)
+          },
+        );
+        const intro = isFirstLoad();
+        if (intro) {
+          gsap.set(".contact-page__description", { y: 28, autoAlpha: 0 });
+          gsap.to(".contact-page__description", {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            delay: 0.3,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility",
+          });
+        }
+        if (intro) {
+          gsap.set(".contact-page__form > *", { y: 26, autoAlpha: 0 });
+          gsap.to(".contact-page__form > *", {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            stagger: 0.09,
+            delay: 0.25,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility",
+          });
+        }
+      });
+    },
+    { scope },
+  );
+
   const [emailAddress, setEmailAddress] = useState("");
   const [turnstileSuccess, setTurnstileSuccess] = useState<boolean>(false);
 
@@ -209,8 +275,11 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className="contact-page">
-      <div className="contact-page__description-wrapper animate__animated animate__fadeInUp animate__faster">
+    <div className="contact-page" ref={scope}>
+      <h1 className="contact-page__title">
+        <span className="contact-page__title__text">Get in Touch</span>
+      </h1>
+      <div className="contact-page__description-wrapper">
         <p className="contact-page__description prose">
           If you have any questions or would like to get in touch, feel free to
           {turnstileSuccess
@@ -243,7 +312,7 @@ export default function Contact() {
       <Form
         action="/contact"
         method="post"
-        className="contact-page__form animate__animated animate__fadeInUp animate__faster"
+        className="contact-page__form"
       >
         <div className="contact-page__form-group">
           <label htmlFor="name" className="contact-page__label">

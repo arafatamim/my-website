@@ -133,6 +133,47 @@ h6 {
   line-height: 1.8rem;
 }
 
+// page navigations: the old view lifts away as the new one settles in,
+// blur clearing like ink drying — same language as the SplitText intros
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-24px);
+    filter: blur(6px);
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+    filter: blur(10px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: vt-page-out 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-page-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+// named groups (the nav rail) morph on the UA default 0.25s ease otherwise —
+// stretch + soften them to match the page crossfade
+::view-transition-group(*) {
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+  }
+}
+
 @keyframes draw-wave {
   from {
     stroke-dashoffset: 1;
@@ -144,11 +185,41 @@ h6 {
 
 .profile__underline,
 .projects__underline,
-.contact-page__underline {
+.contact-page__underline,
+.project__underline {
   & path {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     animation: draw-wave 0.8s ease-out forwards;
+  }
+}
+
+// GSAP takes over animated pages when JS is available and motion is allowed.
+// `html.js` is set by an inline script in root.tsx before first paint, so
+// no-JS visitors (and reduced-motion users) see everything instantly.
+@media (prefers-reduced-motion: no-preference) {
+  html.js .header,
+  html.js .profile,
+  html.js .projects,
+  html.js .contact-page {
+    visibility: hidden; // revealed by gsap.set() on hydration
+  }
+
+  // .project can't be hidden wholesale (its name/tags/image morph via VT), so
+  // hide only the elements GSAP animates in — they'd otherwise flash for the
+  // frame between first paint and useGSAP applying their `from` state.
+  // Each is revealed by its own autoAlpha tween.
+  html.js .project__back,
+  html.js .project__desc,
+  html.js .project__buttons {
+    visibility: hidden;
+  }
+
+  html.js .profile__underline path,
+  html.js .projects__underline path,
+  html.js .contact-page__underline path,
+  html.js .project__underline path {
+    animation: none; // drawn by GSAP instead
   }
 }
 

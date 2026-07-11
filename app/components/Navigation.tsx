@@ -1,8 +1,8 @@
-import { Link, useLocation, useNavigation } from "react-router";
-import { useCallback, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router";
+import { useRef } from "react";
 import "./Navigation.scss";
-import "animate.css";
 import { normalizePathname } from "../utils/path";
+import { gsap, ScrollTrigger, useGSAP } from "../utils/gsap";
 
 interface NavItem {
   path: string;
@@ -10,85 +10,47 @@ interface NavItem {
 }
 
 export function Navigation({ navItems }: { navItems: NavItem[] }) {
-  const location = useLocation();
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const activeItemRef = useRef<HTMLLIElement>(null);
-  const pathname = normalizePathname(location.pathname);
+  const pathname = normalizePathname(useLocation().pathname);
+  const scope = useRef<HTMLElement>(null);
 
-  const updateIndicator = useCallback(() => {
-    const activeItem = activeItemRef.current;
-    const indicator = indicatorRef.current;
-
-    if (activeItem && indicator) {
-      const width = activeItem.offsetWidth;
-      const height = activeItem.offsetHeight;
-      const left = activeItem.offsetLeft;
-      const top = activeItem.offsetTop;
-
-      indicator.style.width = `${width}px`;
-      indicator.style.height = `${height}px`;
-      indicator.style.setProperty("--translateX", `${left}px`);
-      indicator.style.setProperty("--translateY", `${top}px`);
-      indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
-
-      indicator.style.opacity = "1";
-    } else if (indicator) {
-      indicator.style.opacity = "0";
-    }
-  }, []);
-
-  useEffect(() => {
-    let animationFrameId: number;
-    let resizeObserver: ResizeObserver | null = null;
-
-    const runInitialUpdate = () => {
-      updateIndicator();
-
-      const activeItem = activeItemRef.current;
-      if (activeItem) {
-        resizeObserver = new ResizeObserver(() => {
-          updateIndicator();
+  // on the hero page the rail would sit on top of the giant name,
+  // so it only fades in once the hero has scrolled away
+  useGSAP(
+    () => {
+      const hero = document.querySelector(".header");
+      if (!hero || !scope.current) return;
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1025px)", () => {
+        gsap.set(scope.current, { autoAlpha: 0 });
+        ScrollTrigger.create({
+          trigger: hero,
+          start: "bottom 55%",
+          onEnter: () =>
+            gsap.to(scope.current, { autoAlpha: 1, duration: 0.5 }),
+          onLeaveBack: () =>
+            gsap.to(scope.current, { autoAlpha: 0, duration: 0.3 }),
         });
-        resizeObserver.observe(activeItem);
-      }
-    };
-
-    animationFrameId = requestAnimationFrame(runInitialUpdate);
-
-    window.addEventListener("resize", updateIndicator);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", updateIndicator);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-    };
-  }, [location, updateIndicator]);
-
-  const activeClass = (path: string) =>
-    pathname === path ? "nav__item--active" : "";
+      });
+    },
+    { scope, dependencies: [pathname], revertOnUpdate: true },
+  );
 
   return (
-    <nav className="nav animate__animated animate__fadeInUp animate__faster">
+    <nav className="nav" ref={scope}>
       <ul className="nav__ul">
-        <div
-          className="nav__item--active-indicator"
-          ref={indicatorRef}
-          style={{ opacity: 0 }}
-        />
         {navItems.map((item) => (
-          <li
-            key={item.path}
-            className={`nav__item ${activeClass(item.path)}`}
-            ref={pathname === item.path ? activeItemRef : null}
-          >
+          <li key={item.path} className="nav__item">
             <Link
-              className="nav__item__link"
+              className={`nav__item__link ${
+                pathname === item.path ? "nav__item__link--active" : ""
+              }`}
               to={item.path}
-              preventScrollReset={true}
+              state={{ fromNav: true }}
+              viewTransition
+              aria-current={pathname === item.path ? "page" : undefined}
             >
-              {item.label}
+              <span className="nav__item__dash" aria-hidden="true" />
+              <span className="nav__item__label">{item.label}</span>
             </Link>
           </li>
         ))}

@@ -2,27 +2,59 @@
 
 .profile {
   @include base.container;
-  max-width: 700px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 2rem 4rem;
+
+  @include base.breakpoint(tablet) {
+    padding: 2rem 2.5rem;
+  }
+
+  @include base.breakpoint(mobile) {
+    padding: 1.5rem 1.25rem;
+  }
 
   &__title-wrapper {
     display: block;
+    margin-top: 3rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 18ch;
+  }
+
+  &__kicker {
+    margin: 0 0 1.6rem;
+    font-family: var(--body-font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    opacity: 0.6;
   }
 
   &__underline {
     display: block;
-    width: 100%;
+    width: min(100%, 40rem);
     margin: 0.4rem 0 1.5rem;
   }
 
   &__body {
-    /* display: grid;
-    grid-template-columns: 1fr; */
+    margin-top: 5rem;
+
     &__bio {
-      // flex: 1 0 auto;
-    }
-    &__illustration {
-      // flex: 1 1 auto;
+      // sizing comes from .prose only — a competing font-size here loses or
+      // wins by stylesheet order (base.scss is duplicated per route chunk)
+      margin: 0;
+      font-weight: 300;
+      max-width: 46ch;
     }
   }
 }
@@ -31,8 +63,102 @@
   fill: var(--accent-1);
 }
 
+.profile__stats {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 3rem;
+
+  @include base.breakpoint(mobile) {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    &__value {
+      font-family: var(--title-font);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 2.6rem;
+      line-height: 1;
+      color: var(--accent-2);
+    }
+
+    &__label {
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      max-width: 12rem;
+    }
+  }
+}
+
+.profile__marquee {
+  width: 100vw;
+  margin: 4rem 0 4rem calc(50% - 50vw);
+  font-family: var(--title-font);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.1;
+  color: var(--accent-2);
+  opacity: 0.18;
+}
+
+.profile__cta {
+  margin: 6rem 0 4rem;
+  text-align: center;
+
+  &__kicker {
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 1.2rem;
+  }
+
+  &__link {
+    display: inline-block;
+    font-family: var(--title-font);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--accent-2);
+
+    &:hover .profile__cta__arrow {
+      transform: translateX(0.35em);
+    }
+  }
+
+  &__arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  &__note {
+    margin-top: 1.4rem;
+    font-size: 0.95rem;
+    opacity: 0.65;
+  }
+}
+
+.profile__ink-stroke {
+  display: block;
+  width: min(100%, 44rem);
+  height: clamp(1.2rem, 3vw, 2rem);
+  margin: 6rem auto 0;
+  opacity: 0.85;
+}
+
 .profile__skills {
-  margin-top: 2rem;
+  margin-top: 5rem;
 
   &__list {
     display: grid;

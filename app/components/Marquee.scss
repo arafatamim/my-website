@@ -1,0 +1,12 @@
+.marquee {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+
+  &__inner {
+    flex-shrink: 0;
+    padding-right: 0.4em;
+  }
+}

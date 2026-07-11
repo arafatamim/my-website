@@ -8,11 +8,14 @@ import {
   ScrollRestoration,
   useLocation,
 } from "react-router";
+import { useEffect } from "react";
 import type { Route } from "./+types/root";
+import { endFirstLoad } from "./utils/gsap";
 import Header from "./components/Header";
+import InkCursor from "./components/InkCursor";
+import SmoothScroll from "./components/SmoothScroll";
 import { ClientHintCheck, getHints, useHintsSafe } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
-import "animate.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -50,10 +53,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const clientHints = useHintsSafe();
   const pathname = normalizePathname(location.pathname);
 
+  useEffect(endFirstLoad, []);
+
   return (
-    <html lang="en" className={clientHints?.theme ?? "light"}>
+    // suppressHydrationWarning: the inline script below adds .js pre-paint
+    <html
+      lang="en"
+      className={clientHints?.theme ?? "light"}
+      suppressHydrationWarning
+    >
       <head>
         <ClientHintCheck />
+        {/* marks JS availability before first paint so CSS can defer to GSAP */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js")`,
+          }}
+        />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#1a1a2e" />
@@ -119,14 +135,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </filter>
           </defs>
         </svg>
-        <Header
-          collapsed={!["/profile", "/projects", "/contact", "/"].includes(
-            pathname,
-          )}
-        />
+        {/* full-viewport hero only on the home story; compact brand elsewhere */}
+        <Header collapsed={!["/profile", "/"].includes(pathname)} />
 
         {children}
 
+        <InkCursor />
+        <SmoothScroll />
         <ScrollRestoration />
         <Scripts />
         <script

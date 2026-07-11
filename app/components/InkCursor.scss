@@ -1,0 +1,18 @@
+.ink-cursor {
+  position: fixed;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--accent-2);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+}
+
+html.dark .ink-cursor {
+  mix-blend-mode: screen;
+}
