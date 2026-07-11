@@ -26,6 +26,7 @@ export function useSmoothScroll() {
   // scroll offset per history entry, our source of truth for back/forward.
   const positions = useRef<Map<string, number>>(new Map());
   const activeKey = useRef(location.key);
+  const prevPath = useRef(location.pathname);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -58,6 +59,8 @@ export function useSmoothScroll() {
   // fires under the already-updated key.
   useIsoLayoutEffect(() => {
     activeKey.current = location.key;
+    const samePage = location.pathname === prevPath.current;
+    prevPath.current = location.pathname;
     const setTop = (y: number) => {
       const s = smootherRef.current;
       if (s) s.scrollTop(y);
@@ -65,8 +68,11 @@ export function useSmoothScroll() {
     };
 
     // fresh nav (PUSH/REPLACE) → top; a route effect may reposition after.
+    // But a same-pathname change (e.g. a tag filter editing only the query)
+    // should stay in place — this is what preventScrollReset asks for, which
+    // our own restoration has to honor since we replaced <ScrollRestoration>.
     if (navType !== "POP") {
-      setTop(0);
+      if (!samePage) setTop(0);
       return;
     }
 

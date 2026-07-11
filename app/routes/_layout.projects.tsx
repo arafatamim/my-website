@@ -191,7 +191,12 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
       Flip.from(state, {
         duration: 0.55,
         ease: "power2.inOut",
-        absolute: true,
+        // only leaving cards go position:absolute (to fade out without holding
+        // grid space). `absolute: true` would take ALL cards out of flow,
+        // collapsing the grid to ~0 height mid-animation — which clamps the
+        // window scroll to the top. Survivors/entering stay in flow, so the
+        // grid keeps its height and the scroll position holds.
+        absoluteOnLeave: true,
         scale: true,
         stagger: 0.03,
         onEnter: (els) =>
