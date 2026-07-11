@@ -60,6 +60,12 @@
     letter-spacing: -0.04em;
     filter: url(#text-displacement);
     view-transition-name: project-item-name;
+
+    // the name morphs via the view transition on entry; an SVG displacement
+    // filter re-rasterizes it through that animation. skip it on mobile.
+    @include base.breakpoint(mobile) {
+      filter: none;
+    }
   }
 
   &__desc {

@@ -397,10 +397,13 @@ export default function ProfileTab() {
         );
         const ctx2d = canvas?.getContext("2d");
         const off = document.createElement("canvas");
-        // keying buffer is fixed at the source's native resolution — sized
-        // once, never per frame (setting canvas.width reallocates + clears)
-        const OW = (off.width = 1920);
-        const OH = (off.height = 1080);
+        // keying buffer resolution — sized once, never per frame (setting
+        // canvas.width reallocates + clears). full-res on desktop; halved on
+        // mobile, where the per-frame getImageData->alpha loop is the finale's
+        // bottleneck and the soft ink hides the lower resolution. 960×540 is a
+        // quarter of the pixels the hot loop touches per changed frame.
+        const OW = (off.width = isMobile ? 960 : 1920);
+        const OH = (off.height = isMobile ? 540 : 1080);
         const offCtx = off.getContext("2d", { willReadFrequently: true });
         const INK = [74, 39, 18]; // the encode's ink color (#4a2712)
         const SRC_FPS = 50; // r_frame_rate of the encode
@@ -417,7 +420,10 @@ export default function ProfileTab() {
         const GRAIN_DEEPEN = 3.4; // light fibers -> more opaque ink
         const GRAIN_THIN = 1.6; // dark fibers -> page peeks (kept subtle)
         const grainImg = new Image();
-        grainImg.src = grainTexture;
+        // mobile skips the paper tooth entirely: grainLuma stays null so the
+        // per-pixel hot loop takes its lean branch, and the texture is never
+        // even fetched. the tooth is imperceptible at phone size anyway.
+        if (!isMobile) grainImg.src = grainTexture;
         let grainLuma: Uint8ClampedArray | null = null;
         // rasterize the texture once at the keying resolution (cover-fit) so
         // its pixels line up 1:1 with the video frame — it never changes
@@ -475,7 +481,10 @@ export default function ProfileTab() {
         // at 2× — beyond that the soft ink edges gain nothing worth the fill.
         // only reallocate on real resize; otherwise clear + redraw the buffer
         const blit = () => {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          // cap the backing store lower on mobile (DPR is often 2–3 there): the
+          // soft ink gains nothing from a 3× fill, and the smaller canvas cuts
+          // composite + memory cost on the exact devices that struggle
+          const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
           const cw = Math.round(window.innerWidth * dpr);
           const ch = Math.round(window.innerHeight * dpr);
           if (canvas!.width !== cw || canvas!.height !== ch) {
@@ -534,8 +543,10 @@ export default function ProfileTab() {
           buildGrain(); // rasterize the tooth, then re-key with it applied
           onLoaded();
         };
-        grainImg.onload = onGrain;
-        if (grainImg.complete && grainImg.naturalWidth) onGrain(); // cached
+        if (!isMobile) {
+          grainImg.onload = onGrain;
+          if (grainImg.complete && grainImg.naturalWidth) onGrain(); // cached
+        }
 
         // static hosts without Range-request support report the file as
         // unseekable (seekable = [0,0]) and every seek clamps to 0 — a blob:

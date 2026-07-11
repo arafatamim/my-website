@@ -22,6 +22,10 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
         // CSS hides .header until JS takes over (no flash of unanimated content)
         gsap.set(scope.current, { visibility: "visible" });
 
+        // blur is the priciest filter to animate; per-char blur on a weak
+        // mobile GPU janks the intro. drop it there — the rise reads on its own
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
         // intro choreography only on a cold load; on client-side navigation
         // the view transition morphs the title, so animating it too fights it
         if (isFirstLoad()) {
@@ -55,7 +59,7 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
                 yPercent: 70,
                 autoAlpha: 0,
                 rotateX: -35,
-                filter: "blur(12px)",
+                filter: isMobile ? "none" : "blur(12px)",
                 transformOrigin: "50% 100%",
                 duration: 1.1,
                 stagger: 0.04,

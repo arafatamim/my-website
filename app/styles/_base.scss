@@ -173,6 +173,25 @@ h6 {
   animation: vt-page-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+// mobile: swap the full-viewport blur for a plain slide+fade. animating blur
+// over the whole snapshot is one of the heaviest things a phone can be asked to
+// do mid-transition; the translate/opacity alone still reads as the same move.
+@media (max-width: 768px) {
+  @keyframes vt-page-out {
+    to {
+      opacity: 0;
+      transform: translateY(-24px);
+    }
+  }
+
+  @keyframes vt-page-in {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+  }
+}
+
 // named groups (the nav rail) morph on the UA default 0.25s ease otherwise —
 // stretch + soften them to match the page crossfade
 ::view-transition-group(*) {

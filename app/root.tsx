@@ -111,20 +111,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
               width="120%"
               height="140%"
             >
+              {/*
+                static noise, not animated: an <animate> on baseFrequency forces
+                the whole feTurbulence + feDisplacementMap + feGaussianBlur chain
+                to recompute every frame, forever, on every element wearing this
+                filter (all nav dashes + the ink divider). The shimmer it bought
+                is imperceptible on a 3px dash and murderous on mobile. The
+                displacement still gives the brushy edge — just at zero idle cost.
+              */}
               <feTurbulence
                 type="fractalNoise"
                 baseFrequency="0.03 0.06"
                 numOctaves="3"
                 seed="5"
                 result="noise"
-              >
-                <animate
-                  attributeName="baseFrequency"
-                  values="0.03 0.06;0.035 0.065;0.03 0.06"
-                  dur="3s"
-                  repeatCount="indefinite"
-                />
-              </feTurbulence>
+              />
               <feDisplacementMap
                 in="SourceGraphic"
                 in2="noise"

@@ -160,6 +160,8 @@ export default function Contact() {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.set(scope.current, { visibility: "visible" });
+        // blur is the priciest filter to animate; skip per-char blur on mobile
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
         // title + underline animate on every visit (they ride the page slide);
         // the rest of the intro only on a cold load.
         // title is static text, safe to split (unlike the description)
@@ -169,7 +171,7 @@ export default function Contact() {
             gsap.from(self.chars, {
               yPercent: 70,
               autoAlpha: 0,
-              filter: "blur(10px)",
+              filter: isMobile ? "none" : "blur(10px)",
               duration: 1,
               stagger: 0.035,
               ease: "power3.out",

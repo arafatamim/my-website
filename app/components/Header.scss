@@ -75,6 +75,10 @@
       font-size: clamp(4.5rem, 24vw, 9rem);
       align-items: flex-start;
       gap: 0.4rem;
+      // the hero title is transform-animated every scroll frame (parallax +
+      // name swap); an SVG displacement filter re-rasterizes the whole element
+      // each of those frames. drop it on mobile — the rough edge isn't worth it
+      filter: none;
     }
 
     &__row {
