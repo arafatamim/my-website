@@ -135,7 +135,9 @@ export function meta() {
 export default function ProfileTab() {
   const scope = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const seeAllRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, 0.2);
+  useMagnetic(seeAllRef, 0.2);
 
   // nav-bar arrivals land below the hero, straight at the content. Passive
   // effect: runs after SmoothScroll's layout-effect top reset, so we override
@@ -802,7 +804,7 @@ export default function ProfileTab() {
             </li>
           ))}
         </ul>
-        <Link to="/projects" className="profile__work__all" viewTransition>
+        <Link to="/projects" className="profile__work__all" viewTransition ref={seeAllRef}>
           See all projects →
         </Link>
       </section>

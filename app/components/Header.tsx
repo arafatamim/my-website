@@ -5,12 +5,13 @@ import "./Header.scss";
 import { NavLink } from "react-router";
 import { useRef } from "react";
 import { gsap, isFirstLoad, SplitText, useGSAP } from "../utils/gsap";
-import { useMagnetic } from "../utils/useMagnetic";
+import { useMagnetic, useMagneticAll } from "../utils/useMagnetic";
 
 export default function Header({ collapsed }: { collapsed: boolean }) {
   const scope = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(buttonRef);
+  useMagneticAll(scope, ".header__socials__link", 0.4, [collapsed]);
 
   const [firstName, lastName] = siteMetadata.title.split(" ");
 

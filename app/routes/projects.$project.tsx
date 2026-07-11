@@ -9,6 +9,7 @@ import { Link } from "react-router";
 
 import { absoluteUrl, buildMeta } from "../meta";
 import { gsap, useGSAP } from "../utils/gsap";
+import { useMagneticAll } from "../utils/useMagnetic";
 
 export const handle: SitemapHandle = {
   sitemap: async (domain) => {
@@ -114,6 +115,7 @@ export default function Project({ loaderData }: Route.ComponentProps) {
     : null;
 
   const scope = useRef<HTMLDivElement>(null);
+  useMagneticAll(scope, ".project__buttons a", 0.2, [name]);
 
   // name/tags/image morph in via the native view transition and must not be
   // touched by GSAP; everything else gets the ink entrance

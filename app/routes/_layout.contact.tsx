@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/contact.scss";
 import { gsap, isFirstLoad, SplitText, useGSAP } from "../utils/gsap";
 import { buildMeta } from "../meta";
+import { useMagnetic } from "../utils/useMagnetic";
 
 export function meta() {
   return buildMeta({
@@ -137,6 +138,8 @@ export default function Contact() {
   const isSubmitting = navigation.state === "submitting";
 
   const scope = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  useMagnetic(submitRef, 0.2);
 
   // no SplitText here: the description re-renders when Turnstile succeeds,
   // so React must keep ownership of its DOM
@@ -353,6 +356,7 @@ export default function Contact() {
           type="submit"
           disabled={isSubmitting || !turnstileSuccess}
           className="contact-page__button"
+          ref={submitRef}
         >
           {isSubmitting ? "Sending..." : "Send Message"}
         </button>
