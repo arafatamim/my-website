@@ -1,6 +1,6 @@
 import "../styles/profile.scss";
 import { useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigationType } from "react-router";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import {
   SiDocker,
@@ -23,6 +23,7 @@ import siteMetadata, { absoluteUrl } from "../meta";
 import Marquee from "../components/Marquee";
 import {
   gsap,
+  ScrollSmoother,
   ScrollTrigger,
   scrubWindow,
   SplitText,
@@ -146,13 +147,24 @@ export default function ProfileTab() {
   const ctaRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, 0.2);
 
-  // nav-bar arrivals land below the hero, straight at the content
-  // (passive effect: runs after ScrollRestoration's layout-effect top reset)
+  // nav-bar arrivals land below the hero, straight at the content. Passive
+  // effect: runs after SmoothScroll's layout-effect top reset, so we override
+  // it here. Skip on POP (back/forward): the fromNav flag is baked into the
+  // history entry, so without this guard returning to profile would re-skip
+  // the hero and clobber the scroll position SmoothScroll just restored.
   const { state } = useLocation();
+  const navType = useNavigationType();
   useEffect(() => {
+    if (navType === "POP") return;
     if (!(state as { fromNav?: boolean } | null)?.fromNav) return;
     const hero = document.querySelector<HTMLElement>(".header");
-    if (hero) window.scrollTo(0, hero.offsetTop + hero.offsetHeight);
+    if (!hero) return;
+    const y = hero.offsetTop + hero.offsetHeight;
+    // scrollTop sets ScrollSmoother instantly; window.scrollTo would make it
+    // glide. Falls back to native scroll under reduced motion (no smoother).
+    const smoother = ScrollSmoother.get();
+    if (smoother) smoother.scrollTop(y);
+    else window.scrollTo(0, y);
   }, []);
 
   useGSAP(

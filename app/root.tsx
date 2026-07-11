@@ -5,14 +5,14 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
   useLocation,
 } from "react-router";
 import { useEffect } from "react";
 import type { Route } from "./+types/root";
 import { endFirstLoad } from "./utils/gsap";
 import Header from "./components/Header";
-import SmoothScroll from "./components/SmoothScroll";
+import { Navigation } from "./components/Navigation";
+import { useSmoothScroll } from "./utils/useSmoothScroll";
 import { getHints, useHintsSafe } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
 
@@ -52,6 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const clientHints = useHintsSafe();
   const pathname = normalizePathname(location.pathname);
 
+  useSmoothScroll();
   useEffect(endFirstLoad, []);
 
   return (
@@ -146,13 +147,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </defs>
         </svg>
 
-        {/* full-viewport hero only on the home story; compact brand elsewhere */}
-        <Header collapsed={!["/profile", "/"].includes(pathname)} />
+        {/*
+          ScrollSmoother transforms #smooth-content, which makes it the
+          containing block for any position:fixed descendant — so the fixed
+          nav rail has to live OUTSIDE the wrapper or it would scroll away.
+          The paper texture is a fixed pseudo-element on <body>, already
+          outside the wrapper. The header hero scrolls (parallax), so it goes
+          inside the smoothed content.
+        */}
+        {["/profile", "/projects", "/contact"].includes(pathname) && (
+          <Navigation
+            navItems={[
+              { path: "/profile", label: "PROFILE" },
+              { path: "/projects", label: "PROJECTS" },
+              { path: "/contact", label: "CONTACT" },
+            ]}
+          />
+        )}
 
-        {children}
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            {/* full-viewport hero only on the home story; compact brand elsewhere */}
+            <Header collapsed={!["/profile", "/"].includes(pathname)} />
 
-        <SmoothScroll />
-        <ScrollRestoration />
+            {children}
+          </div>
+        </div>
+
         <Scripts />
         <script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
