@@ -13,7 +13,7 @@ import type { Route } from "./+types/root";
 import { endFirstLoad } from "./utils/gsap";
 import Header from "./components/Header";
 import SmoothScroll from "./components/SmoothScroll";
-import { ClientHintCheck, getHints, useHintsSafe } from "./utils/clientHints";
+import { getHints, useHintsSafe } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
 
 export const links: Route.LinksFunction = () => [
@@ -62,11 +62,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head>
-        <ClientHintCheck />
-        {/* marks JS availability before first paint so CSS can defer to GSAP */}
+        {/*
+          Pre-paint, before hydration: mark JS availability (so CSS can defer to
+          GSAP) and set the theme from the live system preference. This must be
+          script-driven, not server-driven: most routes are prerendered to static
+          HTML with no request cookie, so a server-set theme class is frozen at
+          build time. matchMedia reads the real preference on every page and the
+          change listener keeps it live. React never rewrites html.className (its
+          value is a constant), so these classes persist.
+        */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.add("js")`,
+            __html: `document.documentElement.classList.add("js");` +
+              `try{var m=matchMedia("(prefers-color-scheme: dark)");` +
+              `var t=function(){document.documentElement.classList.toggle("dark",m.matches)};` +
+              `t();m.addEventListener("change",t)}catch(e){}`,
           }}
         />
         <meta charSet="utf-8" />
