@@ -70,7 +70,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
         author: {
           "@type": "Person",
           name: "Tamim Arafat",
-          url: absoluteUrl("/profile"),
+          url: absoluteUrl("/"),
         },
       },
       {

@@ -85,9 +85,9 @@ const SKILL_GROUPS = [
 ];
 
 export function meta() {
-  const url = absoluteUrl("/profile");
-  // name-first, role-forward: this is the canonical landing page (/ → 301),
-  // so the title has to earn the SERP click, not read like a tab label.
+  const url = absoluteUrl("/");
+  // name-first, role-forward: this is the canonical landing page (the site
+  // root), so the title has to earn the SERP click, not read like a tab label.
   const title = "Tamim Arafat — Full-Stack & Mobile Developer";
   const description =
     "Tamim Arafat — Full-stack and mobile developer specializing in React, TypeScript, Node.js, Python, Go, and mobile development with Flutter and Jetpack Compose.";
@@ -95,7 +95,7 @@ export function meta() {
   return buildMeta({
     title,
     description,
-    path: "/profile",
+    path: "/",
     ogType: "profile",
     jsonLd: {
         "@context": "https://schema.org",

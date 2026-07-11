@@ -15,7 +15,7 @@ export default {
   ssr: true,
   async prerender() {
     return [
-      "/profile",
+      "/",
       "/projects",
       "/robots.txt",
       "/sitemap.xml",

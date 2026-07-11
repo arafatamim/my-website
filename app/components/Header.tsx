@@ -220,8 +220,8 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
   } else {
     return (
       <div className="collapsed-hero">
-        {/* straight to /profile: "/" is a document redirect (full reload) */}
-        <NavLink to="/profile" className="collapsed-hero__link" viewTransition>
+        {/* home is the profile page; client-side nav with a view transition */}
+        <NavLink to="/" className="collapsed-hero__link" viewTransition>
           <div className="collapsed-hero__header">
             <img
               className="collapsed-hero__header__brand-image"

@@ -155,10 +155,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           outside the wrapper. The header hero scrolls (parallax), so it goes
           inside the smoothed content.
         */}
-        {["/profile", "/projects", "/contact"].includes(pathname) && (
+        {["/", "/projects", "/contact"].includes(pathname) && (
           <Navigation
             navItems={[
-              { path: "/profile", label: "PROFILE" },
+              { path: "/", label: "PROFILE" },
               { path: "/projects", label: "PROJECTS" },
               { path: "/contact", label: "CONTACT" },
             ]}
@@ -168,7 +168,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div id="smooth-wrapper">
           <div id="smooth-content">
             {/* full-viewport hero only on the home story; compact brand elsewhere */}
-            <Header collapsed={!["/profile", "/"].includes(pathname)} />
+            <Header collapsed={pathname !== "/"} />
 
             {children}
           </div>

@@ -2,7 +2,7 @@
   "name": "Tamim Arafat",
   "short_name": "Tamim Arafat",
   "description": "Full-stack and mobile developer portfolio",
-  "start_url": "/profile",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#1a1a2e",
