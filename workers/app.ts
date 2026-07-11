@@ -1,13 +1,4 @@
-import { createRequestHandler } from "react-router";
-
-declare module "react-router" {
-  export interface AppLoadContext {
-    cloudflare: {
-      env: Env;
-      ctx: ExecutionContext;
-    };
-  }
-}
+import { createRequestHandler, RouterContextProvider } from "react-router";
 
 const requestHandler = createRequestHandler(
   () => import("virtual:react-router/server-build"),
@@ -15,9 +6,9 @@ const requestHandler = createRequestHandler(
 );
 
 export default {
-  async fetch(request, env, ctx) {
-    return requestHandler(request, {
-      cloudflare: { env, ctx },
-    });
+  async fetch(request, _env, _ctx) {
+    // v8 requires a RouterContextProvider (plain objects are rejected).
+    // Nothing reads the load context — env comes from process.env/import.meta.
+    return requestHandler(request, new RouterContextProvider());
   },
 } satisfies ExportedHandler<Env>;

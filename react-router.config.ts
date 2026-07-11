@@ -22,7 +22,4 @@ export default {
       ...(await getProjectRoutes()),
     ];
   },
-  future: {
-    v8_viteEnvironmentApi: true,
-  },
 } satisfies Config;

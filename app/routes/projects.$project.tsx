@@ -46,7 +46,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { project, logoImage, projectImage };
 }
 
-export function meta({ data: { project } }: Route.MetaArgs) {
+export function meta({ data }: Route.MetaArgs) {
+  const project = data?.project;
+  if (!project) return [];
+
   const title = `${project.name} — Tamim Arafat`;
   const url = absoluteUrl(`/projects/${project.slug}`);
 
