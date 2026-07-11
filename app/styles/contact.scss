@@ -2,9 +2,14 @@
 @use "../styles/base.scss";
 
 .contact-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 3rem 4rem;
+  // full-bleed with a left gutter that clears the fixed nav rail, matching
+  // the projects page so both titles share the same left alignment. inner
+  // blocks (description 34rem, form 600px) keep their own widths
+  padding: 3rem 4rem 3rem 14rem;
+
+  @include base.breakpoint(laptop) {
+    padding-left: 6rem;
+  }
 
   @include base.breakpoint(tablet) {
     padding: 2rem 2.5rem;
