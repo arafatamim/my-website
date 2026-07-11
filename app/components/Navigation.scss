@@ -9,13 +9,15 @@
   // own transition group: stays pinned while the page slides underneath
   view-transition-name: nav;
 
-  // small screens: back into the flow as a top row, no overlay over text
+  // small screens: a centered top row that sticks to the top on scroll
   @include base.breakpoint(tablet) {
-    position: static;
+    position: sticky;
+    top: 0.6rem;
     transform: none;
     display: flex;
     justify-content: center;
     margin-top: 0.5rem;
+    z-index: 100;
   }
 
   &__ul {
@@ -29,6 +31,13 @@
     @include base.breakpoint(tablet) {
       flex-direction: row;
       gap: 1.5rem;
+      // frosted pill so the sticky bar stays readable over scrolling content
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      background: var(--primary-color); // fallback if color-mix unsupported
+      background: color-mix(in srgb, var(--primary-color) 82%, transparent);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
     }
   }
 
@@ -132,6 +141,42 @@
       pointer-events: auto;
       transition: none;
     }
+  }
+
+  // phones: the three labels + dashes overflow the row, so tighten just enough
+  @include base.breakpoint(mobile) {
+    &__ul {
+      gap: 1rem;
+    }
+
+    &__item__link {
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    .nav__item__dash {
+      width: 0.85rem;
+    }
+
+    .nav__item__link--active .nav__item__dash,
+    .nav__item__link--active:hover .nav__item__dash {
+      width: 1.7rem;
+    }
+  }
+}
+
+// compact-brand pages (projects/contact/project): the nav sits between the
+// small brand bar and the page content and needs room. the full-hero /profile
+// page already has its own spacing, so scope this to the collapsed-hero pages.
+@include base.breakpoint(mobile) {
+  .collapsed-hero + .nav {
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  // profile: the full hero sits above — add room before the nav (bottom is fine)
+  .header + .nav {
+    margin-top: 2.25rem;
   }
 }
 

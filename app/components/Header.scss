@@ -13,8 +13,9 @@
   }
 
   @include base.breakpoint(mobile) {
-    min-height: 88svh;
-    padding: 1.5rem 1.25rem 1.25rem;
+    min-height: auto; // content-height on phones, not a full screen
+    padding: 1.5rem 1.25rem 2.5rem;
+    gap: 2.5rem;
   }
 
   &__top {
@@ -61,15 +62,32 @@
     view-transition-name: header-site-name;
     filter: url(#text-displacement);
 
+    // mobile: names stack left, avatar becomes a real focal element above them
+    @include base.breakpoint(mobile) {
+      font-size: clamp(4.5rem, 24vw, 9rem);
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
     &__row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: clamp(1rem, 4vw, 3rem);
+
+      @include base.breakpoint(mobile) {
+        flex-direction: column-reverse; // avatar above the first name
+        align-items: flex-start;
+        gap: 1.25rem;
+      }
     }
 
     &__line--last {
       align-self: flex-end;
+
+      @include base.breakpoint(mobile) {
+        align-self: flex-start;
+      }
     }
   }
 
@@ -82,6 +100,10 @@
       height: auto;
       border-radius: 50%;
       view-transition-name: header-brand-image;
+
+      @include base.breakpoint(mobile) {
+        width: 6.5rem;
+      }
     }
   }
 
