@@ -2,11 +2,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { SplitText } from "gsap/SplitText";
+import { Flip } from "gsap/Flip";
 import { useGSAP } from "@gsap/react";
 
 // Guarded so prerender (node) never touches browser APIs.
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, useGSAP);
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, Flip, useGSAP);
   if (import.meta.env.DEV) {
     // console debugging only
     (window as any).ScrollTrigger = ScrollTrigger;
@@ -41,4 +42,4 @@ export const scrubWindow =
     return Math.min(start + px, ScrollTrigger.maxScroll(window));
   };
 
-export { gsap, ScrollSmoother, ScrollTrigger, SplitText, useGSAP };
+export { Flip, gsap, ScrollSmoother, ScrollTrigger, SplitText, useGSAP };

@@ -11,10 +11,12 @@ interface ProjectItemProps {
   };
   index?: number;
   shape?: "feature" | "tall" | "wide" | "square";
+  /** filtered out — dropped from the grid flow, animated by GSAP Flip */
+  hidden?: boolean;
 }
 
 const ProjectItem: React.FC<ProjectItemProps> = (
-  { project, index, shape = "square", ...rest },
+  { project, index, shape = "square", hidden = false, ...rest },
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -22,8 +24,12 @@ const ProjectItem: React.FC<ProjectItemProps> = (
     <NavLink
       {...rest}
       to={"/projects/" + project.slug}
-      className={`project__link project__link--${shape}`}
+      className={`project__link project__link--${shape}${
+        hidden ? " project__link--hidden" : ""
+      }`}
       viewTransition
+      aria-hidden={hidden || undefined}
+      tabIndex={hidden ? -1 : undefined}
     >
       <article className="project__card">
         <div className="project__card__image">

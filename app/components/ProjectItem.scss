@@ -3,6 +3,12 @@
 .project__link {
   display: block;
 
+  // filtered out: leaves the bento grid flow so `dense` reflows the rest.
+  // GSAP Flip animates the enter/leave; display:none is the "gone" endpoint.
+  &--hidden {
+    display: none;
+  }
+
   &.transitioning .project__card {
     &__name {
       view-transition-name: project-item-name;

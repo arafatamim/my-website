@@ -7,6 +7,7 @@ import "../styles/projects.scss";
 import { getProjectImage } from "../utils/projectImages";
 import { absoluteUrl, buildMeta } from "../meta";
 import {
+  Flip,
   gsap,
   isFirstLoad,
   ScrollTrigger,
@@ -69,12 +70,22 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tags = searchParams.getAll("tags");
-
-  const filteredProjects = projects.filter((project) =>
-    tags.every((tag: string) => project.tags.includes(tag))
-  );
+  const tagKey = tags.join(",");
 
   const scope = useRef<HTMLDivElement>(null);
+
+  // FLIP capture: read the cards' current geometry BEFORE React commits the new
+  // filter. Render still shows the previously-committed layout, so this is the
+  // "First" snapshot; the effect below plays it to the "Last" after commit.
+  // (A deliberate render-phase read — the one place FLIP has to reach the DOM.)
+  const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
+  const prevTagKey = useRef(tagKey);
+  if (prevTagKey.current !== tagKey && scope.current) {
+    flipState.current = Flip.getState(
+      scope.current.querySelectorAll(".project__link"),
+    );
+  }
+  prevTagKey.current = tagKey;
 
   // intro: title chars + description lines + underline (runs once)
   useGSAP(
@@ -131,12 +142,13 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
     { scope },
   );
 
-  // grid: cells rise in as they scroll into view (re-runs when the filter changes)
+  // grid: cells rise in as they scroll into view. Runs once on mount only —
+  // filter changes are owned by the Flip transition below, not a replayed intro.
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".project__card");
+        const cards = gsap.utils.toArray<HTMLElement>(".project__link");
         if (!cards.length) return;
         gsap.set(cards, { y: 36, scale: 0.96, autoAlpha: 0 });
         ScrollTrigger.batch(cards, {
@@ -156,7 +168,48 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
         });
       });
     },
-    { scope, dependencies: [tags.join(",")], revertOnUpdate: true },
+    { scope },
+  );
+
+  // filter: FLIP the grid from its pre-change layout — survivors glide to their
+  // new bento slots while entering/leaving cards fade + scale. Reduced motion
+  // skips straight to the committed layout (React already toggled display).
+  useGSAP(
+    () => {
+      const state = flipState.current;
+      flipState.current = null;
+      if (!state) return; // first mount, or nothing captured
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // a card parked at the intro's pre-reveal opacity (scrolled past, never
+      // revealed) must show once it's part of an active filter transition.
+      gsap.set(
+        scope.current!.querySelectorAll(".project__link:not(.project__link--hidden)"),
+        { autoAlpha: 1 },
+      );
+
+      Flip.from(state, {
+        duration: 0.55,
+        ease: "power2.inOut",
+        absolute: true,
+        scale: true,
+        stagger: 0.03,
+        onEnter: (els) =>
+          gsap.fromTo(
+            els,
+            { autoAlpha: 0, scale: 0.8 },
+            { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out" },
+          ),
+        onLeave: (els) =>
+          gsap.to(els, {
+            autoAlpha: 0,
+            scale: 0.8,
+            duration: 0.35,
+            ease: "power2.in",
+          }),
+      });
+    },
+    { scope, dependencies: [tagKey] },
   );
 
   return (
@@ -216,14 +269,25 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
       </header>
 
       <div className="projects__grid">
-        {filteredProjects.map((project, i) => (
-          <ProjectItem
-            key={project.slug}
-            project={project}
-            index={i}
-            shape={SHAPES[project.slug] ?? "square"}
-          />
-        ))}
+        {(() => {
+          // render every card (stable key) so Flip can animate the diff; the
+          // filter just hides non-matches. index counts visible cards only.
+          let visible = 0;
+          return projects.map((project) => {
+            const matches = tags.every((tag: string) =>
+              project.tags.includes(tag)
+            );
+            return (
+              <ProjectItem
+                key={project.slug}
+                project={project}
+                index={matches ? visible++ : undefined}
+                hidden={!matches}
+                shape={SHAPES[project.slug] ?? "square"}
+              />
+            );
+          });
+        })()}
       </div>
     </div>
   );
