@@ -124,16 +124,49 @@
       justify-content: center;
       gap: 0.5rem;
 
+      // primary CTA: solid terracotta so the main action actually leads. lifts
+      // and deepens on hover, icon nudges out, and it keeps a visible focus ring
       &:first-child {
-        background-color: var(--secondary-color);
-        color: var(--accent-1);
-        padding: 0.9rem 1.2rem;
-        border-radius: 0.4rem;
+        background-color: var(--accent-2);
+        color: var(--primary-color);
+        padding: 0.95rem 1.6rem;
+        border-radius: var(--border-radius);
         border: 1px solid var(--accent-2);
-        transition: 0.1s;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        box-shadow: 0 6px 18px
+          color-mix(in srgb, var(--accent-2) 32%, transparent);
+        transition:
+          transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+          background-color 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+
+        svg {
+          transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
         &:hover {
-          background-color: var(--secondary-color-highlight);
+          background-color: var(--accent-2-highlight);
+          border-color: var(--accent-2-highlight);
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px
+            color-mix(in srgb, var(--accent-2) 45%, transparent);
+
+          svg {
+            transform: translateX(2px);
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 4px 12px
+            color-mix(in srgb, var(--accent-2) 30%, transparent);
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--accent-2);
+          outline-offset: 3px;
         }
       }
 
