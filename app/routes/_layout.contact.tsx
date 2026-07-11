@@ -222,7 +222,7 @@ export default function Contact() {
   }, []);
 
   const turnstileRef = useRef<HTMLDivElement>(null);
-  const widgetIdRef = useRef<string | undefined>(undefined);
+  const widgetIdRef = useRef<string | null | undefined>(null);
 
   useEffect(() => {
     const renderTurnstile = () => {
@@ -258,7 +258,7 @@ export default function Contact() {
         ((window as any).turnstile as Turnstile.Turnstile).remove(
           widgetIdRef.current,
         );
-        widgetIdRef.current = undefined;
+        widgetIdRef.current = null;
       }
       window.removeEventListener("load", renderTurnstile);
     };

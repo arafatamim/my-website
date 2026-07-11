@@ -11,7 +11,7 @@ import { absoluteUrl, buildMeta } from "../meta";
 import { gsap, useGSAP } from "../utils/gsap";
 import { useMagneticAll } from "../utils/useMagnetic";
 
-export const handle: SitemapHandle = {
+export const handle: SitemapHandle<unknown> = {
   sitemap: async (domain) => {
     const projects =
       (await import("../content/projects/projects.json")).default;
