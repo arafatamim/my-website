@@ -47,6 +47,7 @@
     align-items: center;
     gap: 0.8rem;
     color: var(--accent-1);
+    transition: color 0.4s ease;
     font-family: var(--body-font);
     font-size: 0.8rem;
     font-weight: 500;
@@ -177,6 +178,16 @@
   // profile: the full hero sits above — add room before the nav (bottom is fine)
   .header + .nav {
     margin-top: 2.25rem;
+  }
+}
+
+// profile ink finale: the page turns black behind the fixed rail, so flip
+// the rail's ink to paper. links/dashes derive from --accent-1, and the
+// hover/active terracotta (--accent-2) already reads on black. desktop only:
+// the tablet/mobile pill carries its own frosted background.
+@media (min-width: 1025px) {
+  body.over-ink .nav {
+    --accent-1: #e8e6e3;
   }
 }
 

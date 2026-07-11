@@ -110,15 +110,82 @@
   opacity: 0.18;
 }
 
-.profile__cta {
-  margin: 6rem 0 4rem;
-  text-align: center;
+// ink finale: the brush video is a fixed, multiply-blended viewport backdrop.
+// its white is invisible over the paper, so as the scroll seeks through it the
+// dark-terracotta strokes look painted onto the page itself — nothing slides.
+.profile__finale {
+  position: relative;
+  overflow: hidden;
+  // full-bleed: the pinned scene owns the whole viewport. negative bottom
+  // eats the page padding so the ink runs to the document's end
+  width: 100vw;
+  min-height: 100svh;
+  margin: 6rem 0 -2rem calc(50% - 50vw);
+  display: grid;
+  place-items: center;
+
+  @include base.breakpoint(mobile) {
+    margin-bottom: -1.5rem;
+  }
+
+  // frame source only — its pixels reach the screen via the canvas
+  &__video {
+    display: none;
+  }
+
+  // absolute, not fixed: ScrollTrigger's pin transforms the section, which
+  // would re-anchor a fixed child to it anyway
+  &__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    // no blend mode: frames are alpha-keyed in JS, transparency is real
+
+    // no scrub without motion — skip the backdrop, keep the CTAs
+    @media (prefers-reduced-motion: reduce) {
+      display: none;
+    }
+  }
+
+  // ghost type behind the CTA — outlined, swelling with the scroll
+  &__watermark {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    font-family: var(--title-font);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(7rem, 20vw, 19rem);
+    line-height: 1;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(250 249 247 / 20%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 3; // above the ink and the watermark
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  // no video backdrop → the light CTA text still needs its ink panel
+  @media (prefers-reduced-motion: reduce) {
+    background: #3a1e0d;
+  }
 
   &__kicker {
     font-size: 0.9rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    opacity: 0.7;
+    color: rgb(250 249 247 / 65%);
     margin-bottom: 1.2rem;
   }
 
@@ -127,12 +194,12 @@
     font-family: var(--title-font);
     font-style: italic;
     font-weight: 600;
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    line-height: 1.15;
+    font-size: clamp(2.6rem, 6vw, 4.8rem);
+    line-height: 1.12;
     letter-spacing: -0.02em;
-    color: var(--accent-2);
+    color: #d4884a; // dark-theme terracotta: reads on black in both themes
 
-    &:hover .profile__cta__arrow {
+    &:hover .profile__finale__arrow {
       transform: translateX(0.35em);
     }
   }
@@ -140,6 +207,66 @@
   &__arrow {
     display: inline-block;
     transition: transform 0.3s ease;
+  }
+
+  &__secondary {
+    display: block;
+    width: fit-content;
+    margin: 2.4rem auto 0;
+    font-family: var(--body-font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(250 249 247 / 80%);
+    border-bottom: 1px solid rgb(250 249 247 / 30%);
+    padding-bottom: 0.3em;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+
+    &:hover {
+      color: #faf9f7;
+      border-color: #d4884a;
+    }
+  }
+
+  // site footer, grounded on the ink at the very end of the page
+  &__footer {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem clamp(1.5rem, 4vw, 3rem);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: rgb(250 249 247 / 55%);
+
+    @include base.breakpoint(mobile) {
+      flex-direction: column-reverse;
+      gap: 0.8rem;
+      padding-bottom: 1.1rem;
+    }
+
+    &__socials {
+      display: flex;
+      gap: 1.4rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      a {
+        color: rgb(250 249 247 / 70%);
+        font-size: 1.1rem;
+        line-height: 1;
+
+        &:hover {
+          color: #d4884a;
+        }
+      }
+    }
   }
 }
 
@@ -154,13 +281,27 @@
 .profile__skills {
   margin-top: 5rem;
 
+  &__group {
+    margin-top: 2.4rem;
+
+    &__label {
+      margin: 0;
+      font-family: var(--body-font);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+  }
+
   &__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 1.5rem;
     list-style: none;
     padding: 0;
-    margin: 1.5rem 0;
+    margin: 1rem 0 0;
 
     &__item {
       display: flex;
@@ -169,12 +310,15 @@
       gap: 0.5rem;
       padding: 0.8rem;
       border-radius: 0.5rem;
-      background-color: rgba(255, 255, 255, 0.05);
+      // accent-1-derived tint reads on both themes (the old white 5% was
+      // invisible white-on-cream in light mode)
+      background-color: rgba(0, 0, 0, 0.05); // fallback if color-mix unsupported
+      background-color: color-mix(in srgb, var(--accent-1) 6%, transparent);
       transition: all 0.2s ease-in-out;
 
       &:hover {
         transform: translateY(-2px);
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: color-mix(in srgb, var(--accent-1) 11%, transparent);
       }
 
       span {
@@ -182,5 +326,140 @@
         text-align: center;
       }
     }
+  }
+}
+
+// selected work: three editorial rows, shots alternating sides
+.profile__work {
+  margin-top: 6rem;
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 3rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3.5rem, 8vw, 5.5rem);
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    color: var(--accent-1);
+
+    &:hover {
+      color: var(--accent-1); // the card isn't a "link-colored" link
+    }
+
+    @include base.breakpoint(mobile) {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    &--flip {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+
+      @include base.breakpoint(mobile) {
+        grid-template-columns: 1fr;
+      }
+
+      .profile__work__item__media {
+        order: 2;
+
+        @include base.breakpoint(mobile) {
+          order: 0;
+        }
+      }
+    }
+
+    &__media {
+      overflow: hidden;
+      border-radius: var(--border-radius);
+      aspect-ratio: 16 / 10;
+      box-shadow: 0 10px 34px rgb(0 0 0 / 12%);
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      // portrait screen recordings sit whole on a tinted panel
+      &--phone {
+        background-color: rgba(0, 0, 0, 0.05);
+        background-color: color-mix(in srgb, var(--accent-2) 14%, transparent);
+
+        img {
+          box-sizing: border-box;
+          padding: 1.4rem 0;
+          object-fit: contain;
+          object-position: center;
+        }
+      }
+    }
+
+    &:hover &__media img {
+      transform: scale(1.04);
+    }
+
+    &__index {
+      display: block;
+      margin-bottom: 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--accent-2);
+    }
+
+    &__name {
+      margin: 0;
+      font-style: italic;
+      font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+      line-height: 1.08;
+    }
+
+    &__desc {
+      margin: 0.7rem 0 0;
+      max-width: 34ch;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    &__more {
+      display: inline-block;
+      margin-top: 1.3rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    &__arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover &__arrow {
+      transform: translateX(0.35em);
+    }
+  }
+
+  &__all {
+    display: block;
+    width: fit-content;
+    margin: 3.5rem auto 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--accent-2) 40%, transparent);
+    padding-bottom: 0.3em;
   }
 }
