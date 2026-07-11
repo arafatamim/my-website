@@ -328,7 +328,7 @@ export default function ProfileTab() {
       </section>
 
       <Marquee
-        text="developer · designer · tinkerer"
+        text="developer · designer · tinkerer · open source contributor · philomath · autodidact"
         className="profile__marquee"
       />
 
