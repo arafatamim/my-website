@@ -135,16 +135,20 @@
   }
 }
 
-@keyframes nav-in {
+@keyframes nav-item-in {
   from {
     opacity: 0;
-    transform: translateY(-50%) translateX(-16px);
+    transform: translateX(-16px);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .nav {
-    animation: nav-in 0.5s ease-out 0.2s backwards;
+  // each item slides in from the left, staggered top-to-bottom.
+  // sibling-index() is the item's 1-based DOM position, so the delay
+  // grows per item — no JS or per-item inline styles needed.
+  .nav__item {
+    animation: nav-item-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc((sibling-index() - 1) * 0.08s);
 
     @include base.breakpoint(tablet) {
       animation: none;
