@@ -10,6 +10,7 @@ import {
   Flip,
   gsap,
   isFirstLoad,
+  ScrollSmoother,
   ScrollTrigger,
   SplitText,
   useGSAP,
@@ -80,10 +81,17 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   // (A deliberate render-phase read — the one place FLIP has to reach the DOM.)
   const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
   const prevTagKey = useRef(tagKey);
+  // grid height + scroll offset captured pre-commit, so narrowing can ease the
+  // page's height down instead of the browser snapping scroll to the new max.
+  const gridPrevHeight = useRef(0);
+  const scrollBefore = useRef(0);
   if (prevTagKey.current !== tagKey && scope.current) {
     flipState.current = Flip.getState(
       scope.current.querySelectorAll(".project__link"),
     );
+    const grid = scope.current.querySelector<HTMLElement>(".projects__grid");
+    gridPrevHeight.current = grid ? grid.offsetHeight : 0;
+    scrollBefore.current = ScrollSmoother.get()?.scrollTop() ?? window.scrollY;
   }
   prevTagKey.current = tagKey;
 
@@ -213,6 +221,47 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
             ease: "power2.in",
           }),
       });
+
+      // Narrowing shrinks the page: the browser (and ScrollSmoother) clamp the
+      // scroll to the new, shorter max the instant React commits — snapping the
+      // view upward. Ease the grid's height down over the transition and drive
+      // the scroll down in lockstep, so the page shrinks smoothly under a
+      // controlled scroll instead of jumping. One proxy tween runs both.
+      const grid = scope.current!.querySelector<HTMLElement>(".projects__grid");
+      const prevH = gridPrevHeight.current;
+      const smoother = ScrollSmoother.get();
+      if (grid && prevH && smoother && grid.offsetHeight < prevH - 1) {
+        // narrowing only. Refresh against the new (short) grid to read the true
+        // final max, then clamp the pre-change scroll to it — that's the target.
+        ScrollTrigger.refresh();
+        const target = Math.min(
+          scrollBefore.current,
+          ScrollTrigger.maxScroll(window),
+        );
+        if (target < scrollBefore.current - 1) {
+          // pin the grid tall (so the start scroll is reachable), refresh to
+          // grant the room, restore the pre-clamp scroll, then ease scroll down
+          // to the target. Height stays pinned for the whole tween so the
+          // content doesn't shrink under ScrollSmoother mid-animation; it's
+          // released at the end, when the scroll already sits at the new max.
+          grid.style.height = `${prevH}px`;
+          ScrollTrigger.refresh();
+          smoother.scrollTop(scrollBefore.current);
+          gsap.to({ s: scrollBefore.current }, {
+            s: target,
+            duration: 0.55,
+            ease: "power2.inOut",
+            onUpdate() {
+              smoother.scrollTop((this.targets()[0] as { s: number }).s);
+            },
+            onComplete() {
+              grid.style.height = "";
+              ScrollTrigger.refresh();
+              smoother.scrollTop(target);
+            },
+          });
+        }
+      }
     },
     { scope, dependencies: [tagKey] },
   );
