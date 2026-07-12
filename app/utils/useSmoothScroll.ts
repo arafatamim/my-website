@@ -30,7 +30,17 @@ export function useSmoothScroll() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const smoother = ScrollSmoother.create({ smooth: 1.2, effects: false });
+    const smoother = ScrollSmoother.create({
+      smooth: 1.2,
+      effects: false,
+      // On touch devices ScrollSmoother falls back to native scroll, which the
+      // browser runs on the compositor thread — so ScrollTrigger's position:fixed
+      // pins (e.g. the homepage finale scene) update a frame behind and jitter.
+      // normalizeScroll forces scrolling onto the main thread, keeping pins in
+      // sync. Desktop pins via ScrollSmoother's transform and already syncs, so
+      // only pay this cost where the jitter actually occurs.
+      normalizeScroll: ScrollTrigger.isTouch === 1,
+    });
     smootherRef.current = smoother;
     return () => {
       smoother.kill();
