@@ -159,6 +159,37 @@ export default function ProfileTab() {
     else window.scrollTo(0, y);
   }, []);
 
+  // Seekability: static hosts without Range support report the finale video as
+  // unseekable (seekable = [0,0]), so every scrub clamps to frame 0. A blob:
+  // URL is always fully seekable, so route the bytes through one — once per
+  // mount, independent of the motion/breakpoint matchMedia below (which reverts
+  // on every media change; re-fetching there hit an already-revoked blob: src
+  // and rejected with "Failed to fetch").
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const video = document.querySelector<HTMLVideoElement>(
+      ".profile__finale__video",
+    );
+    if (!video) return;
+    const originalSrc = video.src;
+    const ac = new AbortController();
+    let blobUrl: string | undefined;
+    fetch(originalSrc, { signal: ac.signal })
+      .then((r) => r.blob())
+      .then((b) => {
+        blobUrl = URL.createObjectURL(b);
+        video.src = blobUrl;
+      })
+      .catch(() => {
+        // aborted on unmount, or the fetch failed — the original src still
+        // seeks on Range-capable hosts (incl. the dev server), so leave it
+      });
+    return () => {
+      ac.abort();
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, []);
+
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -561,18 +592,6 @@ export default function ProfileTab() {
           if (grainImg.complete && grainImg.naturalWidth) onGrain(); // cached
         }
 
-        // static hosts without Range-request support report the file as
-        // unseekable (seekable = [0,0]) and every seek clamps to 0 — a blob:
-        // URL is always fully seekable, so route the bytes through one
-        let blobUrl: string | undefined;
-        if (video) {
-          fetch(video.src)
-            .then((r) => r.blob())
-            .then((b) => {
-              blobUrl = URL.createObjectURL(b);
-              video.src = blobUrl;
-            });
-        }
         // the finale pins once the toolkit has fully scrolled away — nothing
         // paints over content the visitor is still reading. from there the
         // scroll drives the whole scene: ink floods the screen, a ghost
@@ -665,7 +684,6 @@ export default function ProfileTab() {
           video?.removeEventListener("seeked", onSeeked);
           video?.removeEventListener("loadeddata", onLoaded);
           window.removeEventListener("resize", render);
-          if (blobUrl) URL.revokeObjectURL(blobUrl);
         };
       });
     },
