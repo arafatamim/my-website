@@ -170,7 +170,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {/* full-viewport hero only on the home story; compact brand elsewhere */}
             <Header collapsed={pathname !== "/"} />
 
-            {children}
+            <main>{children}</main>
           </div>
         </div>
 
@@ -207,7 +207,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main
+    <div
       style={{
         display: "flex",
         flexDirection: "column",
@@ -224,6 +224,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <code>{stack}</code>
         </pre>
       )}
-    </main>
+    </div>
   );
 }

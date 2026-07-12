@@ -262,9 +262,10 @@ export default function ProfileTab() {
         SplitText.create(".profile__body__bio", {
           type: "words",
           autoSplit: true,
+          aria: "none",
           onSplit: (self) =>
             gsap.from(self.words, {
-              opacity: 0.12,
+              autoAlpha: 0,
               stagger: 0.05,
               ease: "none",
               scrollTrigger: {

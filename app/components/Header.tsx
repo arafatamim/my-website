@@ -1,6 +1,6 @@
 import { FaFacebook, FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import siteMetadata from "../meta";
-import avatar from "../assets/img/me.jpg";
+import avatar from "../assets/img/me.webp";
 import "./Header.scss";
 import { NavLink } from "react-router";
 import { useRef } from "react";
@@ -55,6 +55,7 @@ export default function Header({ collapsed }: { collapsed: boolean }) {
           // name: per-character ink-settle rise (blur clears as the type lands)
           SplitText.create(".header__hero__title__line", {
             type: "chars",
+            aria: "none",
             onSplit: (self) =>
               gsap.from(self.chars, {
                 yPercent: 70,
