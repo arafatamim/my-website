@@ -246,3 +246,22 @@
     }
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  // mobile bar fades in on page load (applies at tablet breakpoint where
+  // .nav--bar switches from display:none to display:flex)
+  .nav--bar {
+    animation: nav-bar-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes nav-bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
