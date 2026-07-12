@@ -178,13 +178,16 @@ export default function ProfileTab() {
       .then((r) => r.blob())
       .then((b) => {
         blobUrl = URL.createObjectURL(b);
-        video.src = blobUrl;
         // Firefox respects `preload="none"` more strictly than Chrome and
-        // won't auto-load a freshly-assigned src — duration stays 0, the
+        // won't fetch a freshly-assigned src — duration stays 0, the
         // timeline's `if (video?.duration)` guard silently skips every seek,
-        // and the ink never draws. `load()` forces the fetch regardless of
-        // the preload hint.
-        video.load();
+        // and the ink never draws. Bump the hint to "auto" *before* assigning
+        // src so the resource-selection the assignment kicks off actually
+        // fetches. (Not video.load(): that resets the element to an empty
+        // buffer, and `loadeddata` then keys an all-black frame — luma 0 ->
+        // full-opacity ink — flashing solid brown at currentTime 0.)
+        video.preload = "auto";
+        video.src = blobUrl;
       })
       .catch(() => {
         // aborted on unmount, or the fetch failed — the original src still
