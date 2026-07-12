@@ -13,7 +13,7 @@ import { endFirstLoad } from "./utils/gsap";
 import Header from "./components/Header";
 import { Navigation } from "./components/Navigation";
 import { useSmoothScroll } from "./utils/useSmoothScroll";
-import { getHints, useHintsSafe } from "./utils/clientHints";
+import { getHints } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
 
 export const links: Route.LinksFunction = () => [
@@ -55,7 +55,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const clientHints = useHintsSafe();
   const pathname = normalizePathname(location.pathname);
   const navVisible = NAV_ITEMS.some((item) => item.path === pathname);
 
@@ -63,12 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useEffect(endFirstLoad, []);
 
   return (
-    // suppressHydrationWarning: the inline script below adds .js pre-paint
-    <html
-      lang="en"
-      className={clientHints?.theme ?? "light"}
-      suppressHydrationWarning
-    >
+    <html lang="en">
       <head>
         {/*
           Pre-paint, before hydration: mark JS availability (so CSS can defer to
