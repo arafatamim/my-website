@@ -179,6 +179,12 @@ export default function ProfileTab() {
       .then((b) => {
         blobUrl = URL.createObjectURL(b);
         video.src = blobUrl;
+        // Firefox respects `preload="none"` more strictly than Chrome and
+        // won't auto-load a freshly-assigned src — duration stays 0, the
+        // timeline's `if (video?.duration)` guard silently skips every seek,
+        // and the ink never draws. `load()` forces the fetch regardless of
+        // the preload hint.
+        video.load();
       })
       .catch(() => {
         // aborted on unmount, or the fetch failed — the original src still
