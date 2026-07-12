@@ -631,13 +631,13 @@ export default function ProfileTab() {
           ".profile__finale__watermark",
           { autoAlpha: 0, scale: 0.88 },
           { autoAlpha: 1, scale: 1, duration: 0.55, ease: "none" },
-          0.35,
+          0.2,
         );
         finaleTl.fromTo(
           ".profile__finale__content",
           { yPercent: 14 },
           { yPercent: 0, duration: 0.5, ease: "power1.out" },
-          0.42,
+          0.25,
         );
         finaleTl.fromTo(
           ".profile__finale__kicker",
@@ -648,7 +648,7 @@ export default function ProfileTab() {
             duration: 0.28,
             ease: "power2.out",
           },
-          0.45,
+          0.28,
         );
         // headline: chars climb out of the ink behind masks, tilting upright
         // (words too: chars alone would let lines wrap mid-word)
@@ -665,18 +665,18 @@ export default function ProfileTab() {
                 stagger: { each: 0.012, from: "start" },
                 ease: "power3.out",
               },
-              0.52,
+              0.30,
             ),
         });
         finaleTl.from(
           ".profile__finale__secondary",
           { y: 26, autoAlpha: 0, duration: 0.15, ease: "power2.out" },
-          0.85,
+          0.65,
         );
         finaleTl.from(
           ".profile__finale__footer",
           { y: 20, autoAlpha: 0, duration: 0.14, ease: "power2.out" },
-          0.86,
+          0.66,
         );
 
         return () => {
