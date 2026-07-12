@@ -601,7 +601,7 @@ export default function ProfileTab() {
           scrollTrigger: {
             trigger: ".profile__finale",
             start: "top top",
-            end: "+=140%",
+            end: "+=200%",
             pin: true,
             scrub: 0.8,
           },
