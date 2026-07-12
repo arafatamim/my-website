@@ -12,11 +12,16 @@
   // small screens: a centered top row that sticks to the top on scroll
   @include base.breakpoint(tablet) {
     position: sticky;
+    left: 0;
     top: 0.6rem;
     transform: none;
     display: flex;
-    justify-content: center;
-    margin-top: 0.5rem;
+    // Shrink to the pill and center the box itself with auto inline margins.
+    // Centering the box (not a child via justify-content) survives ScrollTrigger
+    // pinning, which re-anchors the element at its own already-centered left —
+    // a full-width nav gets anchored offset by the scrollbar gutter and drifts.
+    width: fit-content;
+    margin: 0.5rem auto 0;
     z-index: 100;
   }
 
@@ -167,12 +172,42 @@
   }
 }
 
+// The desktop rail (position:fixed) renders outside #smooth-content; the mobile
+// bar renders inside it, in-flow beneath the header. Each is hidden at the
+// other's breakpoint so only one participates in layout and the `nav` view
+// transition at a time. tablet = max-width:1024px.
+.nav--rail {
+  @include base.breakpoint(tablet) {
+    display: none;
+  }
+}
+
+.nav--bar {
+  display: none;
+
+  @include base.breakpoint(tablet) {
+    display: flex;
+    // the laptop-breakpoint rail rule (.nav { left: 1.25rem }) also matches here
+    // and, being later in source, would beat the base tablet `left: 0`; re-zero
+    // it so the pin path (position: relative) isn't offset off-center.
+    left: 0;
+    // Native `position: sticky` (from the base .nav tablet block) is the
+    // default. It works, and stays GPU-composited, on touch devices and under
+    // reduced motion — there ScrollSmoother uses native scroll and never
+    // transforms #smooth-content. On non-touch narrow viewports the smoothing
+    // transform breaks sticky, so Navigation pins with ScrollTrigger instead
+    // (which sets position:relative inline). A fixed-position pin on touch
+    // repaints against momentum scroll and jitters, so it's gated off there.
+  }
+}
+
 // compact-brand pages (projects/contact/project): the nav sits between the
 // small brand bar and the page content and needs room. the full-hero /profile
 // page already has its own spacing, so scope this to the collapsed-hero pages.
 @include base.breakpoint(mobile) {
   .collapsed-hero + .nav {
-    margin: 1.75rem 0 2.5rem;
+    // auto left/right keeps the fit-content bar centered; only top/bottom differ
+    margin: 1.75rem auto 2.5rem;
   }
 
   // profile: the full hero sits above — add room before the nav (bottom is fine)

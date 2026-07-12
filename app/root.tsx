@@ -38,6 +38,12 @@ export const links: Route.LinksFunction = () => [
   { rel: "manifest", href: "/site.webmanifest" },
 ];
 
+const NAV_ITEMS = [
+  { path: "/", label: "PROFILE" },
+  { path: "/projects", label: "PROJECTS" },
+  { path: "/contact", label: "CONTACT" },
+];
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const clientHints = getHints(request);
   return {
@@ -51,6 +57,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const clientHints = useHintsSafe();
   const pathname = normalizePathname(location.pathname);
+  const navVisible = NAV_ITEMS.some((item) => item.path === pathname);
 
   useSmoothScroll();
   useEffect(endFirstLoad, []);
@@ -148,27 +155,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </svg>
 
         {/*
-          ScrollSmoother transforms #smooth-content, which makes it the
-          containing block for any position:fixed descendant — so the fixed
-          nav rail has to live OUTSIDE the wrapper or it would scroll away.
-          The paper texture is a fixed pseudo-element on <body>, already
-          outside the wrapper. The header hero scrolls (parallax), so it goes
-          inside the smoothed content.
+          The nav has two placements the transform forces apart. The desktop
+          rail is position:fixed, and ScrollSmoother transforms #smooth-content
+          into a containing block that would trap a fixed descendant — so the
+          rail lives OUTSIDE the wrapper. The mobile bar is position:sticky and
+          must sit in-flow beneath the header to stick correctly, so it lives
+          INSIDE the smoothed content right after the header. Each hides at the
+          other's breakpoint. The paper texture is a fixed <body> pseudo, also
+          outside; the header hero scrolls (parallax), so it goes inside.
         */}
-        {["/", "/projects", "/contact"].includes(pathname) && (
-          <Navigation
-            navItems={[
-              { path: "/", label: "PROFILE" },
-              { path: "/projects", label: "PROJECTS" },
-              { path: "/contact", label: "CONTACT" },
-            ]}
-          />
-        )}
+        {navVisible && <Navigation variant="rail" navItems={NAV_ITEMS} />}
 
         <div id="smooth-wrapper">
           <div id="smooth-content">
             {/* full-viewport hero only on the home story; compact brand elsewhere */}
             <Header collapsed={pathname !== "/"} />
+            {navVisible && <Navigation variant="bar" navItems={NAV_ITEMS} />}
 
             <main>{children}</main>
           </div>
