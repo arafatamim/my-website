@@ -17,6 +17,7 @@ import ferngeist from "../content/projects/img/ferngeist.webp";
 import sellmate from "../content/projects/img/sellmate.webp";
 import sellmateVideo from "../content/projects/video/sellmate-demo.webm";
 import ferngeistVideo from "../content/projects/video/ferngeist-demo.webm";
+import amarRapidPassVideo from "../content/projects/video/amar-rapid-pass-demo.webm";
 
 export interface Project {
   name: string;
@@ -64,6 +65,7 @@ const logoImages: Record<string, any> = {
 export const projectVideos: Record<string, string> = {
   "sellmate-demo.webm": sellmateVideo,
   "ferngeist-demo.webm": ferngeistVideo,
+  "amar-rapid-pass-demo.webm": amarRapidPassVideo,
 };
 
 export function getProjectImage(filename: string): any {

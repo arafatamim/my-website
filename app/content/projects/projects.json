@@ -27,6 +27,7 @@
     "desc": "Check the balance and transaction history of your Rapid Passes (for Bangladesh). Now with Material 3 Expressive design.",
     "logo": "amar-rapid-pass-logo.png",
     "image": "amar-rapid-pass.webp",
+    "video": "amar-rapid-pass-demo.webm",
     "imagePosition": "center top",
     "slug": "amar-rapid-pass",
     "repo": {
