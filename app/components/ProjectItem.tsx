@@ -1,16 +1,10 @@
 import { NavLink, useSearchParams } from "react-router";
 import { useState } from "react";
+import type { ProjectWithMedia } from "~/utils/projectImages";
 import "./ProjectItem.scss";
 
 interface ProjectItemProps {
-  project: {
-    slug: string;
-    name: string;
-    desc: string;
-    tags: string[];
-    projectImage: string;
-    projectVideo?: string;
-  };
+  project: ProjectWithMedia;
   index?: number;
   shape?: "feature" | "tall" | "wide" | "square";
   /** filtered out — dropped from the grid flow, animated by GSAP Flip */
@@ -50,6 +44,9 @@ const ProjectItem: React.FC<ProjectItemProps> = (
                 muted
                 loop
                 playsInline
+                style={project.imagePosition
+                  ? { objectPosition: project.imagePosition }
+                  : undefined}
                 aria-label={`Demo for ${project.name}`}
               />
             )
@@ -57,6 +54,9 @@ const ProjectItem: React.FC<ProjectItemProps> = (
               <img
                 src={project.projectImage}
                 alt={`Image for ${project.name}`}
+                style={project.imagePosition
+                  ? { objectPosition: project.imagePosition }
+                  : undefined}
               />
             )}
         </div>

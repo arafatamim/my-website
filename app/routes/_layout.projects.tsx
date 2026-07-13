@@ -5,6 +5,8 @@ import { useRef } from "react";
 import ProjectItem from "~/components/ProjectItem";
 import "../styles/projects.scss";
 import { getProjectImage, projectVideos } from "../utils/projectImages";
+import type { Project } from "../utils/projectImages";
+import projectsData from "../content/projects/projects.json";
 import { absoluteUrl, buildMeta } from "../meta";
 import {
   Flip,
@@ -50,9 +52,7 @@ export const meta = ({ loaderData }: Route.MetaArgs) => {
 };
 
 export async function loader() {
-  const projects = (await import("../content/projects/projects.json"))[
-    "default"
-  ];
+  const projects = projectsData as Project[];
 
   const enhancedProjects = projects.map((project) => {
     const projectWithImages = {
@@ -350,8 +350,8 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
 
 // bento spans picked from each screenshot's natural aspect ratio
 const SHAPES: Record<string, "feature" | "tall" | "wide" | "square"> = {
-  sellmate: "tall", // portrait phone-recording demo
-  ferngeist: "feature", // ~1:1, newest — gets the 2×2 cell
+  sellmate: "feature",
+  ferngeist: "tall",
   "amar-rapid-pass": "tall",
   "freight-away": "tall",
   "goodlink-global": "tall",

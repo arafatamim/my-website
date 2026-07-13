@@ -4,6 +4,7 @@
     "desc": "AI Facebook, Messenger & social-media automation for SMBs — a customer sends a product photo, the bot matches the catalogue and runs the full multilingual order flow.",
     "image": "sellmate.webp",
     "video": "sellmate-demo.webm",
+    "imagePosition": "center top",
     "demoLink": "https://sellmate-demo.arafatam.im",
     "slug": "sellmate",
     "tags": ["ai", "convex", "trigger.dev", "case-study"]
@@ -13,6 +14,7 @@
     "desc": "Android client for ACP-compatible coding agents.",
     "image": "ferngeist.webp",
     "video": "ferngeist-demo.webm",
+    "imagePosition": "left top",
     "slug": "ferngeist",
     "repo": {
       "url": "//github.com/arafatamim/ferngeist"
@@ -25,6 +27,7 @@
     "desc": "Check the balance and transaction history of your Rapid Passes (for Bangladesh). Now with Material 3 Expressive design.",
     "logo": "amar-rapid-pass-logo.png",
     "image": "amar-rapid-pass.webp",
+    "imagePosition": "center top",
     "slug": "amar-rapid-pass",
     "repo": {
       "url": "//github.com/arafatamim/rapid_pass_app"
@@ -81,6 +84,7 @@
     "desc": "Simple and handy tally counter.",
     "logo": "tally-counter-logo.png",
     "image": "tally-counter.png",
+    "imagePosition": "center top",
     "slug": "tally-counter-pwa",
     "repo": {
       "url": "//github.com/arafatamim/tally-counter"
@@ -93,6 +97,7 @@
     "desc": "Android app to stream videos from 1500+ supported websites, powered by youtube-dl.",
     "logo": "multistreamer-logo.png",
     "image": "multistreamer.webp",
+    "imagePosition": "left top",
     "slug": "multistreamer",
     "downloadLink": "//github.com/arafatamim/multistreamer/releases",
     "repo": {
@@ -105,6 +110,7 @@
     "desc": "View Islamic prayer times for your location.",
     "logo": "waqt-web-logo.png",
     "image": "waqt-web.webp",
+    "imagePosition": "center",
     "slug": "waqt-web",
     "repo": {
       "url": "//github.com/arafatamim/waqt-web"

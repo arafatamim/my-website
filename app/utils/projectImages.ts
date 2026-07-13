@@ -16,6 +16,27 @@ import multistreamer from "../content/projects/img/multistreamer.webp";
 import ferngeist from "../content/projects/img/ferngeist.webp";
 import sellmate from "../content/projects/img/sellmate.webp";
 import sellmateVideo from "../content/projects/video/sellmate-demo.webm";
+import ferngeistVideo from "../content/projects/video/ferngeist-demo.webm";
+
+export interface Project {
+  name: string;
+  desc: string;
+  image: string;
+  video?: string;
+  logo?: string;
+  imagePosition?: string;
+  slug: string;
+  repo?: { url: string };
+  productLink?: string;
+  downloadLink?: string;
+  demoLink?: string;
+  tags: string[];
+}
+
+export type ProjectWithMedia = Project & {
+  projectImage: string;
+  projectVideo?: string;
+};
 
 const projectImages: Record<string, any> = {
   "waqt-web.webp": waqtWeb,
@@ -42,6 +63,7 @@ const logoImages: Record<string, any> = {
 
 export const projectVideos: Record<string, string> = {
   "sellmate-demo.webm": sellmateVideo,
+  "ferngeist-demo.webm": ferngeistVideo,
 };
 
 export function getProjectImage(filename: string): any {

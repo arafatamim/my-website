@@ -8,6 +8,8 @@ import {
   getProjectImage,
   projectVideos,
 } from "~/utils/projectImages";
+import type { Project } from "~/utils/projectImages";
+import projectsData from "../content/projects/projects.json";
 import { useRef } from "react";
 import { Link } from "react-router";
 
@@ -17,8 +19,7 @@ import { useMagneticAll } from "../utils/useMagnetic";
 
 export const handle: SitemapHandle<unknown> = {
   sitemap: async (domain) => {
-    const projects =
-      (await import("../content/projects/projects.json")).default;
+    const projects = projectsData as Project[];
 
     return projects.map((project) => ({
       route: `${domain}/projects/${project.slug}`,
@@ -31,9 +32,7 @@ export const handle: SitemapHandle<unknown> = {
 export async function loader({ params }: Route.LoaderArgs) {
   const projectId = params.project;
 
-  const projects = (await import("../content/projects/projects.json"))[
-    "default"
-  ];
+  const projects = projectsData as Project[];
   const project = projects.find((p) => p.slug === projectId);
 
   if (!project) {
@@ -98,7 +97,16 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export default function Project({ loaderData }: Route.ComponentProps) {
   const {
-    project: { name, desc, repo, productLink, downloadLink, demoLink, tags },
+    project: {
+      name,
+      desc,
+      repo,
+      productLink,
+      downloadLink,
+      demoLink,
+      tags,
+      imagePosition,
+    },
     logoImage,
     projectImage,
     projectVideo,
@@ -277,10 +285,21 @@ export default function Project({ loaderData }: Route.ComponentProps) {
               muted
               loop
               playsInline
+              style={imagePosition
+                ? { objectPosition: imagePosition }
+                : undefined}
               aria-label={name + " demo"}
             />
           )
-          : <img src={projectImage} alt={name + " screenshot"} />}
+          : (
+            <img
+              src={projectImage}
+              alt={name + " screenshot"}
+              style={imagePosition
+                ? { objectPosition: imagePosition }
+                : undefined}
+            />
+          )}
       </figure>
     </div>
   );
