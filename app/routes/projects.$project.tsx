@@ -1,7 +1,7 @@
 import type { Route } from "./+types/projects.$project";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 import "../styles/project.scss";
-import { FaArrowLeftLong, FaDownload, FaGitAlt } from "react-icons/fa6";
+import { FaArrowLeftLong, FaDownload, FaGitAlt, FaPlay } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import {
   getLogoImage,
@@ -98,7 +98,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export default function Project({ loaderData }: Route.ComponentProps) {
   const {
-    project: { name, desc, repo, productLink, downloadLink, tags },
+    project: { name, desc, repo, productLink, downloadLink, demoLink, tags },
     logoImage,
     projectImage,
     projectVideo,
@@ -109,6 +109,13 @@ export default function Project({ loaderData }: Route.ComponentProps) {
       <a href={productLink} target="_blank" rel="noopener noreferrer">
         <FaExternalLinkAlt />
         Visit project
+      </a>
+    )
+    : demoLink != null
+    ? (
+      <a href={demoLink} target="_blank" rel="noopener noreferrer">
+        <FaPlay />
+        View demo
       </a>
     )
     : downloadLink != null
