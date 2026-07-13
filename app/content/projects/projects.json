@@ -12,6 +12,7 @@
     "name": "Ferngeist",
     "desc": "Android client for ACP-compatible coding agents.",
     "image": "ferngeist.webp",
+    "video": "ferngeist-demo.webm",
     "slug": "ferngeist",
     "repo": {
       "url": "//github.com/arafatamim/ferngeist"
