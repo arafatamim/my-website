@@ -62,7 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useEffect(endFirstLoad, []);
 
   return (
-    <html lang="en">
+    <html lang="en" className="js" suppressHydrationWarning>
       <head>
         {/*
           Pre-paint, before hydration: mark JS availability (so CSS can defer to
