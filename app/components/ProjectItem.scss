@@ -16,7 +16,15 @@
     &__tags {
       view-transition-name: project-item-tags;
     }
-    &__image > img,
+    &__image > img {
+      view-transition-name: project-item-image;
+    }
+    // a hovered video card mounts both <img> and <video>; the video is the
+    // visible layer, so it owns the shared name — two live elements sharing one
+    // view-transition-name aborts the whole transition.
+    &__image:has(video) > img {
+      view-transition-name: none;
+    }
     &__image > video {
       view-transition-name: project-item-image;
     }
@@ -44,6 +52,7 @@
   background-color: var(--secondary-color);
 
   &__image {
+    position: relative;
     height: 100%;
 
     img,
@@ -51,8 +60,23 @@
       display: block;
       width: 100%;
       height: 100%;
+    }
+
+    img {
       object-fit: cover;
       transition: transform 0.5s ease;
+    }
+
+    video {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.5s ease;
+
+      &.is-visible {
+        opacity: 1;
+      }
     }
   }
 

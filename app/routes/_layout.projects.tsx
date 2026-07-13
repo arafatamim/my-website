@@ -80,7 +80,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
   // filter. Render still shows the previously-committed layout, so this is the
   // "First" snapshot; the effect below plays it to the "Last" after commit.
   // (A deliberate render-phase read — the one place FLIP has to reach the DOM.)
-  const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
+  const flipState = useRef<Flip.FlipState | null>(null);
   const prevTagKey = useRef(tagKey);
   // grid height + scroll offset captured pre-commit, so narrowing can ease the
   // page's height down instead of the browser snapping scroll to the new max.

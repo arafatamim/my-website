@@ -1,5 +1,5 @@
 import { NavLink, useSearchParams } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ProjectWithMedia } from "~/utils/projectImages";
 import "./ProjectItem.scss";
 
@@ -11,12 +11,43 @@ interface ProjectItemProps {
   hidden?: boolean;
 }
 
+// crossfade duration; keep in sync with the opacity transition in ProjectItem.scss
+const VIDEO_FADE_MS = 320;
+
 const ProjectItem: React.FC<ProjectItemProps> = (
   { project, index, shape = "square", hidden = false, ...rest },
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [hovered, setHovered] = useState(false);
-  const showVideo = hovered && project.projectVideo != null;
+  const [isHovering, setIsHovering] = useState(false);
+  const [videoMounted, setVideoMounted] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(false);
+  const hasVideo = project.projectVideo != null;
+
+  // mount on hover-in, fade to opaque next frame; on hover-out, fade to
+  // transparent and unmount once the CSS transition has had time to finish —
+  // a quick re-hover during fade-out cancels the pending unmount instead of
+  // flashing back to frame 0.
+  useEffect(() => {
+    if (!videoMounted) return;
+    if (isHovering) {
+      const frame = requestAnimationFrame(() => setVideoVisible(true));
+      return () => cancelAnimationFrame(frame);
+    }
+    setVideoVisible(false);
+    const timer = setTimeout(() => setVideoMounted(false), VIDEO_FADE_MS);
+    return () => clearTimeout(timer);
+  }, [videoMounted, isHovering]);
+
+  const handleMouseEnter = () => {
+    if (!hasVideo) return;
+    setIsHovering(true);
+    setVideoMounted(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!hasVideo) return;
+    setIsHovering(false);
+  };
 
   return (
     <NavLink
@@ -31,34 +62,32 @@ const ProjectItem: React.FC<ProjectItemProps> = (
     >
       <article
         className="project__card"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="project__card__image">
-          {showVideo
-            ? (
-              <video
-                src={project.projectVideo}
-                poster={project.projectImage}
-                autoPlay
-                muted
-                loop
-                playsInline
-                style={project.imagePosition
-                  ? { objectPosition: project.imagePosition }
-                  : undefined}
-                aria-label={`Demo for ${project.name}`}
-              />
-            )
-            : (
-              <img
-                src={project.projectImage}
-                alt={`Image for ${project.name}`}
-                style={project.imagePosition
-                  ? { objectPosition: project.imagePosition }
-                  : undefined}
-              />
-            )}
+          <img
+            src={project.projectImage}
+            alt={`Image for ${project.name}`}
+            style={project.imagePosition
+              ? { objectPosition: project.imagePosition }
+              : undefined}
+          />
+          {videoMounted && (
+            <video
+              src={project.projectVideo}
+              poster={project.projectImage}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className={videoVisible ? "is-visible" : undefined}
+              style={project.imagePosition
+                ? { objectPosition: project.imagePosition }
+                : undefined}
+              aria-label={`Demo for ${project.name}`}
+            />
+          )}
         </div>
         <div className="project__card__label">
           {index != null && (
