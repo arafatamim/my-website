@@ -3,7 +3,11 @@ import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 import "../styles/project.scss";
 import { FaArrowLeftLong, FaDownload, FaGitAlt } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { getLogoImage, getProjectImage } from "~/utils/projectImages";
+import {
+  getLogoImage,
+  getProjectImage,
+  projectVideos,
+} from "~/utils/projectImages";
 import { useRef } from "react";
 import { Link } from "react-router";
 
@@ -43,8 +47,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const projectImage = getProjectImage(project.image);
+  const projectVideo = project.video ? projectVideos[project.video] : null;
 
-  return { project, logoImage, projectImage };
+  return { project, logoImage, projectImage, projectVideo };
 }
 
 export function meta({ loaderData }: Route.MetaArgs) {
@@ -96,6 +101,7 @@ export default function Project({ loaderData }: Route.ComponentProps) {
     project: { name, desc, repo, productLink, downloadLink, tags },
     logoImage,
     projectImage,
+    projectVideo,
   } = loaderData;
 
   const tryButton = productLink != null
@@ -255,7 +261,19 @@ export default function Project({ loaderData }: Route.ComponentProps) {
       </div>
 
       <figure className="project__images">
-        <img src={projectImage} alt={name + " screenshot"} />
+        {projectVideo
+          ? (
+            <video
+              src={projectVideo}
+              poster={projectImage}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-label={name + " demo"}
+            />
+          )
+          : <img src={projectImage} alt={name + " screenshot"} />}
       </figure>
     </div>
   );

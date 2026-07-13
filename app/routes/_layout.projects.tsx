@@ -4,7 +4,7 @@ import { FaTimesCircle } from "react-icons/fa";
 import { useRef } from "react";
 import ProjectItem from "~/components/ProjectItem";
 import "../styles/projects.scss";
-import { getProjectImage } from "../utils/projectImages";
+import { getProjectImage, projectVideos } from "../utils/projectImages";
 import { absoluteUrl, buildMeta } from "../meta";
 import {
   Flip,
@@ -58,6 +58,7 @@ export async function loader() {
     const projectWithImages = {
       ...project,
       projectImage: getProjectImage(project.image),
+      projectVideo: project.video ? projectVideos[project.video] : undefined,
     };
 
     return projectWithImages;
@@ -349,6 +350,7 @@ export default function ProjectsTab({ loaderData }: Route.ComponentProps) {
 
 // bento spans picked from each screenshot's natural aspect ratio
 const SHAPES: Record<string, "feature" | "tall" | "wide" | "square"> = {
+  sellmate: "tall", // portrait phone-recording demo
   ferngeist: "feature", // ~1:1, newest — gets the 2×2 cell
   "amar-rapid-pass": "tall",
   "freight-away": "tall",

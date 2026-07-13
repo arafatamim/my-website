@@ -14,6 +14,8 @@ import mym from "../content/projects/img/mym.webp";
 import multistreamerLogo from "../content/projects/img/multistreamer-logo.png";
 import multistreamer from "../content/projects/img/multistreamer.webp";
 import ferngeist from "../content/projects/img/ferngeist.webp";
+import sellmate from "../content/projects/img/sellmate.webp";
+import sellmateVideo from "../content/projects/video/sellmate-demo.webm";
 
 const projectImages: Record<string, any> = {
   "waqt-web.webp": waqtWeb,
@@ -26,6 +28,7 @@ const projectImages: Record<string, any> = {
   "mym.webp": mym,
   "multistreamer.webp": multistreamer,
   "ferngeist.webp": ferngeist,
+  "sellmate.webp": sellmate,
 };
 
 const logoImages: Record<string, any> = {
@@ -35,6 +38,10 @@ const logoImages: Record<string, any> = {
   "rbds-logo.png": rbdsLogo,
   "mym-logo.png": mymLogo,
   "multistreamer-logo.png": multistreamerLogo,
+};
+
+export const projectVideos: Record<string, string> = {
+  "sellmate-demo.webm": sellmateVideo,
 };
 
 export function getProjectImage(filename: string): any {

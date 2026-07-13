@@ -16,13 +16,15 @@
     &__tags {
       view-transition-name: project-item-tags;
     }
-    &__image > img {
+    &__image > img,
+    &__image > video {
       view-transition-name: project-item-image;
     }
   }
 
   &:hover {
-    .project__card__image img {
+    .project__card__image img,
+    .project__card__image video {
       transform: scale(1.045);
     }
     .project__card__name {
@@ -44,7 +46,8 @@
   &__image {
     height: 100%;
 
-    img {
+    img,
+    video {
       display: block;
       width: 100%;
       height: 100%;

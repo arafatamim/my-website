@@ -1,5 +1,13 @@
 [
   {
+    "name": "Sellmate",
+    "desc": "AI Facebook, Messenger & social-media automation for SMBs — a customer sends a product photo, the bot matches the catalogue and runs the full multilingual order flow.",
+    "image": "sellmate.webp",
+    "video": "sellmate-demo.webm",
+    "slug": "sellmate",
+    "tags": ["ai", "convex", "trigger.dev", "case-study"]
+  },
+  {
     "name": "Ferngeist",
     "desc": "Android client for ACP-compatible coding agents.",
     "image": "ferngeist.webp",

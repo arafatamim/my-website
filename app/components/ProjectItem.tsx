@@ -1,4 +1,5 @@
 import { NavLink, useSearchParams } from "react-router";
+import { useState } from "react";
 import "./ProjectItem.scss";
 
 interface ProjectItemProps {
@@ -8,6 +9,7 @@ interface ProjectItemProps {
     desc: string;
     tags: string[];
     projectImage: string;
+    projectVideo?: string;
   };
   index?: number;
   shape?: "feature" | "tall" | "wide" | "square";
@@ -19,6 +21,8 @@ const ProjectItem: React.FC<ProjectItemProps> = (
   { project, index, shape = "square", hidden = false, ...rest },
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [hovered, setHovered] = useState(false);
+  const showVideo = hovered && project.projectVideo != null;
 
   return (
     <NavLink
@@ -31,9 +35,30 @@ const ProjectItem: React.FC<ProjectItemProps> = (
       aria-hidden={hidden || undefined}
       tabIndex={hidden ? -1 : undefined}
     >
-      <article className="project__card">
+      <article
+        className="project__card"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <div className="project__card__image">
-          <img src={project.projectImage} alt={`Image for ${project.name}`} />
+          {showVideo
+            ? (
+              <video
+                src={project.projectVideo}
+                poster={project.projectImage}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label={`Demo for ${project.name}`}
+              />
+            )
+            : (
+              <img
+                src={project.projectImage}
+                alt={`Image for ${project.name}`}
+              />
+            )}
         </div>
         <div className="project__card__label">
           {index != null && (
@@ -44,7 +69,7 @@ const ProjectItem: React.FC<ProjectItemProps> = (
           <span className="project__card__name">{project.name}</span>
         </div>
         <div className="project__card__tags">
-          {project.tags.map((tag: string, i: number) => {
+          {project.tags.slice(0, 3).map((tag: string, i: number) => {
             return (
               <button
                 onClick={(e) => {
