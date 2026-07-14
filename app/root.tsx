@@ -15,23 +15,31 @@ import { Navigation } from "./components/Navigation";
 import { useSmoothScroll } from "./utils/useSmoothScroll";
 import { getHints } from "./utils/clientHints";
 import { normalizePathname } from "./utils/path";
+import cormorantGaramondUrl from "./assets/fonts/cormorant-garamond.woff2";
+import cormorantGaramondItalicUrl from "./assets/fonts/cormorant-garamond-italic.woff2";
+import workSansUrl from "./assets/fonts/work-sans.woff2";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
+    rel: "preload",
+    href: cormorantGaramondUrl,
+    as: "font",
+    type: "font/woff2",
     crossOrigin: "anonymous",
   },
   {
-    rel: "stylesheet",
-    href:
-      "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap",
+    rel: "preload",
+    href: cormorantGaramondItalicUrl,
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
   },
   {
-    rel: "stylesheet",
-    href:
-      "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap",
+    rel: "preload",
+    href: workSansUrl,
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
   },
   { rel: "icon", href: "/favicon.ico", sizes: "any" },
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
@@ -171,11 +179,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <Scripts />
-        <script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-          async
-          defer
-        />
       </body>
     </html>
   );

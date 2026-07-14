@@ -225,6 +225,9 @@ export default function Contact() {
   const widgetIdRef = useRef<string | null | undefined>(null);
 
   useEffect(() => {
+    const TURNSTILE_SRC =
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
     const renderTurnstile = () => {
       if ((window as any).turnstile && turnstileRef.current) {
         if (widgetIdRef.current) {
@@ -250,7 +253,21 @@ export default function Contact() {
     if ((window as any).turnstile) {
       renderTurnstile();
     } else {
-      window.addEventListener("load", renderTurnstile);
+      // loaded globally nowhere else — inject it only on this page, the
+      // only route that needs it, instead of blocking every route with it
+      const existing = document.querySelector<HTMLScriptElement>(
+        `script[src="${TURNSTILE_SRC}"]`,
+      );
+      if (existing) {
+        existing.addEventListener("load", renderTurnstile, { once: true });
+      } else {
+        const script = document.createElement("script");
+        script.src = TURNSTILE_SRC;
+        script.async = true;
+        script.defer = true;
+        script.addEventListener("load", renderTurnstile, { once: true });
+        document.head.appendChild(script);
+      }
     }
 
     return () => {
@@ -260,7 +277,6 @@ export default function Contact() {
         );
         widgetIdRef.current = null;
       }
-      window.removeEventListener("load", renderTurnstile);
     };
   }, []);
 
